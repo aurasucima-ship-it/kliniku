@@ -49,17 +49,18 @@
                 required>
         </div>
 
-        {{-- Jenis Kelamin --}}
-        <div>
-            <label class="block font-semibold text-gray-700 mb-1">Jenis Kelamin</label>
-            <select name="jenis_kelamin"
-                class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm focus:ring focus:ring-blue-300"
-                required>
-                <option value="">-- Pilih --</option>
-                <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
-            </select>
-        </div>
+{{-- Jenis Kelamin --}}
+<div>
+    <label class="block font-semibold text-gray-700 mb-1">Jenis Kelamin</label>
+    <select name="jenis_kelamin"
+        class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm focus:ring focus:ring-blue-300"
+        required>
+        <option value="">-- Pilih --</option>
+        <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
+        <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
+    </select>
+</div>
+
 
         {{-- Alamat --}}
         <div>

@@ -14,21 +14,20 @@ return new class extends Migration
         Schema::create('pendaftarans', function (Blueprint $table) {
             $table->id();
 
-            // Relasi ke user (pasien yang login)
+            // Relasi ke user (akun pasien yang login)
             $table->foreignId('user_id')
                   ->constrained('users')
                   ->onDelete('cascade');
 
-            // Relasi opsional ke tabel pasien (jika ada tabel pasien terpisah)
-$table->foreignId('pasien_id')
-      ->nullable()
-      ->constrained('pasiens')
-      ->onDelete('cascade');
+            // Relasi opsional ke tabel pasien
+            $table->foreignId('pasien_id')
+                  ->nullable()
+                  ->constrained('pasien') 
+                  ->onDelete('cascade');
 
-
-            // Relasi ke dokter
+            // Relasi ke dokter (ubah ke dokter, bukan dokters)
             $table->foreignId('dokter_id')
-                  ->constrained('dokters')
+                  ->constrained('dokter')
                   ->onDelete('cascade');
 
             // Data pendaftaran

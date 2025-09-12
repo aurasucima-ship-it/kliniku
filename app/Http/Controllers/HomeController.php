@@ -23,11 +23,10 @@ class HomeController extends Controller
         switch ($user->role) {
             // ================= ADMIN =================
             case 'admin':
-                $totalAdmin   = User::where('role', 'admin')->count();
-                $totalDokter  = User::where('role', 'dokter')->count();
-                $totalPasien  = User::where('role', 'pasien')->count();
+                $totalAdmin   = User::where('role', 'admin')->count();   // dari tabel users
+                $totalDokter  = Dokter::count();                         // dari tabel dokter
+                $totalPasien  = Pasien::count();                         // dari tabel pasien
 
-                // hitung jumlah pendaftaran pasien per hari
                 $kunjungan = Pendaftaran::selectRaw('COUNT(*) as total, DATE_FORMAT(created_at, "%d/%m") as date')
                     ->groupBy('date')
                     ->orderBy('date', 'asc')
@@ -53,15 +52,18 @@ class HomeController extends Controller
 
             // ================= PASIEN =================
             case 'pasien':
+                // Ambil pasien sesuai user login
                 $pasien = Pasien::where('user_id', $user->id)->first();
+
+                // Ambil rekam medis pasien
                 $rekamMedisSaya = $pasien
-                    ? RekamMedis::where('pasien_id', $pasien->id)->get()
+                    ? $pasien->rekamMedis()->get()
                     : collect();
 
-return view('home.pasien', [
-    'rekamMedisSaya' => $rekamMedisSaya,
-]);
-
+                return view('home.pasien', [
+                    'rekamMedisSaya' => $rekamMedisSaya,
+                    'pasien' => $pasien,
+                ]);
 
             // ================= DEFAULT =================
             default:

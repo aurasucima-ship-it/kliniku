@@ -37,23 +37,36 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::resource('pasien', PasienController::class);           // CRUD pasien
-    Route::resource('dokter', DokterController::class);           // CRUD dokter
-    Route::resource('rekam_medis', RekamMedisController::class);  // CRUD rekam medis
+    Route::resource('pasien', PasienController::class);   // CRUD pasien
+    Route::resource('dokter', DokterController::class);   // CRUD dokter
 });
 
 /*
 |--------------------------------------------------------------------------
-| Dokter Area
+| Rekam Medis (bisa diakses Admin & Dokter)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->group(function () {
-    Route::resource('rekam_medis', RekamMedisController::class);  // Input rekam medis pasien
+Route::middleware(['auth', 'role:admin,dokter'])->group(function () {
+    Route::resource('rekam_medis', RekamMedisController::class);
 });
 
 /*
 |--------------------------------------------------------------------------
-| Pasien Area
+| Pendaftaran Pasien (bisa diakses Pasien & Dokter)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:pasien,dokter'])
+    ->prefix('pendaftaran')
+    ->name('pasien.pendaftaran.')
+    ->group(function () {
+        Route::get('/', [PendaftaranController::class, 'index'])->name('index');
+        Route::get('/create', [PendaftaranController::class, 'create'])->name('create');
+        Route::post('/', [PendaftaranController::class, 'store'])->name('store');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Pasien Area (khusus pasien)
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:pasien'])
@@ -63,15 +76,9 @@ Route::middleware(['auth', 'role:pasien'])
         // Dashboard pasien
         Route::get('/dashboard', fn () => view('pasien.dashboard'))->name('dashboard');
 
-        // Pendaftaran pasien
-        Route::get('/pendaftaran', [PendaftaranController::class, 'index'])->name('pendaftaran.index');
-        Route::get('/pendaftaran/create', [PendaftaranController::class, 'create'])->name('pendaftaran.create');
-        Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
-
         // Rekam medis pasien (read-only)
         Route::get('/rekam_medis', [RekamMedisController::class, 'pasienRekamMedis'])->name('rekam_medis');
     });
-
 
 /*
 |--------------------------------------------------------------------------

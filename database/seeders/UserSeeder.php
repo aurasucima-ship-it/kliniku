@@ -10,25 +10,34 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
-            'name' => 'Admin Klinik',
-            'email' => 'admin@kliniku.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-        ]);
+        // Admin
+        User::updateOrCreate(
+            ['email' => 'admin@kliniku.com'],
+            [
+                'name' => 'Admin Klinik',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+            ]
+        );
 
-        User::create([
-            'name' => 'Dokter Klinik',
-            'email' => 'dokter@kliniku.com',
-            'password' => Hash::make('password'),
-            'role' => 'dokter',
-        ]);
+        // Dokter (dr. Riki Sanjaya)
+        User::updateOrCreate(
+            ['email' => 'dokter@kliniku.com'],
+            [
+                'name' => 'dr. Riki Sanjaya',
+                'password' => Hash::make('password'),
+                'role' => 'dokter',
+            ]
+        );
 
-        User::create([
-            'name' => 'Pasien Klinik',
-            'email' => 'pasien@kliniku.com',
-            'password' => Hash::make('password'),
-            'role' => 'pasien',
-        ]);
+        // Pasien
+        User::updateOrCreate(
+            ['email' => 'pasien@kliniku.com'],
+            [
+                'name' => 'Canva Narendra',
+                'password' => Hash::make('password'),
+                'role' => 'pasien',
+            ]
+        );
     }
 }

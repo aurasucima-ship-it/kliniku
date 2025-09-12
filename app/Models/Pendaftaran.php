@@ -9,11 +9,9 @@ class Pendaftaran extends Model
 {
     use HasFactory;
 
-    protected $table = 'pendaftarans'; // nama tabel di DB
-
     protected $fillable = [
-        'user_id',        // pasien yang daftar (relasi ke users)
-        'pasien_id',      // opsional, kalau ada tabel pasien terpisah
+        'user_id',
+        'pasien_id',
         'dokter_id',
         'nama',
         'jenis_kelamin',
@@ -23,19 +21,13 @@ class Pendaftaran extends Model
         'tanggal_berobat',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | RELASI
-    |--------------------------------------------------------------------------
-    */
-
-    // Relasi ke User (pasien login)
+    // Relasi ke User
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Relasi opsional ke Pasien (jika ada tabel pasien terpisah)
+    // Relasi ke Pasien
     public function pasien()
     {
         return $this->belongsTo(Pasien::class);

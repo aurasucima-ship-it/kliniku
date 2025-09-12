@@ -10,42 +10,38 @@ use Illuminate\Http\Request;
 class RekamMedisController extends Controller
 {
     /**
-     * Tampilkan daftar rekam medis (untuk admin/dokter).
+     * Tampilkan daftar rekam medis (untuk admin/dokter)
      */
     public function index()
     {
-        $rekamMedis = RekamMedis::with(['pasien', 'dokter'])
-            ->latest()
-            ->get();
-
+        $rekamMedis = RekamMedis::with(['pasien', 'dokter'])->latest()->get();
         return view('rekam_medis.index', compact('rekamMedis'));
     }
 
     /**
-     * Form tambah rekam medis.
+     * Form tambah rekam medis
      */
     public function create()
     {
         $pasiens = Pasien::all();
         $dokters = Dokter::all();
-
         return view('rekam_medis.create', compact('pasiens', 'dokters'));
     }
 
     /**
-     * Simpan rekam medis baru.
+     * Simpan rekam medis baru
      */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'pasien_id'            => 'required|exists:pasiens,id',
-            'dokter_id'            => 'required|exists:dokters,id',
-            'keluhan'              => 'required|string',
-            'diagnosa'             => 'nullable|string',
-            'tindakan'             => 'nullable|string',
-            'resep_obat'           => 'nullable|string',
-            'catatan'              => 'nullable|string',
-            'tanggal_pemeriksaan'  => 'required|date',
+            'pasien_id'           => 'required|exists:pasien,id',
+            'dokter_id'           => 'required|exists:dokter,id',
+            'keluhan'             => 'required|string',
+            'diagnosa'            => 'nullable|string',
+            'tindakan'            => 'nullable|string',
+            'resep_obat'          => 'nullable|string',
+            'catatan'             => 'nullable|string',
+            'tanggal_pemeriksaan' => 'required|date',
         ]);
 
         RekamMedis::create($validated);
@@ -56,42 +52,39 @@ class RekamMedisController extends Controller
     }
 
     /**
-     * Detail rekam medis.
+     * Detail rekam medis
      */
     public function show($id)
     {
-        $rekamMedis = RekamMedis::with(['pasien', 'dokter'])
-            ->findOrFail($id);
-
+        $rekamMedis = RekamMedis::with(['pasien', 'dokter'])->findOrFail($id);
         return view('rekam_medis.show', compact('rekamMedis'));
     }
 
     /**
-     * Form edit rekam medis.
+     * Form edit rekam medis
      */
     public function edit($id)
     {
         $rekamMedis = RekamMedis::findOrFail($id);
         $pasiens    = Pasien::all();
         $dokters    = Dokter::all();
-
         return view('rekam_medis.edit', compact('rekamMedis', 'pasiens', 'dokters'));
     }
 
     /**
-     * Update rekam medis.
+     * Update rekam medis
      */
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'pasien_id'            => 'required|exists:pasiens,id',
-            'dokter_id'            => 'required|exists:dokters,id',
-            'keluhan'              => 'required|string',
-            'diagnosa'             => 'nullable|string',
-            'tindakan'             => 'nullable|string',
-            'resep_obat'           => 'nullable|string',
-            'catatan'              => 'nullable|string',
-            'tanggal_pemeriksaan'  => 'required|date',
+            'pasien_id'           => 'required|exists:pasien,id',
+            'dokter_id'           => 'required|exists:dokter,id',
+            'keluhan'             => 'required|string',
+            'diagnosa'            => 'nullable|string',
+            'tindakan'            => 'nullable|string',
+            'resep_obat'          => 'nullable|string',
+            'catatan'             => 'nullable|string',
+            'tanggal_pemeriksaan' => 'required|date',
         ]);
 
         $rekamMedis = RekamMedis::findOrFail($id);
@@ -103,7 +96,7 @@ class RekamMedisController extends Controller
     }
 
     /**
-     * Hapus rekam medis.
+     * Hapus rekam medis
      */
     public function destroy($id)
     {
@@ -116,17 +109,17 @@ class RekamMedisController extends Controller
     }
 
     /**
-     * Rekam medis khusus pasien login.
+     * Rekam medis khusus pasien login
      */
     public function pasienRekamMedis()
-{
-    $pasien = \App\Models\Pasien::where('user_id', auth()->id())->firstOrFail();
+    {
+        $pasien = Pasien::where('user_id', auth()->id())->firstOrFail();
 
-    $rekamMedis = RekamMedis::with('dokter')
-        ->where('pasien_id', $pasien->id)
-        ->latest()
-        ->get();
+        $rekamMedis = RekamMedis::with('dokter')
+            ->where('pasien_id', $pasien->id)
+            ->latest()
+            ->get();
 
-    return view('pasien.rekam_medis.index', compact('rekamMedis'));
-}
+        return view('pasien.rekam_medis.index', compact('rekamMedis'));
+    }
 }
