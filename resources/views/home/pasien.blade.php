@@ -1,45 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
-
-    <!-- Logout -->
-    <div class="d-flex justify-content-end mb-4">
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="btn btn-outline-danger">Logout</button>
-        </form>
-    </div>
+<div class="max-w-6xl mx-auto py-6">
 
     <!-- Ucapan Selamat Datang -->
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body text-center">
-            <h2 class="fw-bold text-primary">
-                Selamat Datang, {{ $pasien->nama ?? Auth::user()->name }} 👋
-            </h2>
-            <p class="mt-3 fs-5 text-muted">
-                Gunakan menu di bawah untuk melakukan 
-                <strong>pendaftaran</strong> atau melihat 
-                <strong>rekam medis</strong> Anda.
-            </p>
-        </div>
+    <div class="bg-white shadow-md rounded-xl p-8 mb-8 text-center">
+        <h2 class="text-4xl font-bold text-pink-600 mb-4">
+            Selamat Datang, {{ $pasien->nama ?? Auth::user()->name }} 👋
+        </h2>
+        <p class="text-lg text-gray-600">
+            Gunakan menu di bawah untuk melakukan 
+            <span class="font-semibold">pendaftaran</span> atau melihat 
+            <span class="font-semibold">rekam medis</span> Anda.
+        </p>
     </div>
 
     <!-- Menu Aksi Cepat -->
-    <div class="row g-4 mb-4">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0 h-100 text-center p-3">
-                <h5>Pendaftaran</h5>
-                <p class="text-muted mb-3">Daftar berobat secara online</p>
-                <a href="{{ route('pasien.pendaftaran.create') }}" class="btn btn-primary">Daftar Sekarang</a>
-            </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Pendaftaran -->
+        <div class="bg-white shadow-md rounded-xl p-6 text-center hover:shadow-lg transition">
+            <h5 class="text-xl font-bold text-pink-500 mb-2">Pendaftaran</h5>
+            <p class="text-gray-500 mb-4">Lihat daftar pendaftaran dan tambah baru</p>
+            <a href="{{ route('pasien.pendaftaran.index') }}" 
+               class="inline-block bg-pink-500 hover:bg-pink-600 text-white font-semibold px-5 py-2.5 rounded-lg shadow transition">
+                Lihat Pendaftaran
+            </a>
         </div>
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0 h-100 text-center p-3">
-                <h5>Rekam Medis</h5>
-                <p class="text-muted mb-3">Lihat riwayat pemeriksaan kamu</p>
-                <a href="{{ route('pasien.rekam_medis') }}" class="btn btn-success">Lihat Rekam Medis</a>
-            </div>
+
+        <!-- Rekam Medis -->
+        <div class="bg-white shadow-md rounded-xl p-6 text-center hover:shadow-lg transition">
+            <h5 class="text-xl font-bold text-pink-500 mb-2">Rekam Medis</h5>
+            <p class="text-gray-500 mb-4">Lihat riwayat pemeriksaan kamu</p>
+            <a href="{{ route('pasien.rekam_medis') }}" 
+               class="inline-block bg-pink-600 hover:bg-pink-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow transition">
+                Lihat Rekam Medis
+            </a>
         </div>
     </div>
 

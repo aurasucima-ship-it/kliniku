@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
@@ -27,7 +27,7 @@ class PendaftaranController extends Controller
     public function indexDokter()
     {
         $pendaftarans = Pendaftaran::with('user') // ambil data pasien (user)
-            ->where('dokter_id', Auth::id()) // dokter_id sama dengan user login (dokter)
+            ->where('dokter_id', Auth::id())       // dokter_id sama dengan user login (dokter)
             ->get();
 
         return view('dokter.pendaftaran.index', compact('pendaftarans'));
@@ -38,7 +38,7 @@ class PendaftaranController extends Controller
      */
     public function indexAdmin()
     {
-        $pendaftarans = Pendaftaran::with(['dokter','user'])->get();
+        $pendaftarans = Pendaftaran::with(['dokter', 'user'])->get();
 
         return view('admin.pendaftaran.index', compact('pendaftarans'));
     }
@@ -63,7 +63,7 @@ class PendaftaranController extends Controller
             'tanggal_berobat' => 'required|date',
             'jenis_kelamin'   => 'required|in:L,P',
             'alamat'          => 'required|string',
-            'dokter_id'       => 'required|exists:dokters,id',
+            'dokter_id'       => 'required|exists:dokter,id',
         ]);
 
         $validated['user_id'] = Auth::id();
@@ -74,5 +74,21 @@ class PendaftaranController extends Controller
         return redirect()
             ->route('pasien.pendaftaran.index')
             ->with('success', 'Pendaftaran berhasil disimpan.');
+    }
+
+    /**
+     * Hapus pendaftaran pasien
+     */
+    public function destroy($id)
+    {
+        $pendaftaran = Pendaftaran::where('id', $id)
+            ->where('user_id', Auth::id()) // keamanan: hanya bisa hapus pendaftarannya sendiri
+            ->firstOrFail();
+
+        $pendaftaran->delete();
+
+        return redirect()
+            ->route('pasien.pendaftaran.index')
+            ->with('success', 'Pendaftaran berhasil dihapus.');
     }
 }

@@ -2,14 +2,17 @@
 
 @section('content')
 <div class="container">
-    <h2>Tambah Rekam Medis</h2>
+    <h2 class="text-pink-600 fw-semibold mb-4 text-center d-flex justify-content-center align-items-center gap-2" style="font-family: 'Poppins', sans-serif;">
+        <i class="fas fa-notes-medical"></i>
+        Tambah Rekam Medis
+    </h2>
 
     <form action="{{ route('rekam_medis.store') }}" method="POST">
         @csrf
 
-        <div class="mb-3">
-            <label for="pasien_id" class="form-label">Pasien</label>
-            <select name="pasien_id" id="pasien_id" class="form-control" required>
+        <div class="mb-2">
+            <label for="pasien_id" class="form-label text-pink-600">Pasien</label>
+            <select name="pasien_id" id="pasien_id" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" required>
                 <option value="">-- Pilih Pasien --</option>
                 @foreach($pasiens as $pasien)
                     <option value="{{ $pasien->id }}">{{ $pasien->nama }}</option>
@@ -17,9 +20,9 @@
             </select>
         </div>
 
-        <div class="mb-3">
-            <label for="dokter_id" class="form-label">Dokter</label>
-            <select name="dokter_id" id="dokter_id" class="form-control" required>
+        <div class="mb-2">
+            <label for="dokter_id" class="form-label text-pink-600">Dokter</label>
+            <select name="dokter_id" id="dokter_id" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" required>
                 <option value="">-- Pilih Dokter --</option>
                 @foreach($dokters as $dokter)
                     <option value="{{ $dokter->id }}">{{ $dokter->nama }}</option>
@@ -27,38 +30,40 @@
             </select>
         </div>
 
-        <div class="mb-3">
-            <label for="keluhan" class="form-label">Keluhan</label>
-            <textarea name="keluhan" id="keluhan" class="form-control" required></textarea>
+        <div class="mb-2">
+            <label for="keluhan" class="form-label text-pink-600">Keluhan</label>
+            <textarea name="keluhan" id="keluhan" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" rows="2" required></textarea>
+        </div>
+
+        <div class="mb-2">
+            <label for="diagnosa" class="form-label text-pink-600">Diagnosa</label>
+            <textarea name="diagnosa" id="diagnosa" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" rows="2"></textarea>
+        </div>
+
+        <div class="mb-2">
+            <label for="tindakan" class="form-label text-pink-600">Tindakan</label>
+            <textarea name="tindakan" id="tindakan" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" rows="2"></textarea>
+        </div>
+
+        <div class="mb-2">
+            <label for="resep_obat" class="form-label text-pink-600">Resep Obat</label>
+            <textarea name="resep_obat" id="resep_obat" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" rows="2"></textarea>
+        </div>
+
+        <div class="mb-2">
+            <label for="catatan" class="form-label text-pink-600">Catatan Tambahan</label>
+            <textarea name="catatan" id="catatan" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" rows="2"></textarea>
         </div>
 
         <div class="mb-3">
-            <label for="diagnosa" class="form-label">Diagnosa</label>
-            <textarea name="diagnosa" id="diagnosa" class="form-control"></textarea>
+            <label for="tanggal_pemeriksaan" class="form-label text-pink-600">Tanggal Pemeriksaan</label>
+            <input type="date" name="tanggal_pemeriksaan" id="tanggal_pemeriksaan" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" required>
         </div>
 
-        <div class="mb-3">
-            <label for="tindakan" class="form-label">Tindakan</label>
-            <textarea name="tindakan" id="tindakan" class="form-control"></textarea>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-sm bg-pink-500 hover:bg-pink-600 text-white">Simpan</button>
+            <a href="{{ route('rekam_medis.index') }}" class="btn btn-sm bg-pink-300 hover:bg-pink-400 text-white">Batal</a>
         </div>
-
-        <div class="mb-3">
-            <label for="resep_obat" class="form-label">Resep Obat</label>
-            <textarea name="resep_obat" id="resep_obat" class="form-control"></textarea>
-        </div>
-
-        <div class="mb-3">
-            <label for="catatan" class="form-label">Catatan Tambahan</label>
-            <textarea name="catatan" id="catatan" class="form-control"></textarea>
-        </div>
-
-        <div class="mb-3">
-            <label for="tanggal_pemeriksaan" class="form-label">Tanggal Pemeriksaan</label>
-            <input type="date" name="tanggal_pemeriksaan" id="tanggal_pemeriksaan" class="form-control" required>
-        </div>
-
-        <button type="submit" class="btn btn-success">Simpan</button>
-        <a href="{{ route('rekam_medis.index') }}" class="btn btn-secondary">Batal</a>
     </form>
 </div>
 @endsection

@@ -5,27 +5,40 @@ namespace App\Http\Controllers;
 use App\Models\RekamMedis;
 use App\Models\Pasien;
 use App\Models\Dokter;
+use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
 
 class RekamMedisController extends Controller
 {
     /**
-     * Tampilkan daftar rekam medis (untuk admin/dokter)
+     * Tampilkan daftar rekam medis (admin & dokter)
      */
     public function index()
     {
-        $rekamMedis = RekamMedis::with(['pasien', 'dokter'])->latest()->get();
+        $rekamMedis = RekamMedis::with(['pasien', 'dokter'])
+            ->latest()
+            ->get();
+
         return view('rekam_medis.index', compact('rekamMedis'));
     }
 
     /**
      * Form tambah rekam medis
+     * Bisa menerima ?pendaftaran_id=xx untuk isi otomatis
      */
-    public function create()
+    public function create(Request $request)
     {
+        $pendaftaran = null;
+
+        if ($request->has('pendaftaran_id')) {
+            $pendaftaran = Pendaftaran::with(['dokter', 'user'])
+                ->findOrFail($request->pendaftaran_id);
+        }
+
         $pasiens = Pasien::all();
         $dokters = Dokter::all();
-        return view('rekam_medis.create', compact('pasiens', 'dokters'));
+
+        return view('rekam_medis.create', compact('pasiens', 'dokters', 'pendaftaran'));
     }
 
     /**
@@ -38,7 +51,7 @@ class RekamMedisController extends Controller
             'dokter_id'           => 'required|exists:dokter,id',
             'keluhan'             => 'required|string',
             'diagnosa'            => 'nullable|string',
-            'tindakan'            => 'nullable|string',
+            'tindakan'             => 'nullable|string',
             'resep_obat'          => 'nullable|string',
             'catatan'             => 'nullable|string',
             'tanggal_pemeriksaan' => 'required|date',
@@ -68,6 +81,7 @@ class RekamMedisController extends Controller
         $rekamMedis = RekamMedis::findOrFail($id);
         $pasiens    = Pasien::all();
         $dokters    = Dokter::all();
+
         return view('rekam_medis.edit', compact('rekamMedis', 'pasiens', 'dokters'));
     }
 
@@ -81,7 +95,7 @@ class RekamMedisController extends Controller
             'dokter_id'           => 'required|exists:dokter,id',
             'keluhan'             => 'required|string',
             'diagnosa'            => 'nullable|string',
-            'tindakan'            => 'nullable|string',
+            'tindakan'             => 'nullable|string',
             'resep_obat'          => 'nullable|string',
             'catatan'             => 'nullable|string',
             'tanggal_pemeriksaan' => 'required|date',

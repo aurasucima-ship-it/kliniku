@@ -33,10 +33,10 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Admin Area
+| Admin & Dokter Area
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin,dokter'])->prefix('admin')->group(function () {
     Route::resource('pasien', PasienController::class);   // CRUD pasien
     Route::resource('dokter', DokterController::class);   // CRUD dokter
 });
@@ -62,6 +62,8 @@ Route::middleware(['auth', 'role:pasien,dokter'])
         Route::get('/', [PendaftaranController::class, 'index'])->name('index');
         Route::get('/create', [PendaftaranController::class, 'create'])->name('create');
         Route::post('/', [PendaftaranController::class, 'store'])->name('store');
+        Route::delete('/{id}', [PendaftaranController::class, 'destroy'])->name('destroy');
+
     });
 
 /*

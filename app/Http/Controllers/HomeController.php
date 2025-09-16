@@ -9,6 +9,7 @@ use App\Models\Pasien;
 use App\Models\Dokter;
 use App\Models\RekamMedis;
 use App\Models\Pendaftaran;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -23,21 +24,28 @@ class HomeController extends Controller
         switch ($user->role) {
             // ================= ADMIN =================
             case 'admin':
-                $totalAdmin   = User::where('role', 'admin')->count();   // dari tabel users
-                $totalDokter  = Dokter::count();                         // dari tabel dokter
-                $totalPasien  = Pasien::count();                         // dari tabel pasien
+                $totalAdmin  = User::where('role', 'admin')->count();
+                $totalDokter = Dokter::count();
+                $totalPasien = Pasien::count();
 
-                $kunjungan = Pendaftaran::selectRaw('COUNT(*) as total, DATE_FORMAT(created_at, "%d/%m") as date')
+                // Ambil data kunjungan per hari
+                $kunjungan = Pendaftaran::selectRaw('COUNT(*) as total, DATE(created_at) as date')
                     ->groupBy('date')
                     ->orderBy('date', 'asc')
                     ->get();
+
+                $labels = $kunjungan->pluck('date')
+                    ->map(fn($d) => Carbon::parse($d)->format('d/m'))
+                    ->toArray();
+
+                $data = $kunjungan->pluck('total')->toArray();
 
                 return view('home.admin', [
                     'totalAdmin'  => $totalAdmin,
                     'totalDokter' => $totalDokter,
                     'totalPasien' => $totalPasien,
-                    'labels'      => $kunjungan->pluck('date')->toArray(),
-                    'data'        => $kunjungan->pluck('total')->toArray(),
+                    'labels'      => $labels,
+                    'data'        => $data,
                 ]);
 
             // ================= DOKTER =================
@@ -52,17 +60,14 @@ class HomeController extends Controller
 
             // ================= PASIEN =================
             case 'pasien':
-                // Ambil pasien sesuai user login
                 $pasien = Pasien::where('user_id', $user->id)->first();
-
-                // Ambil rekam medis pasien
                 $rekamMedisSaya = $pasien
                     ? $pasien->rekamMedis()->get()
                     : collect();
 
                 return view('home.pasien', [
                     'rekamMedisSaya' => $rekamMedisSaya,
-                    'pasien' => $pasien,
+                    'pasien'         => $pasien,
                 ]);
 
             // ================= DEFAULT =================

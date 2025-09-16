@@ -2,18 +2,22 @@
 
 @section('content')
 <div class="max-w-6xl mx-auto bg-white shadow-lg rounded-2xl overflow-hidden">
-    <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center pt-6">Rekam Medis Pasien</h2>
+    <h2 class="text-2xl font-bold mb-6 text-pink-600 text-center pt-6">
+        Rekam Medis Pasien
+    </h2>
 
     @if($rekamMedis->isEmpty())
         <div class="text-center text-gray-600 py-10">
-            <p class="text-lg">Belum ada rekam medis. Data akan muncul jika dokter/admin sudah mengirim.</p>
+            <p class="text-lg">
+                Belum ada rekam medis. Data akan muncul jika dokter/admin sudah mengirim.
+            </p>
         </div>
     @else
         <div class="overflow-x-auto">
             <table class="w-full border-t border-gray-200">
-                <thead class="bg-green-600 text-white">
+                <thead class="bg-pink-500 text-white">
                     <tr>
-                        <th class="px-4 py-3 text-left text-sm font-semibold border">#</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold border">No</th>
                         <th class="px-4 py-3 text-left text-sm font-semibold border">Tanggal</th>
                         <th class="px-4 py-3 text-left text-sm font-semibold border">Dokter</th>
                         <th class="px-4 py-3 text-left text-sm font-semibold border">Keluhan</th>

@@ -3,13 +3,7 @@
 @section('content')
 <div class="container py-4">
 
-    <!-- Logout -->
-    <div class="d-flex justify-content-end mb-4">
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="btn btn-outline-danger">Logout</button>
-        </form>
-    </div>
+
 
     <h2 class="fw-bold text-primary mb-4">Dashboard Dokter</h2>
 
