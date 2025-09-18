@@ -5,18 +5,25 @@
 @section('content')
 <div class="card border border-pink-400 shadow-sm">
     <!-- Header tengah dengan ikon -->
-    <h5 class="card-header text-pink-600 text-center fs-5 fw-semibold d-flex justify-content-center align-items-center gap-2" style="font-family: 'Poppins', sans-serif;">
+    <h5 class="card-header text-center fs-5 fw-semibold d-flex justify-content-center align-items-center gap-2" 
+        style="font-family: 'Poppins', sans-serif; color:#db2777;">
         <i class="fas fa-user-injured"></i>
         DATA PASIEN KLINIKU
     </h5>
 
+    <!-- Tombol Tambah -->
     <div class="p-3">
-        <a href="{{ route('pasien.create') }}" class="btn bg-pink-500 hover:bg-pink-600 text-white mb-3">+ Tambah Pasien</a>
+        <a href="{{ route('pasien.create') }}" 
+           class="btn mb-3" 
+           style="background-color:#ec4899; color:white;">
+           + Tambah Pasien
+        </a>
     </div>
 
+    <!-- Tabel -->
     <div class="table-responsive text-nowrap">
         <table class="table table-bordered table-hover">
-            <thead class="bg-pink-100 text-pink-600 font-bold">
+            <thead style="background-color:#fce7f3; color:#db2777;">
                 <tr>
                     <th>No</th>
                     <th>Nama</th>
@@ -28,28 +35,39 @@
             </thead>
             <tbody>
                 @forelse ($pasiens as $index => $pasien)
-                    <tr class="hover:bg-pink-50">
+                    <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $pasien->nama }}</td>
                         <td>{{ $pasien->alamat }}</td>
                         <td>{{ $pasien->jenis_kelamin_text }}</td>
                         <td>{{ $pasien->dokter->nama ?? '-' }}</td>
                         <td class="d-flex gap-2">
-                            <!-- Detail icon -->
-                            <a href="{{ route('pasien.show', $pasien->id) }}" class="text-pink-500 hover:text-pink-700" title="Detail">
+                            <!-- Detail -->
+                            <a href="{{ route('pasien.show', $pasien->id) }}" 
+                               class="text-decoration-none"
+                               style="color:#ec4899;" 
+                               title="Detail">
                                 <i class="fas fa-eye"></i>
                             </a>
 
-                            <!-- Edit icon -->
-                            <a href="{{ route('pasien.edit', $pasien->id) }}" class="text-pink-500 hover:text-pink-700" title="Edit">
+                            <!-- Edit -->
+                            <a href="{{ route('pasien.edit', $pasien->id) }}" 
+                               class="text-decoration-none"
+                               style="color:#ec4899;" 
+                               title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
 
-                            <!-- Hapus icon -->
-                            <form action="{{ route('pasien.destroy', $pasien->id) }}" method="POST" style="display:inline-block;">
+                            <!-- Hapus -->
+                            <form action="{{ route('pasien.destroy', $pasien->id) }}" 
+                                  method="POST" 
+                                  class="d-inline delete-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="bg-transparent border-0 p-0 text-pink-500 hover:text-pink-700" onclick="return confirm('Yakin hapus pasien ini?')" title="Hapus">
+                                <button type="button" 
+                                        class="border-0 bg-transparent p-0 text-pink-500 delete-btn" 
+                                        style="color:#ec4899;" 
+                                        title="Hapus">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
@@ -57,7 +75,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center text-pink-500">Belum ada data pasien</td>
+                        <td colspan="6" class="text-center" style="color:#db2777;">Belum ada data pasien</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -65,3 +83,29 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const form = this.closest('form');
+        Swal.fire({
+            title: 'Yakin hapus data ini?',
+            text: "Data yang dihapus tidak bisa dikembalikan.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ec4899',
+            cancelButtonColor: '#f9a8d4',
+            confirmButtonText: 'Ya, hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+});
+</script>
+@endpush

@@ -2,7 +2,8 @@
 
 @section('content')
 <div class="container">
-    <h2 class="text-pink-600 fw-semibold mb-4 text-center d-flex justify-content-center align-items-center gap-2" style="font-family: 'Poppins', sans-serif;">
+    <h2 class="fw-semibold mb-4 text-center d-flex justify-content-center align-items-center gap-2" 
+        style="font-family: 'Poppins', sans-serif; color:#db2777;">
         <i class="fas fa-notes-medical"></i>
         Tambah Rekam Medis
     </h2>
@@ -11,8 +12,8 @@
         @csrf
 
         <div class="mb-2">
-            <label for="pasien_id" class="form-label text-pink-600">Pasien</label>
-            <select name="pasien_id" id="pasien_id" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" required>
+            <label for="pasien_id" class="form-label" style="color:#db2777;">Pasien</label>
+            <select name="pasien_id" id="pasien_id" class="form-control form-control-sm border-pink" required>
                 <option value="">-- Pilih Pasien --</option>
                 @foreach($pasiens as $pasien)
                     <option value="{{ $pasien->id }}">{{ $pasien->nama }}</option>
@@ -21,8 +22,8 @@
         </div>
 
         <div class="mb-2">
-            <label for="dokter_id" class="form-label text-pink-600">Dokter</label>
-            <select name="dokter_id" id="dokter_id" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" required>
+            <label for="dokter_id" class="form-label" style="color:#db2777;">Dokter</label>
+            <select name="dokter_id" id="dokter_id" class="form-control form-control-sm border-pink" required>
                 <option value="">-- Pilih Dokter --</option>
                 @foreach($dokters as $dokter)
                     <option value="{{ $dokter->id }}">{{ $dokter->nama }}</option>
@@ -31,38 +32,50 @@
         </div>
 
         <div class="mb-2">
-            <label for="keluhan" class="form-label text-pink-600">Keluhan</label>
-            <textarea name="keluhan" id="keluhan" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" rows="2" required></textarea>
+            <label for="keluhan" class="form-label" style="color:#db2777;">Keluhan</label>
+            <textarea name="keluhan" id="keluhan" class="form-control form-control-sm border-pink" rows="2" required></textarea>
         </div>
 
         <div class="mb-2">
-            <label for="diagnosa" class="form-label text-pink-600">Diagnosa</label>
-            <textarea name="diagnosa" id="diagnosa" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" rows="2"></textarea>
+            <label for="diagnosa" class="form-label" style="color:#db2777;">Diagnosa</label>
+            <textarea name="diagnosa" id="diagnosa" class="form-control form-control-sm border-pink" rows="2"></textarea>
         </div>
 
         <div class="mb-2">
-            <label for="tindakan" class="form-label text-pink-600">Tindakan</label>
-            <textarea name="tindakan" id="tindakan" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" rows="2"></textarea>
+            <label for="tindakan" class="form-label" style="color:#db2777;">Tindakan</label>
+            <textarea name="tindakan" id="tindakan" class="form-control form-control-sm border-pink" rows="2"></textarea>
         </div>
 
         <div class="mb-2">
-            <label for="resep_obat" class="form-label text-pink-600">Resep Obat</label>
-            <textarea name="resep_obat" id="resep_obat" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" rows="2"></textarea>
+            <label for="resep_obat" class="form-label" style="color:#db2777;">Resep Obat</label>
+            <textarea name="resep_obat" id="resep_obat" class="form-control form-control-sm border-pink" rows="2"></textarea>
         </div>
 
         <div class="mb-2">
-            <label for="catatan" class="form-label text-pink-600">Catatan Tambahan</label>
-            <textarea name="catatan" id="catatan" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" rows="2"></textarea>
+            <label for="catatan" class="form-label" style="color:#db2777;">Catatan Tambahan</label>
+            <textarea name="catatan" id="catatan" class="form-control form-control-sm border-pink" rows="2"></textarea>
         </div>
 
         <div class="mb-3">
-            <label for="tanggal_pemeriksaan" class="form-label text-pink-600">Tanggal Pemeriksaan</label>
-            <input type="date" name="tanggal_pemeriksaan" id="tanggal_pemeriksaan" class="form-control form-control-sm border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200" required>
+            <label for="tanggal_pemeriksaan" class="form-label" style="color:#db2777;">Tanggal Pemeriksaan</label>
+            <input type="date" name="tanggal_pemeriksaan" id="tanggal_pemeriksaan" 
+                   class="form-control form-control-sm border-pink" required>
         </div>
 
         <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-sm bg-pink-500 hover:bg-pink-600 text-white">Simpan</button>
-            <a href="{{ route('rekam_medis.index') }}" class="btn btn-sm bg-pink-300 hover:bg-pink-400 text-white">Batal</a>
+            <!-- Tombol Simpan -->
+            <button type="submit" 
+                    class="btn btn-sm"
+                    style="background-color:#ec4899; color:white;">
+                Simpan
+            </button>
+
+            <!-- Tombol Batal -->
+            <a href="{{ route('rekam_medis.index') }}" 
+               class="btn btn-sm"
+               style="background-color:#f9a8d4; color:white;">
+                Batal
+            </a>
         </div>
     </form>
 </div>

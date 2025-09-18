@@ -3,44 +3,31 @@
 @section('title', 'Detail Pasien')
 
 @section('content')
-<div class="card border-pink-400 shadow-sm">
-  <h5 class="card-header bg-pink-500 text-white font-bold">Detail Pasien</h5>
-  <div class="card-body">
-    <table class="table table-bordered table-striped">
-      <tr>
-        <th width="200" class="bg-pink-100 text-pink-600 font-bold">Nama</th>
-        <td>{{ $pasien->nama }}</td>
-      </tr>
-      <tr>
-        <th class="bg-pink-100 text-pink-600 font-bold">Alamat</th>
-        <td>{{ $pasien->alamat }}</td>
-      </tr>
-      <tr>
-        <th class="bg-pink-100 text-pink-600 font-bold">Jenis Kelamin</th>
-        <td>{{ $pasien->jenis_kelamin }}</td>
-      </tr>
-      <tr>
-        <th class="bg-pink-100 text-pink-600 font-bold">No. Telepon</th>
-        <td>{{ $pasien->no_telp ?? '-' }}</td>
-      </tr>
-      <tr>
-        <th class="bg-pink-100 text-pink-600 font-bold">Keluhan</th>
-        <td>{{ $pasien->keluhan ?? '-' }}</td>
-      </tr>
-      <tr>
-        <th class="bg-pink-100 text-pink-600 font-bold">Tanggal Berobat</th>
-        <td>{{ \Carbon\Carbon::parse($pasien->tanggal_berobat)->format('d M Y') }}</td>
-      </tr>
-      <tr>
-        <th class="bg-pink-100 text-pink-600 font-bold">Dokter</th>
-        <td>{{ $pasien->dokter->nama ?? '-' }}</td>
-      </tr>
-    </table>
+<div class="container">
+    <h2 class="text-center fw-semibold mb-4 d-flex justify-content-center align-items-center gap-2"
+        style="font-family: 'Poppins', sans-serif; color:#db2777;">
+        <i class="fas fa-user"></i>
+        Detail Pasien
+    </h2>
 
-    <div class="mt-3 d-flex gap-2">
-      <a href="{{ route('pasien.index') }}" class="btn bg-pink-300 hover:bg-pink-400 text-white">← Kembali</a>
-      <a href="{{ route('pasien.edit', $pasien->id) }}" class="btn bg-pink-500 hover:bg-pink-600 text-white">Edit</a>
+    <div class="card border-pink-300 shadow-sm mb-3">
+        <div class="card-body">
+            <p class="mb-2"><strong style="color:#db2777;">Nama:</strong> {{ $pasien->nama }}</p>
+            <p class="mb-2"><strong style="color:#db2777;">Alamat:</strong> {{ $pasien->alamat }}</p>
+            <p class="mb-2"><strong style="color:#db2777;">Jenis Kelamin:</strong> {{ $pasien->jenis_kelamin }}</p>
+            <p class="mb-2"><strong style="color:#db2777;">No. Telepon:</strong> {{ $pasien->no_telp ?? '-' }}</p>
+            <p class="mb-2"><strong style="color:#db2777;">Keluhan:</strong> {{ $pasien->keluhan ?? '-' }}</p>
+            <p class="mb-2"><strong style="color:#db2777;">Tanggal Berobat:</strong> 
+                {{ \Carbon\Carbon::parse($pasien->tanggal_berobat)->format('d M Y') }}
+            </p>
+            <p class="mb-0"><strong style="color:#db2777;">Dokter:</strong> {{ $pasien->dokter->nama ?? '-' }}</p>
+        </div>
     </div>
-  </div>
+
+    <a href="{{ route('pasien.index') }}" 
+       class="btn text-white"
+       style="background-color:#ec4899;">
+        ← Kembali
+    </a>
 </div>
 @endsection

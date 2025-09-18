@@ -3,10 +3,12 @@
 @section('content')
 <div class="container">
     <!-- Judul Dashboard -->
-    <h1 class="text-3xl font-bold text-pink-600 text-center mb-6 d-flex justify-content-center align-items-center gap-2" style="font-family: 'Poppins', sans-serif;">
-        <i class="fas fa-hospital"></i>
-        Dashboard Admin
-    </h1>
+<h1 class="text-2xl font-bold text-pink-600 text-center mb-6 d-flex justify-content-center align-items-center gap-2"
+    style="font-family: 'Poppins', sans-serif; letter-spacing: 1px; text-shadow: 1px 1px 3px rgba(0,0,0,0.05);">
+    <i class="fas fa-hospital"></i>
+    Dashboard Admin
+</h1>
+
 
     <div class="row mb-4">
         <!-- Total Admin -->
@@ -65,9 +67,9 @@
                 label: 'Jumlah',
                 data: [{{ $totalAdmin }}, {{ $totalDokter }}, {{ $totalPasien }}],
                 backgroundColor: [
-                    'rgba(255, 182, 193, 0.6)',  // soft pink Admin
-                    'rgba(255, 192, 203, 0.6)',  // soft pink Dokter
-                    'rgba(255, 105, 180, 0.6)'   // vibrant pink Pasien
+                    'rgba(255, 182, 193, 0.6)',
+                    'rgba(255, 192, 203, 0.6)',
+                    'rgba(255, 105, 180, 0.6)'
                 ],
                 borderColor: [
                     'rgba(255, 182, 193, 1)',

@@ -24,9 +24,9 @@
         <textarea name="alamat" id="alamat" class="form-control" rows="3">{{ old('alamat') }}</textarea>
       </div>
 
-      <button type="submit" class="btn btn-success">Simpan</button>
-      <a href="{{ route('dokter.index') }}" class="btn btn-secondary">Batal</a>
-    </form>
+<button type="submit" class="btn btn-pink">Simpan</button>
+<a href="{{ route('dokter.index') }}" class="btn btn-secondary">Batal</a>
+
   </div>
 </div>
 @endsection

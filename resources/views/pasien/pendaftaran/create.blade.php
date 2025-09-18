@@ -1,98 +1,89 @@
 @extends('layouts.app')
 
+@section('title', 'Isi Pendaftaran Pasien')
+
 @section('content')
-<div class="max-w-3xl mx-auto bg-pink-50 shadow-lg rounded-2xl p-8">
-    <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Form Pendaftaran Pasien</h2>
+<div class="container my-6">
 
-    {{-- Pesan sukses --}}
-    @if(session('success'))
-        <div class="bg-pink-100 text-pink-700 p-3 rounded-lg mb-6 border border-pink-300 text-sm">
-            {{ session('success') }}
-        </div>
-    @endif
+    <!-- Container Putih Seluruh Halaman -->
+    <div class="bg-white shadow-lg rounded-3xl p-6">
 
-    {{-- Pesan error --}}
-    @if ($errors->any())
-        <div class="bg-red-100 text-red-700 p-3 rounded-lg mb-6 border border-red-300 text-sm">
-            <ul class="list-disc pl-5 space-y-1">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form action="{{ route('pasien.pendaftaran.store') }}" method="POST" class="space-y-4">
-        @csrf
-
-        {{-- Keluhan --}}
-        <div>
-            <label class="block font-semibold text-gray-700 mb-1">Keluhan</label>
-            <textarea name="keluhan" rows="2"
-                class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm focus:ring focus:ring-pink-300"
-                required>{{ old('keluhan') }}</textarea>
+        <!-- Judul Halaman -->
+        <div class="text-center mb-5">
+            <h1 class="fw-bold d-flex justify-content-center align-items-center gap-2"
+                style="font-family: 'Poppins', sans-serif; font-size: 2rem; color:#db2777;">
+                <i class="fas fa-pencil-alt"></i> ISI PENDAFTARAN PASIEN
+            </h1>
         </div>
 
-        {{-- Nomor Telepon --}}
-        <div>
-            <label class="block font-semibold text-gray-700 mb-1">No. Telepon</label>
-            <input type="text" name="no_telp" value="{{ old('no_telp') }}"
-                class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm focus:ring focus:ring-pink-300"
-                required>
-        </div>
+        <form action="{{ route('pasien.pendaftaran.store') }}" method="POST">
+            @csrf
 
-        {{-- Tanggal Berobat --}}
-        <div>
-            <label class="block font-semibold text-gray-700 mb-1">Tanggal Berobat</label>
-            <input type="date" name="tanggal_berobat" value="{{ old('tanggal_berobat') }}"
-                class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm focus:ring focus:ring-pink-300"
-                required>
-        </div>
+            <!-- Baris 1: Nama, Jenis Kelamin, No. Telepon -->
+            <div class="d-flex flex-wrap gap-4 mb-3">
+                <div style="flex: 1 1 250px;">
+                    <label for="nama" class="form-label fw-semibold" style="color:#db2777; font-size:1.1rem;">Nama Pasien</label>
+                    <input type="text" name="nama" id="nama" class="form-control form-control-sm border-pink" value="{{ old('nama') }}" required>
+                </div>
 
-        {{-- Jenis Kelamin --}}
-        <div>
-            <label class="block font-semibold text-gray-700 mb-1">Jenis Kelamin</label>
-            <select name="jenis_kelamin"
-                class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm focus:ring focus:ring-pink-300"
-                required>
-                <option value="">-- Pilih --</option>
-                <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
-            </select>
-        </div>
+                <div style="flex: 1 1 180px;">
+                    <label for="jenis_kelamin" class="form-label fw-semibold" style="color:#db2777; font-size:1.1rem;">Jenis Kelamin</label>
+                    <select name="jenis_kelamin" id="jenis_kelamin" class="form-control form-control-sm border-pink" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                        <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                    </select>
+                </div>
 
-        {{-- Alamat --}}
-        <div>
-            <label class="block font-semibold text-gray-700 mb-1">Alamat</label>
-            <textarea name="alamat" rows="2"
-                class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm focus:ring focus:ring-pink-300"
-                required>{{ old('alamat') }}</textarea>
-        </div>
+                <div style="flex: 1 1 200px;">
+                    <label for="no_telp" class="form-label fw-semibold" style="color:#db2777; font-size:1.1rem;">No. Telepon</label>
+                    <input type="text" name="no_telp" id="no_telp" class="form-control form-control-sm border-pink" value="{{ old('no_telp') }}" required>
+                </div>
+            </div>
 
-        {{-- Pilih Dokter --}}
-        <div>
-            <label class="block font-semibold text-gray-700 mb-1">Pilih Dokter</label>
-            <select name="dokter_id"
-                class="w-full border border-gray-300 rounded-md px-2 py-1 text-sm focus:ring focus:ring-pink-300"
-                required>
-                <option value="">-- Pilih Dokter --</option>
-                @foreach($dokters as $dokter)
-                    <option value="{{ $dokter->id }}" {{ old('dokter_id') == $dokter->id ? 'selected' : '' }}>
-                        {{ $dokter->nama }} ({{ $dokter->spesialis }})
-                    </option>
-                @endforeach
-            </select>
-        </div>
+            <!-- Baris 2: Tanggal Berobat, Alamat, Dokter -->
+            <div class="d-flex flex-wrap gap-4 mb-3">
+                <div style="flex: 1 1 180px;">
+                    <label for="tanggal_berobat" class="form-label fw-semibold" style="color:#db2777; font-size:1.1rem;">Tanggal Berobat</label>
+                    <input type="date" name="tanggal_berobat" id="tanggal_berobat" class="form-control form-control-sm border-pink" value="{{ old('tanggal_berobat') }}" required>
+                </div>
 
-        {{-- Tombol Submit --}}
-        <div class="flex justify-start pt-4">
-            <button type="submit"
-                class="flex items-center gap-2 bg-pink-500 hover:bg-pink-600 
-                       text-white font-semibold px-6 py-2 rounded-md shadow-md 
-                       transition duration-200">
-                <i class="fas fa-user-plus"></i> Daftar
-            </button>
-        </div>
-    </form>
+                <div style="flex: 1 1 250px;">
+                    <label for="alamat" class="form-label fw-semibold" style="color:#db2777; font-size:1.1rem;">Alamat</label>
+                    <input type="text" name="alamat" id="alamat" class="form-control form-control-sm border-pink" value="{{ old('alamat') }}" required>
+                </div>
+
+                <div style="flex: 1 1 200px;">
+                    <label for="dokter_id" class="form-label fw-semibold" style="color:#db2777; font-size:1.1rem;">Pilih Dokter</label>
+                    <select name="dokter_id" id="dokter_id" class="form-control form-control-sm border-pink" required>
+                        <option value="">-- Pilih Dokter --</option>
+                        @foreach($dokters as $dokter)
+                            <option value="{{ $dokter->id }}" {{ old('dokter_id') == $dokter->id ? 'selected' : '' }}>
+                                {{ $dokter->nama }} ({{ $dokter->spesialis }})
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <!-- Baris 3: Keluhan -->
+            <div class="mb-3" style="max-width: 400px;">
+                <label for="keluhan" class="form-label fw-semibold" style="color:#db2777; font-size:1.1rem;">Keluhan</label>
+                <input type="text" name="keluhan" id="keluhan" class="form-control form-control-sm border-pink" value="{{ old('keluhan') }}" required>
+            </div>
+
+            <!-- Tombol Simpan & Batal -->
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn" style="background-color:#ec4899; color:white;">
+                    Simpan
+                </button>
+                <a href="{{ route('pasien.pendaftaran.index') }}" class="btn" style="background-color:#f9a8d4; color:white;">
+                    Batal
+                </a>
+            </div>
+
+        </form>
+    </div> <!-- End Container Putih -->
+
 </div>
 @endsection

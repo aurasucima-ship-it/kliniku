@@ -20,7 +20,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
         rel="stylesheet" />
 
   <!-- Icons -->
@@ -43,6 +43,82 @@
 
   <!-- Config JS -->
   <script src="{{ asset('/js/config.js') }}"></script>
+
+  <!-- Custom Pink Theme -->
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* === Card === */
+    .card-pink {
+      border: 1px solid #f9a8d4 !important;
+      background: #fff !important;
+    }
+
+    .card-header.custom-pink {
+      color: #db2777 !important;
+      font-weight: 600;
+    }
+
+    /* === Button === */
+    .btn-pink {
+      background-color: #ec4899 !important;
+      color: #fff !important;
+      border: none;
+    }
+    .btn-pink:hover {
+      background-color: #db2777 !important;
+    }
+
+    /* === Table === */
+    .table {
+      background-color: #ffffff !important;
+    }
+    .table thead {
+      background-color: #fce7f3 !important;
+      color: #db2777 !important;
+      font-weight: 600;
+    }
+    .table tbody tr:hover {
+      background-color: #fdf2f8 !important;
+    }
+
+    /* === Icon action === */
+    .btn-icon-pink {
+      background: transparent;
+      border: none;
+      color: #ec4899;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .btn-icon-pink:hover {
+      color: #be185d;
+    }
+
+    /* === Flash Notification === */
+    .flash-toast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      width: 360px;
+      text-align: center;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .toast-box {
+      padding: 1.2rem 1.5rem;
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      font-weight: 500;
+      background: #fce7f3;   /* pink-100 */
+      color: #db2777;        /* pink-600 */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 
   @stack('styles')
 </head>
@@ -67,6 +143,26 @@
         <div class="content-wrapper">
           <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
+
+            {{-- Flash notification --}}
+            @if(session('success'))
+              <div id="flashToast" class="flash-toast">
+                <div class="toast-box">
+                  <i class="fas fa-check-circle mb-2" style="font-size:1.8rem; display:block;"></i>
+                  <div>{{ session('success') }}</div>
+                </div>
+              </div>
+            @endif
+
+            @if(session('error'))
+              <div id="flashToast" class="flash-toast">
+                <div class="toast-box">
+                  <i class="fas fa-times-circle mb-2" style="font-size:1.8rem; display:block;"></i>
+                  <div>{{ session('error') }}</div>
+                </div>
+              </div>
+            @endif
+
             @yield('content')
           </div>
           <!-- / Content -->
@@ -101,6 +197,19 @@
 
   <!-- Main JS -->
   <script src="{{ asset('/js/main.js') }}"></script>
+
+  <!-- Flash notification auto hide -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toast = document.getElementById("flashToast");
+      if (toast) {
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          setTimeout(() => toast.remove(), 500);
+        }, 3000);
+      }
+    });
+  </script>
 
   @stack('scripts')
 </body>

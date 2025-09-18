@@ -10,22 +10,36 @@
         @csrf
         @method('PUT')
 
-        <div class="mb-4">
-            <label class="block">Nama</label>
-            <input type="text" name="nama" value="{{ old('nama', $dokter->nama) }}" class="w-full border rounded p-2">
+        <div class="mb-3">
+            <label class="form-label">Nama</label>
+            <input type="text" name="nama" value="{{ old('nama', $dokter->nama) }}" 
+                   class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Spesialis</label>
+            <input type="text" name="spesialis" value="{{ old('spesialis', $dokter->spesialis) }}" 
+                   class="form-control">
         </div>
 
         <div class="mb-4">
-            <label class="block">Spesialis</label>
-            <input type="text" name="spesialis" value="{{ old('spesialis', $dokter->spesialis) }}" class="w-full border rounded p-2">
+            <label class="form-label">Alamat</label>
+            <input type="text" name="alamat" value="{{ old('alamat', $dokter->alamat) }}" 
+                   class="form-control">
         </div>
 
-        <div class="mb-4">
-            <label class="block">Alamat</label>
-            <input type="text" name="alamat" value="{{ old('alamat', $dokter->alamat) }}" class="w-full border rounded p-2">
-        </div>
+        <div class="d-flex gap-2">
+            <!-- Tombol Simpan -->
+            <button type="submit" class="btn text-white" 
+                    style="background-color:#ec4899;">
+                Simpan
+            </button>
 
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Simpan</button>
+            <!-- Tombol Batal -->
+            <a href="{{ route('dokter.index') }}" class="btn btn-secondary">
+                Batal
+            </a>
+        </div>
     </form>
 </div>
 @endsection
