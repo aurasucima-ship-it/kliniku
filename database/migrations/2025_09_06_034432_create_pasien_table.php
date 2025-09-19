@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('alamat')->nullable();
             $table->enum('jenis_kelamin', ['L', 'P']); // L = Laki-laki, P = Perempuan
-            $table->string('no_telp', 15)->nullable();
+            $table->string('no_telp', 30)->nullable();
             $table->text('keluhan')->nullable();
             $table->date('tanggal_berobat');
             $table->foreignId('dokter_id')

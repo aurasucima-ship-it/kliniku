@@ -20,15 +20,14 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Icons -->
   <link rel="stylesheet" href="{{ asset('/vendor/fonts/fontawesome.css') }}" />
   <link rel="stylesheet" href="{{ asset('/vendor/fonts/tabler-icons.css') }}" />
   <link rel="stylesheet" href="{{ asset('/vendor/fonts/flag-icons.css') }}" />
 
-  <!-- Core CSS dari template -->
+  <!-- Core CSS -->
   <link rel="stylesheet" href="{{ asset('/vendor/css/rtl/core.css') }}" class="template-customizer-core-css" />
   <link rel="stylesheet" href="{{ asset('/vendor/css/rtl/theme-default.css') }}" class="template-customizer-theme-css" />
   <link rel="stylesheet" href="{{ asset('/css/demo.css') }}" />
@@ -38,7 +37,7 @@
   <link rel="stylesheet" href="{{ asset('/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
   <link rel="stylesheet" href="{{ asset('/vendor/libs/typeahead-js/typeahead.css') }}" />
 
-  <!-- Laravel Vite (Tailwind + JS) -->
+  <!-- Laravel Vite -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 
   <!-- Config JS -->
@@ -46,57 +45,22 @@
 
   <!-- Custom Pink Theme -->
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-    }
+    body { font-family: 'Poppins', sans-serif; }
 
-    /* === Card === */
-    .card-pink {
-      border: 1px solid #f9a8d4 !important;
-      background: #fff !important;
-    }
+    .card-pink { border: 1px solid #f9a8d4 !important; background: #fff !important; }
+    .card-header.custom-pink { color: #db2777 !important; font-weight: 600; }
 
-    .card-header.custom-pink {
-      color: #db2777 !important;
-      font-weight: 600;
-    }
+    .btn-pink { background-color: #ec4899 !important; color: #fff !important; border: none; }
+    .btn-pink:hover { background-color: #db2777 !important; }
 
-    /* === Button === */
-    .btn-pink {
-      background-color: #ec4899 !important;
-      color: #fff !important;
-      border: none;
-    }
-    .btn-pink:hover {
-      background-color: #db2777 !important;
-    }
+    .table { background-color: #ffffff !important; }
+    .table thead { background-color: #fce7f3 !important; color: #db2777 !important; font-weight: 600; }
+    .table tbody tr:hover { background-color: #fdf2f8 !important; }
 
-    /* === Table === */
-    .table {
-      background-color: #ffffff !important;
-    }
-    .table thead {
-      background-color: #fce7f3 !important;
-      color: #db2777 !important;
-      font-weight: 600;
-    }
-    .table tbody tr:hover {
-      background-color: #fdf2f8 !important;
-    }
+    .btn-icon-pink { background: transparent; border: none; color: #ec4899; cursor: pointer; font-size: 1.2rem; }
+    .btn-icon-pink:hover { color: #be185d; }
 
-    /* === Icon action === */
-    .btn-icon-pink {
-      background: transparent;
-      border: none;
-      color: #ec4899;
-      cursor: pointer;
-      font-size: 1.2rem;
-    }
-    .btn-icon-pink:hover {
-      color: #be185d;
-    }
-
-    /* === Flash Notification === */
+    /* Flash toast */
     .flash-toast {
       position: fixed;
       top: 50%;
@@ -114,8 +78,8 @@
       border-radius: 0.75rem;
       font-size: 1rem;
       font-weight: 500;
-      background: #fce7f3;   /* pink-100 */
-      color: #db2777;        /* pink-600 */
+      background: #fce7f3;
+      color: #db2777;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
   </style>
@@ -124,7 +88,6 @@
 </head>
 
 <body>
-  <!-- Layout wrapper -->
   <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
 
@@ -141,12 +104,11 @@
 
         <!-- Content wrapper -->
         <div class="content-wrapper">
-          <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
 
-            {{-- Flash notification --}}
+            {{-- Flash success --}}
             @if(session('success'))
-              <div id="flashToast" class="flash-toast">
+              <div class="flash-toast" id="flashToastSuccess">
                 <div class="toast-box">
                   <i class="fas fa-check-circle mb-2" style="font-size:1.8rem; display:block;"></i>
                   <div>{{ session('success') }}</div>
@@ -154,18 +116,8 @@
               </div>
             @endif
 
-            @if(session('error'))
-              <div id="flashToast" class="flash-toast">
-                <div class="toast-box">
-                  <i class="fas fa-times-circle mb-2" style="font-size:1.8rem; display:block;"></i>
-                  <div>{{ session('error') }}</div>
-                </div>
-              </div>
-            @endif
-
             @yield('content')
           </div>
-          <!-- / Content -->
 
           <!-- Footer -->
           @include('layouts.inc.footer')
@@ -173,16 +125,13 @@
 
           <div class="content-backdrop fade"></div>
         </div>
-        <!-- / Content wrapper -->
       </div>
-      <!-- / Layout page -->
     </div>
 
     <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
     <div class="drag-target"></div>
   </div>
-  <!-- / Layout wrapper -->
 
   <!-- Core JS -->
   <script src="{{ asset('/vendor/libs/jquery/jquery.js') }}"></script>
@@ -198,16 +147,39 @@
   <!-- Main JS -->
   <script src="{{ asset('/js/main.js') }}"></script>
 
-  <!-- Flash notification auto hide -->
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Flash toast auto hide + Delete confirmation -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const toast = document.getElementById("flashToast");
-      if (toast) {
+      // Auto hide flash toast
+      const toast = document.getElementById("flashToastSuccess");
+      if(toast) {
         setTimeout(() => {
           toast.style.opacity = "0";
           setTimeout(() => toast.remove(), 500);
-        }, 3000);
+        }, 2000);
       }
+
+      // Konfirmasi hapus untuk semua tombol .btn-delete
+      const deleteButtons = document.querySelectorAll(".btn-delete");
+      deleteButtons.forEach(btn => {
+        btn.addEventListener("click", function(e) {
+          e.preventDefault();
+          Swal.fire({
+            title: 'Yakin mau hapus?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+          }).then((result) => {
+            if(result.isConfirmed) {
+              this.closest('form').submit();
+            }
+          });
+        });
+      });
     });
   </script>
 
