@@ -15,15 +15,14 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, $roles): Response
     {
-        // pastikan user sudah login
+    
         if (!auth()->check()) {
             return redirect()->route('login');
         }
 
-        // pecah parameter role (bisa admin,dokter)
         $rolesArray = explode(',', $roles);
 
-        // cek apakah role user termasuk dalam daftar
+     
         if (! in_array(auth()->user()->role, $rolesArray)) {
             abort(403, 'Unauthorized');
         }

@@ -10,7 +10,7 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Admin
+        
         User::updateOrCreate(
             ['email' => 'admin@kliniku.com'],
             [
@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             ]
         );
 
-        // Dokter (dr. Riki Sanjaya)
+      
         User::updateOrCreate(
             ['email' => 'dokter@kliniku.com'],
             [
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             ]
         );
 
-        // Pasien
+        
         User::updateOrCreate(
             ['email' => 'pasien@kliniku.com'],
             [

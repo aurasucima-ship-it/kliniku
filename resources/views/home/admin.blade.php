@@ -2,16 +2,16 @@
 
 @section('content')
 <div class="container">
-    <!-- Judul Dashboard -->
+
 <h1 class="text-2xl font-bold text-pink-600 text-center mb-6 d-flex justify-content-center align-items-center gap-2"
     style="font-family: 'Poppins', sans-serif; letter-spacing: 1px; text-shadow: 1px 1px 3px rgba(0,0,0,0.05);">
     <i class="fas fa-hospital"></i>
-    Dashboard Admin
+    DASHBOARD ADMIN
 </h1>
 
 
     <div class="row mb-4">
-        <!-- Total Admin -->
+      
         <div class="col-md-4">
             <div class="card mb-3 text-white" style="background-color: rgba(255, 182, 193, 0.8);">
                 <div class="card-body text-center">
@@ -21,7 +21,6 @@
             </div>
         </div>
 
-        <!-- Total Dokter -->
         <div class="col-md-4">
             <div class="card mb-3 text-white" style="background-color: rgba(255, 192, 203, 0.8);">
                 <div class="card-body text-center">
@@ -31,7 +30,7 @@
             </div>
         </div>
 
-        <!-- Total Pasien -->
+      
         <div class="col-md-4">
             <div class="card mb-3 text-white" style="background-color: rgba(255, 105, 180, 0.8);">
                 <div class="card-body text-center">
@@ -42,7 +41,6 @@
         </div>
     </div>
 
-    <!-- Grafik -->
     <div class="bg-white shadow rounded-lg p-6">
         <h2 class="text-xl font-semibold text-pink-600 mb-4 text-center d-flex justify-content-center align-items-center gap-2">
             <i class="fas fa-chart-bar"></i>

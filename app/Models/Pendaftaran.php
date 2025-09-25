@@ -21,19 +21,18 @@ class Pendaftaran extends Model
         'tanggal_berobat',
     ];
 
-    // Relasi ke User
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Relasi ke Pasien
+
     public function pasien()
     {
         return $this->belongsTo(Pasien::class);
     }
 
-    // Relasi ke Dokter
+  
     public function dokter()
     {
         return $this->belongsTo(Dokter::class);

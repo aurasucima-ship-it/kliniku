@@ -5,7 +5,7 @@
 @section('content')
 <div class="max-w-6xl mx-auto py-12">
 
-    <!-- Ucapan Selamat Datang -->
+
     <div class="card card-pink mb-12 text-center p-12">
         <div class="card-header custom-pink text-5xl font-extrabold mb-6">
             Selamat Datang di Klinik Kami, {{ $pasien->nama ?? Auth::user()->name }} 👋
@@ -17,9 +17,9 @@
         </p>
     </div>
 
-    <!-- Menu Aksi Cepat: Pendaftaran & Rekam Medis -->
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <!-- Pendaftaran -->
+     
         <div class="card card-pink p-8 text-center hover:shadow-lg transition">
             <h5 class="card-header custom-pink text-2xl font-bold mb-4">Pendaftaran</h5>
             <p class="text-gray-500 mb-6">Lihat daftar pendaftaran dan tambah baru</p>
@@ -28,7 +28,7 @@
             </a>
         </div>
 
-        <!-- Rekam Medis -->
+      
         <div class="card card-pink p-8 text-center hover:shadow-lg transition">
             <h5 class="card-header custom-pink text-2xl font-bold mb-4">Rekam Medis</h5>
             <p class="text-gray-500 mb-6">Lihat riwayat pemeriksaan kamu</p>

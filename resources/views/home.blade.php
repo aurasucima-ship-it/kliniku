@@ -15,13 +15,13 @@
     const ctx = document.getElementById('chartPasien');
 
     new Chart(ctx, {
-        type: 'bar', // ✅ pakai diagram batang
+        type: 'bar', 
         data: {
             labels: {!! json_encode($tanggal ?? ['Ahad','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu']) !!},
             datasets: [{
                 label: 'Jumlah Pasien',
                 data: {!! json_encode($jumlahPasien ?? [950, 600, 450, 850, 700, 250, 900]) !!},
-                backgroundColor: 'rgba(59, 130, 246, 0.8)', // biru solid
+                backgroundColor: 'rgba(59, 130, 246, 0.8)', 
                 borderColor: 'rgba(59, 130, 246, 1)',
                 borderWidth: 1
             }]
@@ -30,7 +30,7 @@
             responsive: true,
             plugins: {
                 legend: {
-                    display: false // sembunyikan legenda supaya mirip contoh
+                    display: false 
                 }
             },
             scales: {
@@ -41,7 +41,7 @@
                     },
                     grid: {
                         color: function(context) {
-                            // buat garis horizontal merah putus-putus seperti contoh
+                         
                             if (context.tick.value % 100 === 0) {
                                 return 'rgba(255, 0, 0, 0.5)';
                             }

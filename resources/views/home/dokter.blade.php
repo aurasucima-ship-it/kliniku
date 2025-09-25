@@ -5,7 +5,7 @@
 
 
 
-    <h2 class="fw-bold text-primary mb-4">Dashboard Dokter</h2>
+    <h2 class="fw-bold text-primary mb-4">DASHBOARD DOKTER</h2>
 
     <div class="row g-4">
         <div class="col-md-6">

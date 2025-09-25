@@ -5,10 +5,10 @@
 @section('content')
 <div class="container my-6">
 
-    <!-- Container Putih Seluruh Halaman -->
+ 
     <div class="bg-white shadow-lg rounded-3xl p-6">
 
-        <!-- Judul Halaman -->
+     
         <div class="text-center mb-6">
             <h1 class="fw-bold d-flex justify-content-center align-items-center gap-2"
                 style="font-family: 'Poppins', sans-serif; font-size: 2rem; color:#db2777;">
@@ -16,7 +16,7 @@
             </h1>
         </div>
 
-        <!-- Tombol Tambah & Kembali -->
+    
         <div class="d-flex justify-content-start gap-2 mb-4">
             <a href="{{ url()->previous() }}" 
                class="btn"
@@ -31,7 +31,7 @@
             </a>
         </div>
 
-        <!-- Tabel Pendaftaran -->
+   
         <div class="table-responsive">
             @if($pendaftarans->isEmpty())
                 <div class="text-center text-muted py-10" style="color:#9ca3af;">
@@ -81,7 +81,7 @@
             @endif
         </div>
 
-    </div> <!-- End container putih -->
+    </div>
 
 </div>
 @endsection

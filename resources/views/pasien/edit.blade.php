@@ -13,20 +13,20 @@
                 @csrf
                 @method('PUT')
 
-                {{-- Nama --}}
+             
                 <div class="mb-3">
                     <label for="nama" class="form-label" style="color:#db2777;">Nama Pasien</label>
                     <input type="text" name="nama" id="nama" class="form-control" 
                         value="{{ old('nama', $pasien->nama) }}" required>
                 </div>
 
-                {{-- Alamat --}}
+             
                 <div class="mb-3">
                     <label for="alamat" class="form-label" style="color:#db2777;">Alamat</label>
                     <textarea name="alamat" id="alamat" class="form-control" rows="2">{{ old('alamat', $pasien->alamat) }}</textarea>
                 </div>
 
-                {{-- Jenis Kelamin --}}
+             
                 <div class="mb-3">
                     <label for="jenis_kelamin" class="form-label" style="color:#db2777;">Jenis Kelamin</label>
                     <select name="jenis_kelamin" id="jenis_kelamin" class="form-control" required>
@@ -36,27 +36,25 @@
                     </select>
                 </div>
 
-                {{-- No. Telepon --}}
+            
                 <div class="mb-3">
                     <label for="no_telp" class="form-label" style="color:#db2777;">No. Telepon</label>
                     <input type="text" name="no_telp" id="no_telp" class="form-control" 
                         value="{{ old('no_telp', $pasien->no_telp) }}">
                 </div>
 
-                {{-- Keluhan --}}
+               
                 <div class="mb-3">
                     <label for="keluhan" class="form-label" style="color:#db2777;">Keluhan</label>
                     <textarea name="keluhan" id="keluhan" class="form-control" rows="2">{{ old('keluhan', $pasien->keluhan) }}</textarea>
                 </div>
 
-                {{-- Tanggal Berobat --}}
                 <div class="mb-3">
                     <label for="tanggal_berobat" class="form-label" style="color:#db2777;">Tanggal Berobat</label>
                     <input type="date" name="tanggal_berobat" id="tanggal_berobat" class="form-control" 
                         value="{{ old('tanggal_berobat', $pasien->tanggal_berobat) }}" required>
                 </div>
 
-                {{-- Dokter --}}
                 <div class="mb-3">
                     <label for="dokter_id" class="form-label" style="color:#db2777;">Dokter</label>
                     <select name="dokter_id" id="dokter_id" class="form-control">

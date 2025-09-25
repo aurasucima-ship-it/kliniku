@@ -12,10 +12,9 @@ class PasienSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        // Ambil semua ID dokter yang ada di tabel dokter
         $dokterIds = DB::table('dokter')->pluck('id')->toArray();
 
-        // Jika belum ada dokter, hentikan seeding pasien
+       
         if (empty($dokterIds)) {
             $this->command->warn('Tidak ada data dokter. Jalankan DokterSeeder terlebih dahulu.');
             return;

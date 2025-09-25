@@ -9,12 +9,11 @@ class Pasien extends Model
 {
     use HasFactory;
 
-    // Nama tabel sesuai database
+ 
     protected $table = 'pasien';
 
-    // Kolom yang boleh diisi mass assignment
     protected $fillable = [
-        'user_id',       // relasi ke akun User
+        'user_id',       
         'nama',
         'alamat',
         'jenis_kelamin',
@@ -24,33 +23,25 @@ class Pasien extends Model
         'dokter_id',
     ];
 
-    /**
-     * Relasi ke User (akun login)
-     */
+  
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Relasi ke Dokter
-     */
+    
     public function dokter()
     {
         return $this->belongsTo(Dokter::class, 'dokter_id');
     }
 
-    /**
-     * Relasi ke Rekam Medis
-     */
+   
     public function rekamMedis()
     {
         return $this->hasMany(RekamMedis::class, 'pasien_id');
     }
 
-    /**
-     * Accessor untuk menampilkan jenis kelamin secara user-friendly
-     */
+    
     public function getJenisKelaminTextAttribute()
     {
         return $this->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan';

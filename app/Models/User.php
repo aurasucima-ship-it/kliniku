@@ -10,28 +10,22 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
-     * Kolom yang boleh diisi mass assignment
-     */
+    
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role', // admin, dokter, pasien
-        'foto', // foto profil user
+        'role', 
+        'foto', 
     ];
 
-    /**
-     * Kolom yang disembunyikan saat serialisasi
-     */
+ 
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Casting data otomatis
-     */
+   
     protected function casts(): array
     {
         return [
@@ -40,9 +34,6 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Cek role user
-     */
     public function isAdmin(): bool
     {
         return $this->role === 'admin';

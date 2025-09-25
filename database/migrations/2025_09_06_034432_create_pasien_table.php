@@ -12,13 +12,13 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('alamat')->nullable();
-            $table->enum('jenis_kelamin', ['L', 'P']); // L = Laki-laki, P = Perempuan
+            $table->enum('jenis_kelamin', ['L', 'P']); 
             $table->string('no_telp', 30)->nullable();
             $table->text('keluhan')->nullable();
             $table->date('tanggal_berobat');
             $table->foreignId('dokter_id')
                   ->nullable()
-                  ->constrained('dokter') // tabel dokter singular
+                  ->constrained('dokter') 
                   ->onDelete('cascade');
             $table->timestamps();
         });

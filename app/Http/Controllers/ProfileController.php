@@ -24,9 +24,9 @@ class ProfileController extends Controller
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 
-        // Update foto jika ada
+    
         if ($request->hasFile('foto')) {
-            // Hapus foto lama kalau ada
+          
             if ($user->foto && Storage::disk('public')->exists($user->foto)) {
                 Storage::disk('public')->delete($user->foto);
             }

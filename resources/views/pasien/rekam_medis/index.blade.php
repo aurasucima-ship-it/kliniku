@@ -5,7 +5,7 @@
 @section('content')
 <div class="container my-6">
 
-    <!-- Judul Halaman + Tombol Kembali -->
+   
     <div class="bg-white shadow-lg rounded-3xl p-6 mb-4 d-flex justify-content-between align-items-center">
         <h2 class="fw-bold d-flex justify-content-center align-items-center gap-2 flex-grow-1"
             style="font-family: 'Poppins', sans-serif; font-size: 2.5rem; color:#db2777;">
@@ -14,7 +14,7 @@
 
     </div>
 
-    <!-- Tabel Rekam Medis -->
+
     <div class="bg-white shadow-lg rounded-3xl p-4">
         @if($rekamMedis->isEmpty())
             <div class="text-center text-gray-600 py-10" style="color:#9ca3af;">

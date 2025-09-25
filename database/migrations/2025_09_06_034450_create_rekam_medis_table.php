@@ -12,11 +12,11 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('pasien_id')
-                  ->constrained('pasien') // singular
+                  ->constrained('pasien') 
                   ->onDelete('cascade');
 
             $table->foreignId('dokter_id')
-                  ->constrained('dokter') // singular
+                  ->constrained('dokter') 
                   ->onDelete('cascade');
 
             $table->text('keluhan');

@@ -10,9 +10,7 @@ use Illuminate\Http\Request;
 
 class RekamMedisController extends Controller
 {
-    /**
-     * Tampilkan daftar rekam medis (admin & dokter)
-     */
+  
     public function index()
     {
         $rekamMedis = RekamMedis::with(['pasien', 'dokter'])
@@ -22,10 +20,7 @@ class RekamMedisController extends Controller
         return view('rekam_medis.index', compact('rekamMedis'));
     }
 
-    /**
-     * Form tambah rekam medis
-     * Bisa menerima ?pendaftaran_id=xx untuk isi otomatis
-     */
+   
     public function create(Request $request)
     {
         $pendaftaran = null;
@@ -41,9 +36,6 @@ class RekamMedisController extends Controller
         return view('rekam_medis.create', compact('pasiens', 'dokters', 'pendaftaran'));
     }
 
-    /**
-     * Simpan rekam medis baru
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -64,18 +56,14 @@ class RekamMedisController extends Controller
             ->with('success', 'Rekam medis berhasil ditambahkan.');
     }
 
-    /**
-     * Detail rekam medis
-     */
+ 
     public function show($id)
     {
         $rekamMedis = RekamMedis::with(['pasien', 'dokter'])->findOrFail($id);
         return view('rekam_medis.show', compact('rekamMedis'));
     }
 
-    /**
-     * Form edit rekam medis
-     */
+ 
     public function edit($id)
     {
         $rekamMedis = RekamMedis::findOrFail($id);
@@ -85,9 +73,7 @@ class RekamMedisController extends Controller
         return view('rekam_medis.edit', compact('rekamMedis', 'pasiens', 'dokters'));
     }
 
-    /**
-     * Update rekam medis
-     */
+ 
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
@@ -109,9 +95,6 @@ class RekamMedisController extends Controller
             ->with('success', 'Rekam medis berhasil diperbarui.');
     }
 
-    /**
-     * Hapus rekam medis
-     */
     public function destroy($id)
     {
         $rekamMedis = RekamMedis::findOrFail($id);
@@ -122,9 +105,7 @@ class RekamMedisController extends Controller
             ->with('success', 'Rekam medis berhasil dihapus.');
     }
 
-    /**
-     * Rekam medis khusus pasien login
-     */
+  
     public function pasienRekamMedis()
     {
         $pasien = Pasien::where('user_id', auth()->id())->firstOrFail();

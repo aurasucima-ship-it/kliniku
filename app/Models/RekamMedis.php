@@ -22,17 +22,12 @@ class RekamMedis extends Model
         'tanggal_pemeriksaan',
     ];
 
-    /**
-     * Relasi ke model Pasien.
-     */
+  
     public function pasien()
     {
         return $this->belongsTo(Pasien::class, 'pasien_id');
     }
 
-    /**
-     * Relasi ke model Dokter.
-     */
     public function dokter()
     {
         return $this->belongsTo(Dokter::class, 'dokter_id');

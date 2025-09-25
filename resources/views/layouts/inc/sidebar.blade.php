@@ -1,8 +1,8 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-white border-r border-pink-200 shadow-sm">
-  <!-- Brand Klinik -->
+
   <div class="app-brand demo">
     <a href="{{ route('home') }}" class="app-brand-link d-flex align-items-center gap-2" aria-label="Beranda INKLINIK">
-      <!-- Logo Lingkaran Pink + Tanda Plus -->
+    
       <span class="app-brand-logo demo" aria-hidden="true">
         <svg width="36" height="36" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img">
           <title>Logo INKLINIK</title>
@@ -22,9 +22,9 @@
 
   <div class="menu-inner-shadow"></div>
 
-  <!-- Menu Items -->
+ 
   <ul class="menu-inner py-1">
-    <!-- Dashboard -->
+   
     <li class="menu-item {{ request()->routeIs('home') ? 'active' : '' }}">
       <a href="{{ route('home') }}" class="menu-link text-pink-500 hover:text-pink-700 focus:text-pink-700">
         <i class="menu-icon tf-icons ti ti-home text-pink-500"></i>
@@ -32,7 +32,7 @@
       </a>
     </li>
 
-    {{-- Admin Menu --}}
+
     @if(Auth::user()->role === 'admin')
       <li class="menu-item {{ request()->routeIs('pasien.*') ? 'active' : '' }}">
         <a href="{{ route('pasien.index') }}" class="menu-link text-pink-500 hover:text-pink-700 focus:text-pink-700">
@@ -56,7 +56,6 @@
       </li>
     @endif
 
-    {{-- Dokter Menu --}}
     @if(Auth::user()->role === 'dokter')
       <li class="menu-item {{ request()->routeIs('pasien.index') ? 'active' : '' }}">
         <a href="{{ route('pasien.index') }}" class="menu-link text-pink-500 hover:text-pink-700 focus:text-pink-700">
@@ -73,7 +72,7 @@
       </li>
     @endif
 
-    {{-- Pasien Menu --}}
+  
     @if(Auth::user()->role === 'pasien')
       <li class="menu-item {{ request()->routeIs('pasien.pendaftaran.create') ? 'active' : '' }}">
         <a href="{{ route('pasien.pendaftaran.create') }}" class="menu-link text-pink-500 hover:text-pink-700 focus:text-pink-700">
@@ -93,11 +92,11 @@
 </aside>
 
 <style>
-  /* Hapus highlight biru default saat klik/fokus */
+
   #layout-menu .menu-link:focus,
   #layout-menu .menu-link:active {
     outline: none;
-    background-color: #ffe4ec; /* soft pink hover/fokus */
+    background-color: #ffe4ec;
     color: #be185d !important;
   }
 

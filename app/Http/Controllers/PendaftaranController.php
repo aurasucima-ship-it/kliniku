@@ -9,9 +9,7 @@ use App\Models\Dokter;
 
 class PendaftaranController extends Controller
 {
-    /**
-     * Pasien: lihat daftar pendaftarannya sendiri
-     */
+ 
     public function index()
     {
         $pendaftarans = Pendaftaran::with('dokter')
@@ -21,21 +19,17 @@ class PendaftaranController extends Controller
         return view('pasien.pendaftaran.index', compact('pendaftarans'));
     }
 
-    /**
-     * Dokter: lihat daftar pasien yang daftar ke dia
-     */
+   
     public function indexDokter()
     {
-        $pendaftarans = Pendaftaran::with('user') // ambil data pasien (user)
-            ->where('dokter_id', Auth::id())       // dokter_id sama dengan user login (dokter)
+        $pendaftarans = Pendaftaran::with('user') 
+            ->where('dokter_id', Auth::id())     
             ->get();
 
         return view('dokter.pendaftaran.index', compact('pendaftarans'));
     }
 
-    /**
-     * Admin: lihat semua pendaftaran
-     */
+   
     public function indexAdmin()
     {
         $pendaftarans = Pendaftaran::with(['dokter', 'user'])->get();
@@ -43,18 +37,13 @@ class PendaftaranController extends Controller
         return view('admin.pendaftaran.index', compact('pendaftarans'));
     }
 
-    /**
-     * Tampilkan form pendaftaran pasien
-     */
+ 
     public function create()
     {
         $dokters = Dokter::all();
         return view('pasien.pendaftaran.create', compact('dokters'));
     }
 
-    /**
-     * Simpan data pendaftaran pasien
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -76,13 +65,11 @@ class PendaftaranController extends Controller
             ->with('success', 'Pendaftaran berhasil disimpan.');
     }
 
-    /**
-     * Hapus pendaftaran pasien
-     */
+ 
     public function destroy($id)
     {
         $pendaftaran = Pendaftaran::where('id', $id)
-            ->where('user_id', Auth::id()) // keamanan: hanya bisa hapus pendaftarannya sendiri
+            ->where('user_id', Auth::id()) 
             ->firstOrFail();
 
         $pendaftaran->delete();

@@ -22,7 +22,6 @@ public function rules(): array
         ],
         'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         
-        // Tambahan validasi password
         'password' => ['nullable', 'string', 'min:8', 'confirmed'],
     ];
 }

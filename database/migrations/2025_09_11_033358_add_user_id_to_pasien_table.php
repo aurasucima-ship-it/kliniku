@@ -11,7 +11,6 @@ return new class extends Migration
         Schema::table('pasien', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id')->after('id')->nullable();
 
-            // opsional: buat foreign key
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

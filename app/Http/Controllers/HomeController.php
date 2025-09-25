@@ -22,13 +22,13 @@ class HomeController extends Controller
         }
 
         switch ($user->role) {
-            // ================= ADMIN =================
+          
             case 'admin':
                 $totalAdmin  = User::where('role', 'admin')->count();
                 $totalDokter = Dokter::count();
                 $totalPasien = Pasien::count();
 
-                // Ambil data kunjungan per hari
+              
                 $kunjungan = Pendaftaran::selectRaw('COUNT(*) as total, DATE(created_at) as date')
                     ->groupBy('date')
                     ->orderBy('date', 'asc')
@@ -48,7 +48,6 @@ class HomeController extends Controller
                     'data'        => $data,
                 ]);
 
-            // ================= DOKTER =================
             case 'dokter':
                 $totalPasien = Pasien::count();
                 $rekamMedis  = RekamMedis::count();
@@ -58,7 +57,7 @@ class HomeController extends Controller
                     'rekamMedis'  => $rekamMedis,
                 ]);
 
-            // ================= PASIEN =================
+         
             case 'pasien':
                 $pasien = Pasien::where('user_id', $user->id)->first();
                 $rekamMedisSaya = $pasien
@@ -70,7 +69,6 @@ class HomeController extends Controller
                     'pasien'         => $pasien,
                 ]);
 
-            // ================= DEFAULT =================
             default:
                 return redirect('/');
         }

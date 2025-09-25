@@ -5,10 +5,10 @@
 @section('content')
 <div class="container my-6">
 
-    <!-- Container Putih Seluruh Halaman -->
+   
     <div class="bg-white shadow-lg rounded-3xl p-6">
 
-        <!-- Judul Halaman -->
+        
         <div class="text-center mb-5">
             <h1 class="fw-bold d-flex justify-content-center align-items-center gap-2"
                 style="font-family: 'Poppins', sans-serif; font-size: 2rem; color:#db2777;">
@@ -18,8 +18,6 @@
 
         <form action="{{ route('pasien.pendaftaran.store') }}" method="POST">
             @csrf
-
-            <!-- Baris 1: Nama, Jenis Kelamin, No. Telepon -->
             <div class="d-flex flex-wrap gap-4 mb-3">
                 <div style="flex: 1 1 250px;">
                     <label for="nama" class="form-label fw-semibold" style="color:#db2777; font-size:1.1rem;">Nama Pasien</label>
@@ -41,7 +39,6 @@
                 </div>
             </div>
 
-            <!-- Baris 2: Tanggal Berobat, Alamat, Dokter -->
             <div class="d-flex flex-wrap gap-4 mb-3">
                 <div style="flex: 1 1 180px;">
                     <label for="tanggal_berobat" class="form-label fw-semibold" style="color:#db2777; font-size:1.1rem;">Tanggal Berobat</label>
@@ -66,13 +63,13 @@
                 </div>
             </div>
 
-            <!-- Baris 3: Keluhan -->
+       
             <div class="mb-3" style="max-width: 400px;">
                 <label for="keluhan" class="form-label fw-semibold" style="color:#db2777; font-size:1.1rem;">Keluhan</label>
                 <input type="text" name="keluhan" id="keluhan" class="form-control form-control-sm border-pink" value="{{ old('keluhan') }}" required>
             </div>
 
-            <!-- Tombol Simpan & Batal -->
+        
             <div class="d-flex gap-2 mt-4">
                 <button type="submit" class="btn" style="background-color:#ec4899; color:white;">
                     Simpan
@@ -83,7 +80,7 @@
             </div>
 
         </form>
-    </div> <!-- End Container Putih -->
+    </div>
 
 </div>
 @endsection
