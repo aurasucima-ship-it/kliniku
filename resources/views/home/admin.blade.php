@@ -1,19 +1,20 @@
 @extends('layouts.app')
 
+@section('title', 'Dashboard Admin')
+
 @section('content')
-<div class="container">
+<div class="container-xxl flex-grow-1 container-p-y">
 
-<h1 class="text-2xl font-bold text-pink-600 text-center mb-6 d-flex justify-content-center align-items-center gap-2"
-    style="font-family: 'Poppins', sans-serif; letter-spacing: 1px; text-shadow: 1px 1px 3px rgba(0,0,0,0.05);">
-    <i class="fas fa-hospital"></i>
-    DASHBOARD ADMIN
-</h1>
+    <!-- Judul -->
+    <h4 class="fw-bold py-3 mb-4 text-pink-600 d-flex align-items-center gap-2">
+        <i class="fas fa-hospital"></i> Dashboard Admin
+    </h4>
 
-
+    <!-- Statistik Cards -->
     <div class="row mb-4">
-      
-        <div class="col-md-4">
-            <div class="card mb-3 text-white" style="background-color: rgba(255, 182, 193, 0.8);">
+        <!-- Total Admin -->
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card text-white" style="background-color: rgba(255, 182, 193, 0.8);">
                 <div class="card-body text-center">
                     <h5 class="card-title">Total Admin</h5>
                     <p class="card-text fs-4">{{ $totalAdmin }}</p>
@@ -21,8 +22,9 @@
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card mb-3 text-white" style="background-color: rgba(255, 192, 203, 0.8);">
+        <!-- Total Dokter -->
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card text-white" style="background-color: rgba(255, 192, 203, 0.8);">
                 <div class="card-body text-center">
                     <h5 class="card-title">Total Dokter</h5>
                     <p class="card-text fs-4">{{ $totalDokter }}</p>
@@ -30,9 +32,9 @@
             </div>
         </div>
 
-      
-        <div class="col-md-4">
-            <div class="card mb-3 text-white" style="background-color: rgba(255, 105, 180, 0.8);">
+        <!-- Total Pasien -->
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="card text-white" style="background-color: rgba(255, 105, 180, 0.8);">
                 <div class="card-body text-center">
                     <h5 class="card-title">Total Pasien</h5>
                     <p class="card-text fs-4">{{ $totalPasien }}</p>
@@ -41,12 +43,15 @@
         </div>
     </div>
 
-    <div class="bg-white shadow rounded-lg p-6">
-        <h2 class="text-xl font-semibold text-pink-600 mb-4 text-center d-flex justify-content-center align-items-center gap-2">
+    <!-- Grafik Data -->
+    <div class="card mb-4">
+        <div class="card-header text-pink-600 d-flex align-items-center gap-2">
             <i class="fas fa-chart-bar"></i>
             Grafik Data Sistem
-        </h2>
-        <canvas id="chartData"></canvas>
+        </div>
+        <div class="card-body" style="height: 300px;">
+            <canvas id="chartData" style="height:100%; width:100%;"></canvas>
+        </div>
     </div>
 </div>
 @endsection
@@ -55,7 +60,8 @@
 <script src="https://kit.fontawesome.com/a2e0e6ad65.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const ctx = document.getElementById('chartData');
+document.addEventListener('DOMContentLoaded', function () {
+    const ctx = document.getElementById('chartData').getContext('2d');
 
     new Chart(ctx, {
         type: 'bar',
@@ -65,9 +71,9 @@
                 label: 'Jumlah',
                 data: [{{ $totalAdmin }}, {{ $totalDokter }}, {{ $totalPasien }}],
                 backgroundColor: [
-                    'rgba(255, 182, 193, 0.6)',
-                    'rgba(255, 192, 203, 0.6)',
-                    'rgba(255, 105, 180, 0.6)'
+                    'rgba(255, 182, 193, 0.8)',
+                    'rgba(255, 192, 203, 0.8)',
+                    'rgba(255, 105, 180, 0.8)'
                 ],
                 borderColor: [
                     'rgba(255, 182, 193, 1)',
@@ -79,6 +85,8 @@
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false, 
+            animation: false,
             plugins: {
                 legend: { display: false }
             },
@@ -87,5 +95,6 @@
             }
         }
     });
+});
 </script>
 @endpush

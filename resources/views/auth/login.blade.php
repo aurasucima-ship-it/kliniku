@@ -1,89 +1,156 @@
-<x-guest-layout>
-    <div class="max-w-md w-full mx-auto bg-white p-8 rounded-2xl shadow-lg border border-pink-200">
-        <!-- Judul / Heading Form -->
-        <div class="text-center mb-6">
-            <!-- Icon di atas -->
-            <div class="text-pink-600 text-5xl mb-3">
-                🏥
-            </div>
+<!doctype html>
+<html
+  lang="en"
+  class="light-style layout-wide customizer-hide"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="{{ asset('/') }}"
+  data-template="vertical-menu-template"
+  data-style="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-            <!-- Judul -->
-            <h1 class="text-3xl font-extrabold text-pink-600">
-                KLINIKU
-            </h1>
+    <title>Login | KlinikApp</title>
 
-            <!-- Subjudul / deskripsi -->
-            <p class="text-pink-400 text-sm mt-2">
-                Silakan masuk untuk melanjutkan
-            </p>
-        </div>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('/img/favicon/favicon.ico') }}" />
 
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet" />
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
+    <!-- Icons -->
+    <link rel="stylesheet" href="{{ asset('/vendor/fonts/fontawesome.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/vendor/fonts/tabler-icons.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/vendor/fonts/flag-icons.css') }}" />
 
-            <!-- Email Address -->
-            <div class="mb-4">
-                <x-input-label for="email" :value="__('Email')" class="text-pink-600 font-semibold" />
-                <x-text-input 
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{ asset('/vendor/css/rtl/core.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/vendor/css/rtl/theme-default.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/css/demo.css') }}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{{ asset('/vendor/libs/node-waves/node-waves.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/vendor/libs/typeahead-js/typeahead.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/vendor/libs/@form-validation/form-validation.css') }}" />
+
+    <!-- Page CSS -->
+    <link rel="stylesheet" href="{{ asset('/vendor/css/pages/page-auth.css') }}" />
+
+    <!-- Helpers -->
+    <script src="{{ asset('/vendor/js/helpers.js') }}"></script>
+    <script src="{{ asset('/vendor/js/config.js') }}"></script>
+  </head>
+
+  <body>
+    <div class="container-xxl">
+      <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner py-6">
+          <!-- Login Card -->
+          <div class="card">
+            <div class="card-body">
+
+              <!-- Logo -->
+              <div class="app-brand justify-content-center mb-6">
+                <a href="{{ url('/') }}" class="app-brand-link">
+                  <span class="app-brand-logo demo">
+                    <!-- bisa ganti svg/logo -->
+                    <img src="{{ asset('/img/logo.png') }}" alt="Logo" width="40">
+                  </span>
+                  <span class="app-brand-text demo text-heading fw-bold">KlinikApp</span>
+                </a>
+              </div>
+              <!-- /Logo -->
+
+              <h4 class="mb-1">Selamat Datang 👋</h4>
+              <p class="mb-6">Silakan login untuk melanjutkan.</p>
+
+              <!-- Form Login -->
+              <form method="POST" action="{{ route('login') }}">
+                @csrf
+
+                <!-- Email -->
+                <div class="mb-6">
+                  <label for="email" class="form-label">Email</label>
+                  <input
                     id="email"
-                    class="block mt-1 w-full rounded-lg border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200"
-                    type="email" 
-                    name="email" 
-                    :value="old('email')" 
-                    required 
-                    autofocus 
-                    autocomplete="username" 
-                />
-                <x-input-error :messages="$errors->get('email')" class="mt-2 text-pink-500" />
-            </div>
+                    type="email"
+                    class="form-control @error('email') is-invalid @enderror"
+                    name="email"
+                    value="{{ old('email') }}"
+                    required
+                    autocomplete="email"
+                    autofocus
+                    placeholder="Enter your email" />
+                  @error('email')
+                    <span class="invalid-feedback d-block">{{ $message }}</span>
+                  @enderror
+                </div>
 
-            <!-- Password -->
-            <div class="mb-4">
-                <x-input-label for="password" :value="__('Password')" class="text-pink-600 font-semibold" />
-                <x-text-input 
-                    id="password"
-                    class="block mt-1 w-full rounded-lg border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200"
-                    type="password" 
-                    name="password" 
-                    required 
-                    autocomplete="current-password" 
-                />
-                <x-input-error :messages="$errors->get('password')" class="mt-2 text-pink-500" />
-            </div>
+                <!-- Password -->
+                <div class="mb-6 form-password-toggle">
+                  <label class="form-label" for="password">Password</label>
+                  <div class="input-group input-group-merge">
+                    <input
+                      id="password"
+                      type="password"
+                      class="form-control @error('password') is-invalid @enderror"
+                      name="password"
+                      required
+                      autocomplete="current-password"
+                      placeholder="********" />
+                    <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+                  </div>
+                  @error('password')
+                    <span class="invalid-feedback d-block">{{ $message }}</span>
+                  @enderror
+                </div>
 
-            <!-- Remember Me -->
-            <div class="flex items-center mb-6">
-                <label for="remember_me" class="inline-flex items-center cursor-pointer">
-                    <input 
-                        id="remember_me" 
-                        type="checkbox"
-                        class="rounded border-gray-300 text-pink-600 shadow-sm focus:ring-pink-400"
-                        name="remember"
-                    >
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
+                <!-- Remember Me -->
+                <div class="my-4 d-flex justify-content-between align-items-center">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="remember" id="remember">
+                    <label class="form-check-label" for="remember">Ingat saya</label>
+                  </div>
+                </div>
 
-            <!-- Tombol dan Link -->
-            <div class="flex items-center justify-between">
-                @if (Route::has('password.request'))
-                    <a 
-                        class="underline text-sm text-pink-500 hover:text-pink-700"
-                        href="{{ route('password.request') }}"
-                    >
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
+                <!-- Submit -->
+                <div class="mb-6">
+                  <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
+                </div>
+              </form>
+              <!-- End Form Login -->
 
-                <x-primary-button
-                    class="bg-pink-500 hover:bg-pink-600 focus:ring-pink-400 px-6 py-2 rounded-full shadow-md"
-                >
-                    {{ __('Login') }}
-                </x-primary-button>
             </div>
-        </form>
+          </div>
+          <!-- /Login Card -->
+        </div>
+      </div>
     </div>
-</x-guest-layout>
+
+    <!-- Core JS -->
+    <script src="{{ asset('/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('/vendor/libs/node-waves/node-waves.js') }}"></script>
+    <script src="{{ asset('/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ asset('/vendor/libs/typeahead-js/typeahead.js') }}"></script>
+    <script src="{{ asset('/vendor/js/menu.js') }}"></script>
+
+    <!-- Vendors JS -->
+    <script src="{{ asset('/vendor/libs/@form-validation/popular.js') }}"></script>
+    <script src="{{ asset('/vendor/libs/@form-validation/bootstrap5.js') }}"></script>
+    <script src="{{ asset('/vendor/libs/@form-validation/auto-focus.js') }}"></script>
+
+    <!-- Main JS -->
+    <script src="{{ asset('/js/main.js') }}"></script>
+    <script src="{{ asset('/js/pages-auth.js') }}"></script>
+  </body>
+</html>

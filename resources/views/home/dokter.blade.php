@@ -1,25 +1,91 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
+<div class="container">
 
+<h1 class="text-2xl font-bold text-pink-600 text-center mb-6 d-flex justify-content-center align-items-center gap-2"
+    style="font-family: 'Poppins', sans-serif; letter-spacing: 1px; text-shadow: 1px 1px 3px rgba(0,0,0,0.05);">
+    <i class="fas fa-user-doctor"></i>
+    DASHBOARD DOKTER
+</h1>
 
+<div class="row mb-4">
 
-    <h2 class="fw-bold text-primary mb-4">DASHBOARD DOKTER</h2>
-
-    <div class="row g-4">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0 text-center p-3">
-                <h5>Total Pasien</h5>
-                <h2>{{ $totalPasien }}</h2>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0 text-center p-3">
-                <h5>Rekam Medis</h5>
-                <h2>{{ $rekamMedis }}</h2>
+    <div class="col-md-4">
+        <div class="card mb-3 text-white" style="background-color: rgba(255, 182, 193, 0.8);">
+            <div class="card-body text-center">
+                <h5 class="card-title">Total Pasien</h5>
+                <p class="card-text fs-4">{{ $totalPasien }}</p>
             </div>
         </div>
     </div>
+
+    <div class="col-md-4">
+        <div class="card mb-3 text-white" style="background-color: rgba(255, 192, 203, 0.8);">
+            <div class="card-body text-center">
+                <h5 class="card-title">Total Rekam Medis</h5>
+                <p class="card-text fs-4">{{ $totalRekamMedis }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-3 text-white" style="background-color: rgba(255, 105, 180, 0.8);">
+            <div class="card-body text-center">
+                <h5 class="card-title">Total Pembayaran Masuk</h5>
+                <p class="card-text fs-4">{{ $totalPembayaran }}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="bg-white shadow rounded-lg p-6">
+    <h2 class="text-xl font-semibold text-pink-600 mb-4 text-center d-flex justify-content-center align-items-center gap-2">
+        <i class="fas fa-chart-bar"></i>
+        Grafik Data Dokter
+    </h2>
+    <canvas id="chartData"></canvas>
+</div>
+
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://kit.fontawesome.com/a2e0e6ad65.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('chartData');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Pasien', 'Rekam Medis', 'Pembayaran'],
+            datasets: [{
+                label: 'Jumlah',
+                data: [{{ $totalPasien }}, {{ $totalRekamMedis }}, {{ $totalPembayaran }}],
+                backgroundColor: [
+                    'rgba(255, 182, 193, 0.6)',
+                    'rgba(255, 192, 203, 0.6)',
+                    'rgba(255, 105, 180, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(255, 182, 193, 1)',
+                    'rgba(255, 192, 203, 1)',
+                    'rgba(255, 105, 180, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+@endpush

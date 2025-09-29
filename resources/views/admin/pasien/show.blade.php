@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <a href="{{ route('pasien.index') }}" 
+    <a href="{{ route('admin.pasien.index') }}" 
        class="btn text-white"
        style="background-color:#ec4899;">
         ← Kembali

@@ -6,7 +6,7 @@
 <div class="card border-pink-400 shadow-sm mx-auto" style="max-width:600px;">
     <h5 class="card-header bg-pink-500 text-white">Tambah Pasien</h5>
     <div class="card-body">
-        <form action="{{ route('pasien.store') }}" method="POST">
+        <form action="{{ route('admin.pasien.store') }}" method="POST">
             @csrf
 
             <div class="mb-2">
@@ -62,7 +62,7 @@
 
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-pink bg-pink-500 hover:bg-pink-600 text-white flex-grow-1">Simpan</button>
-                <a href="{{ route('pasien.index') }}" class="btn btn-pink bg-pink-300 hover:bg-pink-400 text-white flex-grow-1">Batal</a>
+                <a href="{{ route('admin.pasien.index') }}" class="btn btn-pink bg-pink-300 hover:bg-pink-400 text-white flex-grow-1">Batal</a>
             </div>
         </form>
     </div>

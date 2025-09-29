@@ -20,16 +20,6 @@ class UserSeeder extends Seeder
             ]
         );
 
-      
-        User::updateOrCreate(
-            ['email' => 'dokter@kliniku.com'],
-            [
-                'name' => 'dr. Riki Sanjaya',
-                'password' => Hash::make('password'),
-                'role' => 'dokter',
-            ]
-        );
-
         
         User::updateOrCreate(
             ['email' => 'pasien@kliniku.com'],
@@ -39,5 +29,7 @@ class UserSeeder extends Seeder
                 'role' => 'pasien',
             ]
         );
+
+      
     }
 }

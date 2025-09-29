@@ -9,7 +9,7 @@
             Edit Pasien
         </h5>
         <div class="card-body">
-            <form action="{{ route('pasien.update', $pasien->id) }}" method="POST">
+            <form action="{{ route('admin.pasien.update', $pasien->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -72,7 +72,7 @@
                     <button type="submit" class="btn text-white" style="background-color:#db2777;">
                         Update
                     </button>
-                    <a href="{{ route('pasien.index') }}" class="btn text-white" style="background-color:#f9a8d4;">
+                    <a href="{{ route('admin.pasien.index') }}" class="btn text-white" style="background-color:#f9a8d4;">
                         Batal
                     </a>
                 </div>

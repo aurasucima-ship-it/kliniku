@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class Dokter extends Model
 {
@@ -16,9 +15,10 @@ class Dokter extends Model
         'nama',
         'spesialis',
         'alamat',
-        'foto',
+        'user_id', // penting untuk relasi dengan User
     ];
 
+    // === Relasi ===
     public function pasien()
     {
         return $this->hasMany(Pasien::class, 'dokter_id');
@@ -29,13 +29,8 @@ class Dokter extends Model
         return $this->hasMany(RekamMedis::class, 'dokter_id');
     }
 
-
-    public function getFotoUrlAttribute()
+    public function user()
     {
-        if ($this->foto && Storage::disk('public')->exists('uploads/dokter/'.$this->foto)) {
-            return asset('storage/uploads/dokter/'.$this->foto);
-        }
-
-        return null;
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
