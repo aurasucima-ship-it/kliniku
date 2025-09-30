@@ -1,21 +1,20 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
-@section('title', 'Daftar Rekam Medis')
+@section('title', 'Data Pasien')
 
 @section('content')
 <div class="card border border-pink-400 shadow-sm">
 
     <!-- Header -->
     <h5 class="card-header text-center fs-5 fw-semibold d-flex justify-content-center align-items-center gap-2 text-pink-600">
-        <i class="fas fa-notes-medical"></i>
-        DATA REKAM MEDIS KLINIKU
+        <i class="fas fa-user-injured"></i>
+        DATA PASIEN
     </h5>
 
-    <!-- Tombol tambah -->
     <div class="p-3 flex justify-start">
-        <a href="{{ route('admin.rekam_medis.create') }}" 
+        <a href="{{ route('dokter.pasien.create') }}" 
            class="btn btn-pink mb-3 px-4 py-2 rounded-full shadow-sm hover:bg-pink-500 text-white font-medium">
-           + Tambah Rekam Medis
+           + Tambah Pasien
         </a>
     </div>
 
@@ -25,62 +24,51 @@
             <thead class="table-pink">
                 <tr>
                     <th style="width:50px;">No</th>
-                    <th>Pasien</th>
-                    <th>Dokter</th>
-                    <th>Keluhan</th>
-                    <th>Diagnosa</th>
-                    <th>Tindakan</th>
-                    <th>Resep Obat</th>
-                    <th>Catatan</th>
-                    <th>Tanggal</th>
-                    <th style="width:150px;">Aksi</th>
+                    <th>Nama</th>
+                    <th>Jenis Kelamin</th>
+                    <th>No. Telepon</th>
+                    <th>Tanggal Berobat</th>
+                    <th style="width:120px;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($rekamMedis as $index => $rm)
+                @forelse ($pasiens as $index => $pasien)
                 <tr class="row-hover-pink">
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $rm->pasien->nama ?? '-' }}</td>
-                    <td>{{ $rm->dokter->nama ?? '-' }}</td>
-                    <td>{{ $rm->keluhan }}</td>
-                    <td>{{ $rm->diagnosa }}</td>
-                    <td>{{ $rm->tindakan ?? '-' }}</td>
-                    <td>{{ $rm->resep_obat ?? '-' }}</td>
-                    <td>{{ $rm->catatan_tambahan ?? '-' }}</td>
-                    <td>{{ $rm->tanggal_pemeriksaan_formatted ?? '-' }}</td>
+                    <td>{{ $pasien->nama }}</td>
+                    <td>{{ $pasien->jenis_kelamin_text }}</td>
+                    <td>{{ $pasien->no_telp ?? '-' }}</td>
+                    <td>{{ $pasien->tanggal_berobat->format('d/m/Y') }}</td>
                     <td class="d-flex justify-center gap-2">
-
-                        <!-- Lihat -->
-                        <a href="{{ route('admin.rekam_medis.show', $rm->id) }}" 
-                           class="btn-icon-pink" title="Lihat">
+                        <!-- Show -->
+                        <a href="{{ route('dokter.pasien.show', $pasien->id) }}" class="btn-icon-pink" title="Lihat">
                             <i class="fas fa-eye"></i>
                         </a>
 
                         <!-- Edit -->
-                        <a href="{{ route('admin.rekam_medis.edit', $rm->id) }}" 
-                           class="btn-icon-pink" title="Edit">
+                        <a href="{{ route('dokter.pasien.edit', $pasien->id) }}" class="btn-icon-pink" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
 
                         <!-- Hapus -->
-                        <form action="{{ route('admin.rekam_medis.destroy', $rm->id) }}" method="POST" class="inline-block">
+                        <form action="{{ route('dokter.pasien.destroy', $pasien->id) }}" method="POST" class="inline-block">
                             @csrf
                             @method('DELETE')
                             <button type="button" class="btn-icon-pink btn-delete" title="Hapus">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
-
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="10" class="text-center text-pink-500">Belum ada data rekam medis</td>
+                    <td colspan="6" class="text-center text-pink-500">Belum ada pasien</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
+
 </div>
 @endsection
 
@@ -92,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
         btn.addEventListener("click", function(e) {
             e.preventDefault();
             Swal.fire({
-                title: 'Yakin mau hapus rekam medis ini?',
+                title: 'Yakin mau hapus pasien ini?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, hapus!',

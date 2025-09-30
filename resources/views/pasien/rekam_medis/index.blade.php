@@ -3,63 +3,60 @@
 @section('title', 'Rekam Medis Pasien')
 
 @section('content')
-<div class="container my-6">
+<div class="container mx-auto p-4">
 
-   
-    <div class="bg-white shadow-lg rounded-3xl p-6 mb-4 d-flex justify-content-between align-items-center">
-        <h2 class="fw-bold d-flex justify-content-center align-items-center gap-2 flex-grow-1"
-            style="font-family: 'Poppins', sans-serif; font-size: 2.5rem; color:#db2777;">
+    <!-- Header -->
+    <div class="bg-pink-100 rounded-3xl shadow p-6 mb-6 text-center">
+        <h1 class="text-3xl font-bold text-pink-700 flex justify-center items-center gap-2">
             <i class="fas fa-notes-medical"></i> Rekam Medis Pasien
-        </h2>
-
+        </h1>
     </div>
 
-
-    <div class="bg-white shadow-lg rounded-3xl p-4">
+    <!-- Table -->
+    <div class="overflow-x-auto bg-white shadow-lg rounded-3xl p-4">
         @if($rekamMedis->isEmpty())
-            <div class="text-center text-gray-600 py-10" style="color:#9ca3af;">
-                <p class="fs-5">
-                    Belum ada rekam medis. Data akan muncul jika dokter/admin sudah mengirim.
-                </p>
+            <div class="text-center text-gray-500 py-10">
+                Belum ada rekam medis. Data akan muncul jika dokter/admin sudah mengirim.
             </div>
         @else
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead style="background-color:#ec4899; color:white;">
-                        <tr>
-                            <th class="text-center">No</th>
-                            <th>Tanggal</th>
-                            <th>Dokter</th>
-                            <th>Keluhan</th>
-                            <th>Diagnosa</th>
-                            <th>Tindakan</th>
-                            <th>Resep Obat</th>
-                            <th>Catatan</th>
+            <table class="min-w-full border border-pink-200 rounded-lg overflow-hidden">
+                <thead class="bg-pink-200 text-pink-800">
+                    <tr>
+                        <th class="py-2 px-4 border-b">No</th>
+                        <th class="py-2 px-4 border-b">Tanggal</th>
+                        <th class="py-2 px-4 border-b">Dokter</th>
+                        <th class="py-2 px-4 border-b">Keluhan</th>
+                        <th class="py-2 px-4 border-b">Diagnosa</th>
+                        <th class="py-2 px-4 border-b">Tindakan</th>
+                        <th class="py-2 px-4 border-b">Resep Obat</th>
+                        <th class="py-2 px-4 border-b">Catatan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($rekamMedis as $index => $rm)
+                        <tr class="hover:bg-pink-50">
+                            <td class="py-2 px-4 text-center border-b">{{ $index + 1 }}</td>
+                            <td class="py-2 px-4 border-b">{{ \Carbon\Carbon::parse($rm->tanggal_pemeriksaan)->format('d M Y') }}</td>
+                            <td class="py-2 px-4 border-b">{{ optional($rm->dokter)->nama ?? '-' }}</td>
+                            <td class="py-2 px-4 border-b">{{ $rm->keluhan }}</td>
+                            <td class="py-2 px-4 border-b">{{ $rm->diagnosa }}</td>
+                            <td class="py-2 px-4 border-b">{{ $rm->tindakan }}</td>
+                            <td class="py-2 px-4 border-b">{{ $rm->resep_obat }}</td>
+                            <td class="py-2 px-4 border-b">{{ $rm->catatan }}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($rekamMedis as $index => $rm)
-                            <tr class="align-middle">
-                                <td class="text-center">{{ $index+1 }}</td>
-                                <td>{{ \Carbon\Carbon::parse($rm->tanggal_pemeriksaan)->format('d M Y') }}</td>
-                                <td>{{ $rm->dokter->nama ?? '-' }}</td>
-                                <td>{{ $rm->keluhan }}</td>
-                                <td>{{ $rm->diagnosa }}</td>
-                                <td>{{ $rm->tindakan }}</td>
-                                <td>{{ $rm->resep_obat }}</td>
-                                <td>{{ $rm->catatan }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                    @endforeach
+                </tbody>
+            </table>
         @endif
     </div>
 
+    <!-- Back button -->
+    <div class="mt-6">
+        <a href="{{ url()->previous() }}" 
+           class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded font-medium inline-flex items-center gap-2">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+    </div>
+
 </div>
-            <a href="{{ url()->previous() }}" 
-               class="btn"
-               style="background-color:#9ca3af; color:white;">
-                <i class="fas fa-arrow-left"></i> Kembali
-            </a>
 @endsection

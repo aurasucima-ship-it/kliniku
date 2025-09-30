@@ -1,84 +1,34 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Profile') }}
+        </h2>
+    </x-slot>
 
-@section('title', 'Ubah Profil')
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-@section('content')
-<div class="bg-white shadow rounded-2xl p-4 p-md-5 mx-auto border border-pink-300" style="max-width: 600px;">
-    <h2 class="text-center mb-4" style="color:#db2777; font-family:'Poppins', sans-serif;">
-        <i class="fas fa-user-edit me-2"></i> Ubah Profil
-    </h2>
-
- 
-    @if(session('success'))
-        <div class="alert alert-success mb-4 text-center">
-            {{ session('success') }}
-        </div>
-    @endif
-
-
-    @if ($errors->any())
-        <div class="alert alert-danger mb-4">
-            <ul class="mb-0 ps-3">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
-        @csrf
-        @method('PATCH')
-
-   
-        <div class="mb-3">
-            <label class="form-label fw-semibold" style="color:#db2777;">Nama</label>
-            <input type="text" name="name" 
-                   value="{{ old('name', auth()->user()->name) }}"
-                   class="form-control" style="border-color:#f9a8d4;">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label fw-semibold" style="color:#db2777;">Email</label>
-            <input type="email" name="email" 
-                   value="{{ old('email', auth()->user()->email) }}"
-                   class="form-control" style="border-color:#f9a8d4;">
-        </div>
-
-   
-        <div class="mb-3">
-            <label class="form-label fw-semibold" style="color:#db2777;">Foto Profil</label>
-            <input type="file" name="foto" class="form-control" style="border-color:#f9a8d4;">
-            @if(auth()->user()->foto)
-                <div class="mt-3 text-center">
-                    <img src="{{ asset('storage/' . auth()->user()->foto) }}"
-                        alt="Foto Profil"
-                        class="rounded-circle border"
-                        style="width:100px; height:100px; object-fit:cover; border-color:#f9a8d4;">
+            <!-- Update Profile Information -->
+            <div class="p-6 sm:p-8 bg-white shadow sm:rounded-lg">
+                <div class="max-w-xl mx-auto">
+                    @include('profile.partials.update-profile-information-form')
                 </div>
-            @endif
-        </div>
+            </div>
 
-     
-        <div class="mb-3">
-            <label class="form-label fw-semibold" style="color:#db2777;">Password Baru (opsional)</label>
-            <input type="password" name="password" class="form-control" style="border-color:#f9a8d4;">
-        </div>
+            <!-- Update Password -->
+            <div class="p-6 sm:p-8 bg-white shadow sm:rounded-lg">
+                <div class="max-w-xl mx-auto">
+                    @include('profile.partials.update-password-form')
+                </div>
+            </div>
 
-     
-        <div class="mb-4">
-            <label class="form-label fw-semibold" style="color:#db2777;">Konfirmasi Password</label>
-            <input type="password" name="password_confirmation" class="form-control" style="border-color:#f9a8d4;">
-        </div>
+            <!-- Delete Account -->
+            <div class="p-6 sm:p-8 bg-white shadow sm:rounded-lg">
+                <div class="max-w-xl mx-auto">
+                    @include('profile.partials.delete-user-form')
+                </div>
+            </div>
 
-   
-        <div class="text-end">
-            <button type="submit" 
-                    class="btn px-4" 
-                    style="background-color:#ec4899; color:white; font-weight:600;">
-                Simpan
-            </button>
         </div>
-    </form>
-</div>
-@endsection
+    </div>
+</x-app-layout>

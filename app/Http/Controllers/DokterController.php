@@ -3,21 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dokter;
+use App\Models\Pasien;
 use Illuminate\Http\Request;
 
 class DokterController extends Controller
 {
-   
+    // Halaman dashboard dokter
+    public function home()
+    {
+        $totalDokter = Dokter::count();
+        $totalPasien = Pasien::count();
+
+        return view('home.dokter', compact('totalDokter', 'totalPasien'));
+    }
+
     public function index()
     {
         $dokters = Dokter::latest()->get();
-        return view('dokter.index', compact('dokters'));
+        return view('admin.dokter.index', compact('dokters'));
     }
-
 
     public function create()
     {
-        return view('dokter.create');
+        return view('admin.dokter.create');
     }
 
     public function store(Request $request)
@@ -30,13 +38,13 @@ class DokterController extends Controller
 
         Dokter::create($validated);
 
-        return redirect()->route('dokter.index')
+        return redirect()->route('admin.dokter.index')
                          ->with('success', 'Data dokter berhasil ditambahkan!');
     }
 
     public function edit(Dokter $dokter)
     {
-        return view('dokter.edit', compact('dokter'));
+        return view('admin.dokter.edit', compact('dokter'));
     }
 
     public function update(Request $request, Dokter $dokter)
@@ -49,16 +57,15 @@ class DokterController extends Controller
 
         $dokter->update($validated);
 
-        return redirect()->route('dokter.index')
+        return redirect()->route('admin.dokter.index')
                          ->with('success', 'Data dokter berhasil diperbarui!');
     }
 
-  
     public function destroy(Dokter $dokter)
     {
         $dokter->delete();
 
-        return redirect()->route('dokter.index')
+        return redirect()->route('admin.dokter.index')
                          ->with('success', 'Data dokter berhasil dihapus!');
     }
 }

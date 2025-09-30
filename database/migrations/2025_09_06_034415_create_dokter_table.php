@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('spesialis');
             $table->string('alamat')->nullable();
-            $table->string('foto')->nullable();
+          
             $table->timestamps();
         });
     }

@@ -1,104 +1,99 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
-@section('title', 'Daftar Rekam Medis')
+@section('title', 'Daftar Pembayaran')
 
 @section('content')
 <div class="card border border-pink-400 shadow-sm">
 
     <!-- Header -->
-    <h5 class="card-header text-center fs-5 fw-semibold d-flex justify-content-center align-items-center gap-2 text-pink-600">
-        <i class="fas fa-notes-medical"></i>
-        DATA REKAM MEDIS KLINIKU
+    <h5 class="card-header bg-pink-500 text-white text-center fs-5 fw-semibold d-flex justify-content-center align-items-center gap-2">
+        <i class="fas fa-credit-card"></i>
+        DATA PEMBAYARAN KLINIKU
     </h5>
 
-    <!-- Tombol tambah -->
     <div class="p-3 flex justify-start">
-        <a href="{{ route('admin.rekam_medis.create') }}" 
-           class="btn btn-pink mb-3 px-4 py-2 rounded-full shadow-sm hover:bg-pink-500 text-white font-medium">
-           + Tambah Rekam Medis
+        <a href="{{ route('dokter.pembayaran.create') }}" 
+           class="btn btn-pink bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-full shadow-sm font-medium mb-3">
+           + Tambah Pembayaran
         </a>
     </div>
 
     <!-- Table -->
     <div class="table-responsive text-nowrap">
         <table class="table table-bordered table-hover text-center align-middle">
-            <thead class="table-pink">
+            <thead class="table-pink bg-pink-100 text-pink-700">
                 <tr>
                     <th style="width:50px;">No</th>
                     <th>Pasien</th>
-                    <th>Dokter</th>
-                    <th>Keluhan</th>
-                    <th>Diagnosa</th>
-                    <th>Tindakan</th>
-                    <th>Resep Obat</th>
-                    <th>Catatan</th>
+                    <th>Jumlah</th>
+                    <th>Metode</th>
                     <th>Tanggal</th>
-                    <th style="width:150px;">Aksi</th>
+                    <th>Keterangan</th>
+                    <th style="width:120px;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($rekamMedis as $index => $rm)
-                <tr class="row-hover-pink">
+                @forelse ($pembayaran as $index => $p)
+                <tr class="hover:bg-pink-50">
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $rm->pasien->nama ?? '-' }}</td>
-                    <td>{{ $rm->dokter->nama ?? '-' }}</td>
-                    <td>{{ $rm->keluhan }}</td>
-                    <td>{{ $rm->diagnosa }}</td>
-                    <td>{{ $rm->tindakan ?? '-' }}</td>
-                    <td>{{ $rm->resep_obat ?? '-' }}</td>
-                    <td>{{ $rm->catatan_tambahan ?? '-' }}</td>
-                    <td>{{ $rm->tanggal_pemeriksaan_formatted ?? '-' }}</td>
+                    <td>{{ $p->pasien->nama ?? '-' }}</td>
+                    <td>Rp {{ number_format($p->jumlah, 0, ',', '.') }}</td>
+                    <td>{{ ucfirst($p->metode) }}</td>
+                    <td>{{ $p->tanggal->format('d-m-Y') }}</td>
+                    <td>{{ $p->keterangan ?? '-' }}</td>
                     <td class="d-flex justify-center gap-2">
-
                         <!-- Lihat -->
-                        <a href="{{ route('admin.rekam_medis.show', $rm->id) }}" 
-                           class="btn-icon-pink" title="Lihat">
+                        <a href="{{ route('dokter.pembayaran.show', $p->id) }}" 
+                           class="btn-icon-pink text-pink-600 hover:text-pink-800" 
+                           title="Lihat">
                             <i class="fas fa-eye"></i>
                         </a>
 
                         <!-- Edit -->
-                        <a href="{{ route('admin.rekam_medis.edit', $rm->id) }}" 
-                           class="btn-icon-pink" title="Edit">
+                        <a href="{{ route('dokter.pembayaran.edit', $p->id) }}" 
+                           class="btn-icon-pink text-pink-600 hover:text-pink-800" 
+                           title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
 
                         <!-- Hapus -->
-                        <form action="{{ route('admin.rekam_medis.destroy', $rm->id) }}" method="POST" class="inline-block">
+                        <form action="{{ route('dokter.pembayaran.destroy', $p->id) }}" method="POST" class="inline-block">
                             @csrf
                             @method('DELETE')
-                            <button type="button" class="btn-icon-pink btn-delete" title="Hapus">
+                            <button type="button" class="btn-icon-pink btn-delete text-pink-600 hover:text-pink-800" title="Hapus">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
-
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="10" class="text-center text-pink-500">Belum ada data rekam medis</td>
+                    <td colspan="7" class="text-center text-pink-500">Belum ada data pembayaran</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
+
 </div>
 @endsection
 
 @push('scripts')
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+
     const deleteButtons = document.querySelectorAll(".btn-delete");
     deleteButtons.forEach(btn => {
         btn.addEventListener("click", function(e) {
             e.preventDefault();
             Swal.fire({
-                title: 'Yakin mau hapus rekam medis ini?',
+                title: 'Yakin mau hapus pembayaran ini?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, hapus!',
                 cancelButtonText: 'Batal',
                 customClass: {
-                    confirmButton: 'btn btn-pink px-4 py-2 text-white rounded-full',
+                    confirmButton: 'btn btn-pink bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-full',
                     cancelButton: 'btn btn-secondary px-4 py-2 rounded-full'
                 },
                 buttonsStyling: false
@@ -109,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     });
+
 });
 </script>
 @endpush

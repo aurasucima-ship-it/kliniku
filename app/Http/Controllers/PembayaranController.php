@@ -10,140 +10,168 @@ use Illuminate\Support\Facades\Auth;
 
 class PembayaranController extends Controller
 {
+    // ------------------------
+    // LIST DATA
+    // ------------------------
     public function index()
     {
         $user = Auth::user();
 
         if ($user->role === 'admin') {
-            $pembayaran = Pembayaran::with(['dokter', 'pasien'])->get();
-        } else { 
-            $pembayaran = Pembayaran::with(['dokter', 'pasien'])
-                                    ->where('dokter_id', $user->id)
-                                    ->get();
+            $pembayaran = Pembayaran::with('pasien')->latest()->get();
+            return view('admin.pembayaran.index', compact('pembayaran'));
         }
 
-        return view('pembayaran.index', compact('pembayaran'));
+        if ($user->role === 'dokter') {
+            $pembayaran = Pembayaran::with('pasien')
+                ->where('dokter_id', $user->id)
+                ->latest()->get();
+            return view('dokter.pembayaran.index', compact('pembayaran'));
+        }
+
+        if ($user->role === 'pasien') {
+            $pembayaran = Pembayaran::with('pasien')
+                ->where('pasien_id', $user->pasien->id ?? 0)
+                ->latest()->get();
+            return view('pasien.pembayaran.index', compact('pembayaran'));
+        }
+
+        abort(403);
     }
 
-  
+    // ------------------------
+    // CREATE
+    // ------------------------
     public function create()
     {
         $user = Auth::user();
+        $pasiens = Pasien::all();
 
         if ($user->role === 'admin') {
             $dokter = Dokter::all();
-            $pasien = Pasien::all();
-        } else { // dokter
-            $dokter = null;
-            $pasien = Pasien::where('dokter_id', $user->id)->get();
+            return view('admin.pembayaran.create', compact('pasiens', 'dokter'));
         }
 
-        return view('pembayaran.create', compact('dokter', 'pasien'));
+        if ($user->role === 'dokter') {
+            return view('dokter.pembayaran.create', compact('pasiens'));
+        }
+
+        if ($user->role === 'pasien') {
+            return view('pasien.pembayaran.create');
+        }
+
+        abort(403);
     }
 
     public function store(Request $request)
     {
+        $data = $request->validate([
+            'pasien_id'   => 'required|exists:pasien,id',
+            'jumlah'      => 'required|numeric|min:0',
+            'metode'      => 'required|string',
+            'tanggal'     => 'required|date',
+            'keterangan'  => 'nullable|string',
+        ]);
+
+        $pembayaran = Pembayaran::create($data);
+
         $user = Auth::user();
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.pembayaran.index')->with('success', 'Pembayaran berhasil disimpan.');
+        }
 
-        $request->validate([
-            'pasien_id' => 'required|exists:pasien,id',
-            'layanan'   => 'required|string|max:255',
-            'biaya'     => 'required|numeric',
-            'tanggal'   => 'required|date',
-        ]);
+        if ($user->role === 'dokter') {
+            return redirect()->route('dokter.pembayaran.index')->with('success', 'Pembayaran berhasil disimpan.');
+        }
 
-        $dokter_id = $user->role === 'admin' ? $request->dokter_id : $user->id;
+        if ($user->role === 'pasien') {
+            return redirect()->route('pasien.pembayaran.index')->with('success', 'Pembayaran berhasil disimpan.');
+        }
 
-        Pembayaran::create([
-            'dokter_id' => $dokter_id,
-            'pasien_id' => $request->pasien_id,
-            'layanan'   => $request->layanan,
-            'biaya'     => $request->biaya,
-            'tanggal'   => $request->tanggal,
-            'status'    => 'belum_lunas',
-        ]);
-
-        return redirect()->route('pembayaran.index')->with('success', 'Pembayaran berhasil ditambahkan.');
+        abort(403);
     }
 
-    public function edit($id)
+    // ------------------------
+    // SHOW
+    // ------------------------
+    public function show(Pembayaran $pembayaran)
     {
-        $pembayaran = Pembayaran::findOrFail($id);
         $user = Auth::user();
 
         if ($user->role === 'admin') {
-            $dokter = Dokter::all();
-            $pasien = Pasien::all();
-        } else {
-            $dokter = null;
-            $pasien = Pasien::where('dokter_id', $user->id)->get();
+            return view('admin.pembayaran.show', compact('pembayaran'));
         }
 
-        return view('pembayaran.edit', compact('pembayaran', 'dokter', 'pasien'));
+        if ($user->role === 'dokter') {
+            return view('dokter.pembayaran.show', compact('pembayaran'));
+        }
+
+        if ($user->role === 'pasien' && $pembayaran->pasien_id == ($user->pasien->id ?? 0)) {
+            return view('pasien.pembayaran.show', compact('pembayaran'));
+        }
+
+        abort(403);
     }
 
-    public function update(Request $request, $id)
+    // ------------------------
+    // EDIT
+    // ------------------------
+    public function edit(Pembayaran $pembayaran)
     {
-        $pembayaran = Pembayaran::findOrFail($id);
+        $pasiens = Pasien::all();
+        $user = Auth::user();
 
-        $request->validate([
-            'pasien_id' => 'required|exists:pasien,id',
-            'layanan'   => 'required|string|max:255',
-            'biaya'     => 'required|numeric',
-            'tanggal'   => 'required|date',
-            'status'    => 'required|string',
-        ]);
+        if ($user->role === 'admin') {
+            return view('admin.pembayaran.edit', compact('pembayaran', 'pasiens'));
+        }
 
-        $dokter_id = Auth::user()->role === 'admin' ? $request->dokter_id : Auth::id();
+        if ($user->role === 'dokter') {
+            return view('dokter.pembayaran.edit', compact('pembayaran', 'pasiens'));
+        }
 
-        $pembayaran->update([
-            'dokter_id' => $dokter_id,
-            'pasien_id' => $request->pasien_id,
-            'layanan'   => $request->layanan,
-            'biaya'     => $request->biaya,
-            'tanggal'   => $request->tanggal,
-            'status'    => $request->status,
-        ]);
-
-        return redirect()->route('pembayaran.index')->with('success', 'Pembayaran berhasil diupdate.');
+        abort(403);
     }
 
-    public function destroy($id)
+    public function update(Request $request, Pembayaran $pembayaran)
     {
-        $pembayaran = Pembayaran::findOrFail($id);
+        $data = $request->validate([
+            'pasien_id'   => 'required|exists:pasien,id',
+            'jumlah'      => 'required|numeric|min:0',
+            'metode'      => 'required|string',
+            'tanggal'     => 'required|date',
+            'keterangan'  => 'nullable|string',
+        ]);
+
+        $pembayaran->update($data);
+
+        $user = Auth::user();
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.pembayaran.index')->with('success', 'Pembayaran berhasil diperbarui.');
+        }
+
+        if ($user->role === 'dokter') {
+            return redirect()->route('dokter.pembayaran.index')->with('success', 'Pembayaran berhasil diperbarui.');
+        }
+
+        abort(403);
+    }
+
+    // ------------------------
+    // DELETE
+    // ------------------------
+    public function destroy(Pembayaran $pembayaran)
+    {
         $pembayaran->delete();
 
-        return redirect()->route('pembayaran.index')->with('success', 'Pembayaran berhasil dihapus.');
-    }
+        $user = Auth::user();
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.pembayaran.index')->with('success', 'Pembayaran berhasil dihapus.');
+        }
 
-    public function indexPasien()
-    {
-        $pembayaran = Pembayaran::where('pasien_id', Auth::id())->get();
-        return view('pasien.pembayaran.index', compact('pembayaran'));
-    }
+        if ($user->role === 'dokter') {
+            return redirect()->route('dokter.pembayaran.index')->with('success', 'Pembayaran berhasil dihapus.');
+        }
 
- 
-    public function formBayar($id)
-    {
-        $pembayaran = Pembayaran::where('pasien_id', Auth::id())->findOrFail($id);
-        return view('pasien.pembayaran.form', compact('pembayaran'));
-    }
-
-    public function prosesBayar(Request $request, $id)
-    {
-        $pembayaran = Pembayaran::where('pasien_id', Auth::id())->findOrFail($id);
-
-        $request->validate([
-            'metode' => 'required|string',
-            'catatan' => 'nullable|string',
-        ]);
-
-        $pembayaran->update([
-            'status' => 'menunggu_konfirmasi',
-         
-        ]);
-
-        return redirect()->route('pasien.pembayaran.index')
-                         ->with('success', 'Pembayaran berhasil diajukan.');
+        abort(403);
     }
 }
