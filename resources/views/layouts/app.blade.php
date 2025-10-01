@@ -8,83 +8,147 @@
   data-style="light">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>@yield('title') | KLINIKU</title>
+    <title>@yield('title') | KLINIKU</title>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="{{ asset('/img/favicon/favicon.ico') }}" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('/img/favicon/favicon.ico') }}" />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Icons -->
-  <link rel="stylesheet" href="{{ asset('/vendor/fonts/fontawesome.css') }}" />
-  <link rel="stylesheet" href="{{ asset('/vendor/fonts/tabler-icons.css') }}" />
-  <link rel="stylesheet" href="{{ asset('/vendor/fonts/flag-icons.css') }}" />
+    <!-- Icons -->
+    <link rel="stylesheet" href="{{ asset('/vendor/fonts/fontawesome.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/vendor/fonts/tabler-icons.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/vendor/fonts/flag-icons.css') }}" />
 
-  <!-- Core CSS -->
-  <link rel="stylesheet" href="{{ asset('/vendor/css/rtl/core.css') }}" />
-  <link rel="stylesheet" href="{{ asset('/vendor/css/rtl/theme-default.css') }}" />
-  <link rel="stylesheet" href="{{ asset('/css/demo.css') }}" />
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{ asset('/vendor/css/rtl/core.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/vendor/css/rtl/theme-default.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/css/demo.css') }}" />
 
-  <!-- Vendors CSS -->
-  <link rel="stylesheet" href="{{ asset('/vendor/libs/node-waves/node-waves.css') }}" />
-  <link rel="stylesheet" href="{{ asset('/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
-  <link rel="stylesheet" href="{{ asset('/vendor/libs/typeahead-js/typeahead.css') }}" />
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{{ asset('/vendor/libs/node-waves/node-waves.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/vendor/libs/typeahead-js/typeahead.css') }}" />
 
-  <script src="{{ asset('/js/config.js') }}"></script>
-  @stack('styles')
+    <style>
+        #layout-menu {
+            background-color: #FCE7F3;
+        }
+
+        #layout-menu .menu-link {
+            color: #9d174d; 
+        }
+
+        #layout-menu .menu-item:hover > .menu-link {
+            background-color: #FBCFE8; 
+            color: #831843;
+        }
+
+        #layout-menu .menu-item.active > .menu-link {
+            background-color: #F9A8D4; 
+            color: #6B0F42;
+            font-weight: 600;
+        }
+
+        .table-pink th {
+            background-color: #f9c2d3; 
+            color: #db2777; 
+        }
+
+        .row-hover-pink:hover {
+            background-color: #ffe4ed; 
+        }
+
+        .btn-icon-pink {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            height: 36px;
+            background-color: #db2777;
+            color: #fff;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-icon-pink:hover {
+            background-color: #e91e63;
+            transform: scale(1.1);
+        }
+
+        .btn-pink {
+            background-color: #db2777;
+            color: #fff;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .btn-pink:hover {
+            background-color: #e91e63;
+        }
+
+        .text-pink-500 {
+            color: #db2777;
+        }
+    </style>
+
+    <script src="{{ asset('/js/config.js') }}"></script>
+    @stack('styles')
 </head>
 
 <body>
-  <div class="layout-wrapper layout-content-navbar">
-    <div class="layout-container">
-      <!-- Sidebar -->
-      @include('layouts.inc.sidebar')
-      <!-- / Sidebar -->
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
 
-      <!-- Layout page -->
-      <div class="layout-page">
-        <!-- Navbar -->
-        @include('layouts.inc.navbar')
-        <!-- / Navbar -->
+            <!-- Sidebar -->
+            @include('layouts.inc.sidebar')
+            <!-- / Sidebar -->
 
-        <!-- Content wrapper -->
-        <div class="content-wrapper">
-          <div class="container-xxl flex-grow-1 container-p-y">
-            @yield('content')
-          </div>
+            <!-- Layout page -->
+            <div class="layout-page">
 
-          <!-- Footer -->
-          @include('layouts.inc.footer')
-          <!-- / Footer -->
+                <!-- Navbar -->
+                @include('layouts.inc.navbar')
+                <!-- / Navbar -->
+
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+                    <div class="container-xxl flex-grow-1 container-p-y">
+                        @yield('content')
+                    </div>
+
+                    <!-- Footer -->
+                    @include('layouts.inc.footer')
+                    <!-- / Footer -->
+                </div>
+            </div>
         </div>
-      </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+        <div class="drag-target"></div>
     </div>
 
-    <!-- Overlay -->
-    <div class="layout-overlay layout-menu-toggle"></div>
-    <div class="drag-target"></div>
-  </div>
+    <!-- Core JS -->
+    <script src="{{ asset('/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('/vendor/libs/node-waves/node-waves.js') }}"></script>
+    <script src="{{ asset('/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ asset('/vendor/libs/hammer/hammer.js') }}"></script>
+    <script src="{{ asset('/vendor/libs/i18n/i18n.js') }}"></script>
+    <script src="{{ asset('/vendor/libs/typeahead-js/typeahead.js') }}"></script>
+    <script src="{{ asset('/vendor/js/menu.js') }}"></script>
 
-  <!-- Core JS -->
-  <script src="{{ asset('/vendor/libs/jquery/jquery.js') }}"></script>
-  <script src="{{ asset('/vendor/libs/popper/popper.js') }}"></script>
-  <script src="{{ asset('/vendor/js/bootstrap.js') }}"></script>
-  <script src="{{ asset('/vendor/libs/node-waves/node-waves.js') }}"></script>
-  <script src="{{ asset('/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
-  <script src="{{ asset('/vendor/libs/hammer/hammer.js') }}"></script>
-  <script src="{{ asset('/vendor/libs/i18n/i18n.js') }}"></script>
-  <script src="{{ asset('/vendor/libs/typeahead-js/typeahead.js') }}"></script>
-  <script src="{{ asset('/vendor/js/menu.js') }}"></script>
-
-  <!-- Main JS -->
-  <script src="{{ asset('/js/main.js') }}"></script>
-  @stack('scripts')
+    <!-- Main JS -->
+    <script src="{{ asset('/js/main.js') }}"></script>
+    @stack('scripts')
 </body>
 </html>

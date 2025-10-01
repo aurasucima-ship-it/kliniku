@@ -3,23 +3,34 @@
 @section('title', 'Detail Rekam Medis')
 
 @section('content')
-<div class="container mx-auto p-4 max-w-2xl">
-    <h1 class="text-2xl font-semibold mb-4 text-pink-600">Detail Rekam Medis</h1>
+<div class="max-w-3xl mx-auto p-4">
 
-    <div class="bg-pink-50 border border-pink-200 rounded p-4 shadow">
-        <p><strong>Pasien:</strong> {{ $rekamMedis->pasien->nama ?? '-' }}</p>
-        <p><strong>Dokter:</strong> {{ $rekamMedis->dokter->nama ?? '-' }}</p>
-        <p><strong>Keluhan:</strong> {{ $rekamMedis->keluhan }}</p>
-        <p><strong>Diagnosa:</strong> {{ $rekamMedis->diagnosa }}</p>
-        <p><strong>Tindakan:</strong> {{ $rekamMedis->tindakan }}</p>
-        <p><strong>Resep Obat:</strong> {{ $rekamMedis->resep_obat }}</p>
-        <p><strong>Catatan:</strong> {{ $rekamMedis->catatan }}</p>
-        <p><strong>Tanggal Pemeriksaan:</strong> {{ $rekamMedis->tanggal_pemeriksaan }}</p>
+    <div class="card border border-pink-400 shadow-sm mb-4">
+
+        <h5 class="card-header text-center fs-5 fw-semibold d-flex justify-content-center align-items-center gap-2" 
+            style="font-family: 'Poppins', sans-serif; color:#db2777;">
+            <i class="fas fa-notes-medical"></i> DETAIL REKAM MEDIS
+        </h5>
+
+        <div class="card-body">
+            <p class="mb-2"><strong style="color:#db2777;">Pasien:</strong> {{ $rekamMedis->pasien->nama ?? '-' }}</p>
+            <p class="mb-2"><strong style="color:#db2777;">Dokter:</strong> {{ $rekamMedis->dokter->nama ?? '-' }}</p>
+            <p class="mb-2"><strong style="color:#db2777;">Keluhan:</strong> {{ $rekamMedis->keluhan ?? '-' }}</p>
+            <p class="mb-2"><strong style="color:#db2777;">Diagnosa:</strong> {{ $rekamMedis->diagnosa ?? '-' }}</p>
+            <p class="mb-2"><strong style="color:#db2777;">Tindakan:</strong> {{ $rekamMedis->tindakan ?? '-' }}</p>
+            <p class="mb-2"><strong style="color:#db2777;">Resep Obat:</strong> {{ $rekamMedis->resep_obat ?? '-' }}</p>
+            <p class="mb-2"><strong style="color:#db2777;">Catatan:</strong> {{ $rekamMedis->catatan ?? '-' }}</p>
+            <p class="mb-0"><strong style="color:#db2777;">Tanggal Pemeriksaan:</strong> {{ \Carbon\Carbon::parse($rekamMedis->tanggal_pemeriksaan)->format('d M Y') }}</p>
+        </div>
     </div>
 
-    <div class="mt-4 flex gap-2">
-        <a href="{{ route('admin.rekam_medis.index') }}" class="bg-pink-300 hover:bg-pink-400 text-white px-4 py-2 rounded font-medium shadow">Kembali</a>
-        <a href="{{ route('admin.rekam_medis.edit', $rekamMedis->id) }}" class="bg-pink-200 hover:bg-pink-300 text-pink-800 px-4 py-2 rounded font-medium shadow">Edit</a>
+    <div class="text-center flex justify-center gap-2">
+        <a href="{{ route('admin.rekam_medis.index') }}" 
+           class="btn btn-pink px-4 py-2 shadow">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+    
     </div>
+
 </div>
 @endsection

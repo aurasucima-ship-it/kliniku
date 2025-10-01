@@ -31,10 +31,6 @@ class Pembayaran extends Model
         'jumlah'  => 'decimal:2',
     ];
 
-    // ------------------------
-    // RELATIONS
-    // ------------------------
-
     public function pasien()
     {
         return $this->belongsTo(Pasien::class, 'pasien_id');
@@ -45,23 +41,16 @@ class Pembayaran extends Model
         return $this->belongsTo(Dokter::class, 'dokter_id');
     }
 
-    // ------------------------
-    // ATTRIBUTE HELPERS
-    // ------------------------
-
-    // Status pembayaran
     public function getStatusPembayaranAttribute()
     {
         return $this->lunas ? 'Lunas' : 'Belum Lunas';
     }
 
-    // Format jumlah dalam rupiah
     public function getJumlahRupiahAttribute()
     {
         return 'Rp ' . number_format($this->jumlah ?? 0, 0, ',', '.');
     }
 
-    // Format biaya dalam rupiah
     public function getBiayaRupiahAttribute()
     {
         return 'Rp ' . number_format($this->biaya ?? 0, 0, ',', '.');

@@ -14,9 +14,7 @@ use Carbon\Carbon;
 
 class HomeController extends Controller
 {
-    /**
-     * Dashboard utama berdasarkan role user
-     */
+
     public function index()
     {
         $user = Auth::user();
@@ -26,15 +24,12 @@ class HomeController extends Controller
         }
 
         switch ($user->role) {
-            // ======================
-            // ADMIN DASHBOARD
-            // ======================
+  
             case 'admin':
                 $totalAdmin  = User::where('role', 'admin')->count();
                 $totalDokter = Dokter::count();
                 $totalPasien = Pasien::count();
 
-                // Statistik kunjungan pasien per hari
                 $kunjungan = Pendaftaran::selectRaw('COUNT(*) as total, DATE(created_at) as date')
                     ->groupBy('date')
                     ->orderBy('date', 'asc')
@@ -54,11 +49,8 @@ class HomeController extends Controller
                     'data'
                 ));
 
-            // ======================
-            // DOKTER DASHBOARD
-            // ======================
             case 'dokter':
-                $dokterId = optional($user->dokter)->id; // aman kalau null
+                $dokterId = optional($user->dokter)->id; 
 
                 $totalPasien = $dokterId
                     ? Pasien::where('dokter_id', $dokterId)->count()
@@ -78,9 +70,7 @@ class HomeController extends Controller
                     'totalPembayaran'
                 ));
 
-            // ======================
-            // PASIEN DASHBOARD
-            // ======================
+          
             case 'pasien':
                 $pasien = Pasien::where('user_id', $user->id)->first();
 
@@ -95,9 +85,6 @@ class HomeController extends Controller
                     'pendaftaranSaya'
                 ));
 
-            // ======================
-            // DEFAULT → LOGIN
-            // ======================
             default:
                 return redirect()->route('login');
         }

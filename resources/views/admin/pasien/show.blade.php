@@ -4,42 +4,15 @@
 
 @section('content')
 
-<div class="card border border-pink-400 shadow-sm">
+<div class="max-w-3xl mx-auto">
 
-    <!-- Header -->
-    <h5 class="card-header text-center fs-5 fw-semibold d-flex justify-content-center align-items-center gap-2" 
-        style="font-family: 'Poppins', sans-serif; color:#db2777;">
-        <i class="fas fa-user"></i> DETAIL PASIEN
-    </h5>
+    <div class="card border border-pink-400 shadow-sm mb-4">
 
-    <div class="card-body">
-        <div class="mb-3">
-            <strong>Nama:</strong> {{ $pasien->nama }}
-        </div>
-        <div class="mb-3">
-            <strong>Alamat:</strong> {{ $pasien->alamat }}
-        </div>
-        <div class="mb-3">
-            <strong>Jenis Kelamin:</strong> {{ $pasien->jenis_kelamin }}
-        </div>
-        <div class="mb-3">
-            <strong>Dokter:</strong> {{ $pasien->dokter->nama ?? '-' }}
-        </div>
+        <h5 class="card-header text-center fs-5 fw-semibold d-flex justify-content-center align-items-center gap-2" 
+            style="font-family: 'Poppins', sans-serif; color:#db2777;">
+            <i class="fas fa-user"></i> DETAIL PASIEN
+        </h5>
 
-        <a href="{{ route('admin.pasien.index') }}" class="btn" 
-           style="background-color:#db2777; color:#fff; font-weight:500;">
-           <i class="fas fa-arrow-left"></i> Kembali
-        </a>
-    </div>
-
-<div class="container">
-    <h2 class="text-center fw-semibold mb-4 d-flex justify-content-center align-items-center gap-2"
-        style="font-family: 'Poppins', sans-serif; color:#db2777;">
-        <i class="fas fa-user"></i>
-        Detail Pasien
-    </h2>
-
-    <div class="card border-pink-300 shadow-sm mb-3">
         <div class="card-body">
             <p class="mb-2"><strong style="color:#db2777;">Nama:</strong> {{ $pasien->nama }}</p>
             <p class="mb-2"><strong style="color:#db2777;">Alamat:</strong> {{ $pasien->alamat }}</p>
@@ -53,11 +26,13 @@
         </div>
     </div>
 
-    <a href="{{ route('admin.pasien.index') }}" 
-       class="btn text-white"
-       style="background-color:#ec4899;">
-        ← Kembali
-    </a>
+    <div class="text-center">
+        <a href="{{ route('admin.pasien.index') }}" 
+           class="btn btn-pink px-4 py-2 shadow">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+    </div>
 
 </div>
+
 @endsection

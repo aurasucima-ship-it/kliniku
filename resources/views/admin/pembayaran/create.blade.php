@@ -5,7 +5,6 @@
 @section('content')
 <div class="card border border-pink-400 shadow-sm">
 
-    <!-- Header -->
     <h5 class="card-header text-center fs-5 fw-semibold d-flex justify-content-center align-items-center gap-2 text-pink-600">
         <i class="fas fa-credit-card"></i>
         TAMBAH PEMBAYARAN
@@ -15,7 +14,6 @@
         <form action="{{ route('admin.pembayaran.store') }}" method="POST">
             @csrf
 
-            <!-- Pasien -->
             <div class="mb-3">
                 <label for="pasien_id" class="form-label fw-semibold">Pasien</label>
                 <select name="pasien_id" id="pasien_id" class="form-select @error('pasien_id') is-invalid @enderror" required>
@@ -31,7 +29,6 @@
                 @enderror
             </div>
 
-            <!-- Jumlah -->
             <div class="mb-3">
                 <label for="jumlah" class="form-label fw-semibold">Jumlah</label>
                 <input type="number" name="jumlah" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" value="{{ old('jumlah') }}" placeholder="Masukkan jumlah pembayaran" required>
@@ -40,7 +37,6 @@
                 @enderror
             </div>
 
-            <!-- Metode -->
             <div class="mb-3">
                 <label for="metode" class="form-label fw-semibold">Metode Pembayaran</label>
                 <select name="metode" id="metode" class="form-select @error('metode') is-invalid @enderror" required>
@@ -56,7 +52,6 @@
                 @enderror
             </div>
 
-            <!-- Tanggal -->
             <div class="mb-3">
                 <label for="tanggal" class="form-label fw-semibold">Tanggal</label>
                 <input type="date" name="tanggal" id="tanggal" class="form-control @error('tanggal') is-invalid @enderror" value="{{ old('tanggal', date('Y-m-d')) }}" required>
@@ -65,7 +60,6 @@
                 @enderror
             </div>
 
-            <!-- Keterangan -->
             <div class="mb-3">
                 <label for="keterangan" class="form-label fw-semibold">Keterangan</label>
                 <textarea name="keterangan" id="keterangan" class="form-control @error('keterangan') is-invalid @enderror" rows="3">{{ old('keterangan') }}</textarea>
@@ -74,7 +68,6 @@
                 @enderror
             </div>
 
-            <!-- Submit -->
             <div class="mt-4 flex gap-2">
                 <button type="submit" class="btn btn-pink px-4 py-2 rounded-full shadow-sm text-white font-medium hover:bg-pink-500">
                     Simpan Pembayaran

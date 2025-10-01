@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PembayaranController extends Controller
 {
-    // ------------------------
-    // LIST DATA
-    // ------------------------
     public function index()
     {
         $user = Auth::user();
@@ -39,9 +36,6 @@ class PembayaranController extends Controller
         abort(403);
     }
 
-    // ------------------------
-    // CREATE
-    // ------------------------
     public function create()
     {
         $user = Auth::user();
@@ -91,9 +85,6 @@ class PembayaranController extends Controller
         abort(403);
     }
 
-    // ------------------------
-    // SHOW
-    // ------------------------
     public function show(Pembayaran $pembayaran)
     {
         $user = Auth::user();
@@ -113,9 +104,6 @@ class PembayaranController extends Controller
         abort(403);
     }
 
-    // ------------------------
-    // EDIT
-    // ------------------------
     public function edit(Pembayaran $pembayaran)
     {
         $pasiens = Pasien::all();
@@ -156,9 +144,6 @@ class PembayaranController extends Controller
         abort(403);
     }
 
-    // ------------------------
-    // DELETE
-    // ------------------------
     public function destroy(Pembayaran $pembayaran)
     {
         $pembayaran->delete();

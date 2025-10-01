@@ -1,156 +1,122 @@
 <!doctype html>
-<html
-  lang="en"
-  class="light-style layout-wide customizer-hide"
-  dir="ltr"
-  data-theme="theme-default"
-  data-assets-path="{{ asset('/') }}"
-  data-template="vertical-menu-template"
-  data-style="light">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+<html lang="en">
 
-    <title>Login | KlinikApp</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | KLINIKU</title>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('/img/favicon/favicon.ico') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap"
-      rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Public Sans', sans-serif;
+    }
 
-    <!-- Icons -->
-    <link rel="stylesheet" href="{{ asset('/vendor/fonts/fontawesome.css') }}" />
-    <link rel="stylesheet" href="{{ asset('/vendor/fonts/tabler-icons.css') }}" />
-    <link rel="stylesheet" href="{{ asset('/vendor/fonts/flag-icons.css') }}" />
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
 
-    <!-- Core CSS -->
-    <link rel="stylesheet" href="{{ asset('/vendor/css/rtl/core.css') }}" />
-    <link rel="stylesheet" href="{{ asset('/vendor/css/rtl/theme-default.css') }}" />
-    <link rel="stylesheet" href="{{ asset('/css/demo.css') }}" />
+    .login-card img {
+      width: 120px;
+      border-radius: 15px;
+      margin-bottom: 15px;
+    }
 
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href="{{ asset('/vendor/libs/node-waves/node-waves.css') }}" />
-    <link rel="stylesheet" href="{{ asset('/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
-    <link rel="stylesheet" href="{{ asset('/vendor/libs/typeahead-js/typeahead.css') }}" />
-    <link rel="stylesheet" href="{{ asset('/vendor/libs/@form-validation/form-validation.css') }}" />
+    .login-card h2 {
+      color: #e91e63;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
 
-    <!-- Page CSS -->
-    <link rel="stylesheet" href="{{ asset('/vendor/css/pages/page-auth.css') }}" />
+    .login-card p {
+      color: #555;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
 
-    <!-- Helpers -->
-    <script src="{{ asset('/vendor/js/helpers.js') }}"></script>
-    <script src="{{ asset('/vendor/js/config.js') }}"></script>
-  </head>
+    .login-card input {
+      width: 100%;
+      padding: 0.65rem 0.8rem;
+      border: 1px solid #f8bbd0;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
 
-  <body>
-    <div class="container-xxl">
-      <div class="authentication-wrapper authentication-basic container-p-y">
-        <div class="authentication-inner py-6">
-          <!-- Login Card -->
-          <div class="card">
-            <div class="card-body">
+    .login-card input:focus {
+      border-color: #e91e63;
+      outline: none;
+      box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25);
+    }
 
-              <!-- Logo -->
-              <div class="app-brand justify-content-center mb-6">
-                <a href="{{ url('/') }}" class="app-brand-link">
-                  <span class="app-brand-logo demo">
-                    <!-- bisa ganti svg/logo -->
-                    <img src="{{ asset('/img/logo.png') }}" alt="Logo" width="40">
-                  </span>
-                  <span class="app-brand-text demo text-heading fw-bold">KlinikApp</span>
-                </a>
-              </div>
-              <!-- /Logo -->
+    .btn-login {
+      width: 50%;
+      padding: 0.55rem;
+      background: #e91e63;
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: 0.3s;
+    }
 
-              <h4 class="mb-1">Selamat Datang 👋</h4>
-              <p class="mb-6">Silakan login untuk melanjutkan.</p>
+    .btn-login:hover {
+      background: #d81b60;
+    }
 
-              <!-- Form Login -->
-              <form method="POST" action="{{ route('login') }}">
-                @csrf
+    .form-check-label {
+      color: #e91e63;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
 
-                <!-- Email -->
-                <div class="mb-6">
-                  <label for="email" class="form-label">Email</label>
-                  <input
-                    id="email"
-                    type="email"
-                    class="form-control @error('email') is-invalid @enderror"
-                    name="email"
-                    value="{{ old('email') }}"
-                    required
-                    autocomplete="email"
-                    autofocus
-                    placeholder="Enter your email" />
-                  @error('email')
-                    <span class="invalid-feedback d-block">{{ $message }}</span>
-                  @enderror
-                </div>
+<body>
 
-                <!-- Password -->
-                <div class="mb-6 form-password-toggle">
-                  <label class="form-label" for="password">Password</label>
-                  <div class="input-group input-group-merge">
-                    <input
-                      id="password"
-                      type="password"
-                      class="form-control @error('password') is-invalid @enderror"
-                      name="password"
-                      required
-                      autocomplete="current-password"
-                      placeholder="********" />
-                    <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
-                  </div>
-                  @error('password')
-                    <span class="invalid-feedback d-block">{{ $message }}</span>
-                  @enderror
-                </div>
+  <div class="login-card">
+    <img src="{{ asset('img/logo/logoklinik.JPEG') }}" alt="Logo KLINIKU">
 
-                <!-- Remember Me -->
-                <div class="my-4 d-flex justify-content-between align-items-center">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="remember" id="remember">
-                    <label class="form-check-label" for="remember">Ingat saya</label>
-                  </div>
-                </div>
+    <h2>KLINIKU</h2>
+    <p>Silakan login untuk melanjutkan</p>
 
-                <!-- Submit -->
-                <div class="mb-6">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
-                </div>
-              </form>
-              <!-- End Form Login -->
+    <form method="POST" action="{{ route('login') }}">
+      @csrf
 
-            </div>
-          </div>
-          <!-- /Login Card -->
-        </div>
-      </div>
-    </div>
+      <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required autofocus>
+      @error('email')
+      <div style="color:red;font-size:0.85rem;">{{ $message }}</div>
+      @enderror
 
-    <!-- Core JS -->
-    <script src="{{ asset('/vendor/libs/jquery/jquery.js') }}"></script>
-    <script src="{{ asset('/vendor/libs/popper/popper.js') }}"></script>
-    <script src="{{ asset('/vendor/js/bootstrap.js') }}"></script>
-    <script src="{{ asset('/vendor/libs/node-waves/node-waves.js') }}"></script>
-    <script src="{{ asset('/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
-    <script src="{{ asset('/vendor/libs/typeahead-js/typeahead.js') }}"></script>
-    <script src="{{ asset('/vendor/js/menu.js') }}"></script>
+      <input type="password" name="password" placeholder="Password" required>
+      @error('password')
+      <div style="color:red;font-size:0.85rem;">{{ $message }}</div>
+      @enderror
 
-    <!-- Vendors JS -->
-    <script src="{{ asset('/vendor/libs/@form-validation/popular.js') }}"></script>
-    <script src="{{ asset('/vendor/libs/@form-validation/bootstrap5.js') }}"></script>
-    <script src="{{ asset('/vendor/libs/@form-validation/auto-focus.js') }}"></script>
+<div style="margin-bottom:15px; display:flex; align-items:center; gap:8px;">
+  <input type="checkbox" id="remember" name="remember" style="width:18px; height:18px; accent-color:#e91e63; cursor:pointer;">
+  <label for="remember" style="cursor:pointer; color:#e91e63; font-weight:500; font-size:0.95rem;">
+    Ingat saya 
+  </label>
+</div>
 
-    <!-- Main JS -->
-    <script src="{{ asset('/js/main.js') }}"></script>
-    <script src="{{ asset('/js/pages-auth.js') }}"></script>
-  </body>
+
+      <button type="submit" class="btn-login">Login</button>
+    </form>
+  </div>
+
+</body>
 </html>

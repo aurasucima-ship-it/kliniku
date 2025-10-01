@@ -30,7 +30,7 @@
         <div class="card card-pink p-8 text-center hover:shadow-lg transition">
             <h5 class="card-header custom-pink text-2xl font-bold mb-4">Rekam Medis</h5>
             <p class="text-gray-500 mb-6">Lihat riwayat pemeriksaan kamu</p>
-            <a href="{{ route('pasien.rekam_medis.index') }}" class="btn btn-pink px-6 py-3 text-lg">
+            <a href="{{ route('pasien.rekam_medis') }}" class="btn btn-pink px-6 py-3 text-lg">
                 Lihat Rekam Medis
             </a>
         </div>

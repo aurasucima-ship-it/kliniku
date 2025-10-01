@@ -15,10 +15,9 @@ class Dokter extends Model
         'nama',
         'spesialis',
         'alamat',
-        'user_id', // penting untuk relasi dengan User
+        'user_id', 
     ];
 
-    // === Relasi ===
     public function pasien()
     {
         return $this->hasMany(Pasien::class, 'dokter_id');

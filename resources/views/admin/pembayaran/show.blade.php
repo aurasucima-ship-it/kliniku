@@ -5,7 +5,6 @@
 @section('content')
 <div class="card border border-pink-400 shadow-sm">
 
-    <!-- Header -->
     <h5 class="card-header text-center fs-5 fw-semibold d-flex justify-content-center align-items-center gap-2 text-pink-600">
         <i class="fas fa-credit-card"></i>
         DETAIL PEMBAYARAN

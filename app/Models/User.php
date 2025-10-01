@@ -31,7 +31,6 @@ class User extends Authenticatable
         ];
     }
 
-    // === Role Checkers ===
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
@@ -47,29 +46,24 @@ class User extends Authenticatable
         return $this->role === 'pasien';
     }
 
-    // === Relations ===
     public function dokter()
     {
-        // 1 user -> 1 dokter
         return $this->hasOne(Dokter::class, 'user_id');
     }
 
     public function pasien()
     {
-        // 1 user -> 1 pasien
         return $this->hasOne(Pasien::class, 'user_id');
     }
 
     public function rekamMedis()
     {
-        // 1 user bisa input banyak rekam medis (jika pasien/dokter terkait)
         return $this->hasMany(RekamMedis::class, 'dokter_id')
             ->orWhere('pasien_id', $this->id);
     }
 
     public function pembayaran()
     {
-        // 1 user -> banyak pembayaran (biasanya pasien)
         return $this->hasMany(Pembayaran::class, 'user_id');
     }
 }

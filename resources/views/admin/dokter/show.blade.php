@@ -3,48 +3,30 @@
 @section('title', 'Detail Dokter')
 
 @section('content')
-<div class="container mx-auto p-4">
 
-    <!-- Header -->
-    <div class="bg-pink-100 rounded-3xl shadow-lg p-6 mb-6 text-center">
-        <h1 class="text-2xl font-bold text-pink-700 flex justify-center items-center gap-3">
-            <i class="fas fa-user-doctor"></i> Detail Dokter
-        </h1>
+<div class="max-w-3xl mx-auto">
+
+    <div class="card border border-pink-400 shadow-sm mb-4">
+
+        <h5 class="card-header text-center fs-5 fw-semibold d-flex justify-content-center align-items-center gap-2" 
+            style="font-family: 'Poppins', sans-serif; color:#db2777;">
+            <i class="fas fa-user-doctor"></i> DETAIL DOKTER
+        </h5>
+
+        <div class="card-body">
+            <p class="mb-2"><strong style="color:#db2777;">Nama:</strong> {{ $dokter->nama }}</p>
+            <p class="mb-2"><strong style="color:#db2777;">Spesialis:</strong> {{ $dokter->spesialis }}</p>
+            <p class="mb-2"><strong style="color:#db2777;">Alamat:</strong> {{ $dokter->alamat }}</p>
+        </div>
     </div>
 
-    <!-- Card Info Dokter -->
-    <div class="bg-white rounded-3xl shadow-xl p-6 max-w-3xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <h2 class="text-pink-600 font-semibold">Nama</h2>
-                <p class="text-gray-700">{{ $dokter->nama }}</p>
-            </div>
-            <div>
-                <h2 class="text-pink-600 font-semibold">Spesialis</h2>
-                <p class="text-gray-700">{{ $dokter->spesialis }}</p>
-            </div>
-            <div class="md:col-span-2">
-                <h2 class="text-pink-600 font-semibold">Alamat</h2>
-                <p class="text-gray-700">{{ $dokter->alamat }}</p>
-            </div>
-            <div>
-                <h2 class="text-pink-600 font-semibold">No. Telepon</h2>
-                <p class="text-gray-700">{{ $dokter->no_telp ?? '-' }}</p>
-            </div>
-            <div>
-                <h2 class="text-pink-600 font-semibold">Email</h2>
-                <p class="text-gray-700">{{ $dokter->email ?? '-' }}</p>
-            </div>
-        </div>
-
-        <!-- Tombol Kembali -->
-        <div class="mt-6 flex justify-end">
-            <a href="{{ route('admin.dokter.index') }}"
-               class="bg-pink-300 hover:bg-pink-400 text-white px-5 py-2 rounded-full font-semibold shadow transition duration-300">
-               Kembali
-            </a>
-        </div>
+    <div class="text-center">
+        <a href="{{ route('admin.dokter.index') }}" 
+           class="btn btn-pink px-4 py-2 shadow">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
     </div>
 
 </div>
+
 @endsection

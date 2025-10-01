@@ -1,116 +1,90 @@
-
-@extends('layouts.admin')
-
 @extends('layouts.app')
-
 
 @section('title', 'Tambah Rekam Medis')
 
 @section('content')
 
-<div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
-    <h2 class="text-xl font-semibold mb-4">Tambah Rekam Medis</h2>
+<div class="card border border-pink-400 shadow-sm mx-auto" style="max-width:600px;">
 
-<div class="container mx-auto p-4 max-w-2xl">
-    <h1 class="text-2xl font-semibold mb-4 text-pink-600">Tambah Rekam Medis</h1>
+    <h5 class="card-header text-center fs-5 fw-semibold d-flex justify-center items-center gap-2 text-pink-600">
+        <i class="fas fa-notes-medical"></i> FORM TAMBAH REKAM MEDIS
+    </h5>
 
-    @if($errors->any())
-        <div class="bg-pink-100 text-pink-700 px-4 py-3 rounded shadow mb-4">
-            <ul class="list-disc pl-5">
-                @foreach($errors->all() as $e)
-                    <li>{{ $e }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    <div class="card-body">
 
-
-    <form action="{{ route('admin.rekam_medis.store') }}" method="POST">
-        @csrf
-
-        <label class="block mb-2">Pasien</label>
-        <select name="pasien_id" class="w-full border rounded p-2 mb-4">
-            <option value="">-- Pilih Pasien --</option>
-            @foreach($pasiens as $pasien)
-                <option value="{{ $pasien->id }}">{{ $pasien->nama }}</option>
-            @endforeach
-        </select>
-
-        <label class="block mb-2">Dokter</label>
-        <select name="dokter_id" class="w-full border rounded p-2 mb-4">
-            <option value="">-- Pilih Dokter --</option>
-            @foreach($dokters as $dokter)
-                <option value="{{ $dokter->id }}">{{ $dokter->nama }}</option>
-            @endforeach
-        </select>
-
-        <label class="block mb-2">Keluhan</label>
-        <textarea name="keluhan" class="w-full border rounded p-2 mb-4"></textarea>
-
-        <label class="block mb-2">Diagnosa</label>
-        <textarea name="diagnosa" class="w-full border rounded p-2 mb-4"></textarea>
-
-        <label class="block mb-2">Tindakan</label>
-        <textarea name="tindakan" class="w-full border rounded p-2 mb-4"></textarea>
-
-        <label class="block mb-2">Resep Obat</label>
-        <textarea name="resep_obat" class="w-full border rounded p-2 mb-4"></textarea>
-
-        <label class="block mb-2">Catatan Tambahan</label>
-        <textarea name="catatan_tambahan" class="w-full border rounded p-2 mb-4"></textarea>
-
-        <label class="block mb-2">Tanggal Pemeriksaan</label>
-        <input type="date" name="tanggal_pemeriksaan" class="w-full border rounded p-2 mb-4">
-
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Simpan</button>
-
-        <!-- Pilih pasien -->
-        <div class="mb-3">
-            <label class="form-label text-pink-700">Pasien</label>
-            <select name="pasien_id" class="form-select border-pink-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200">
-                @foreach($pasiens as $p)
-                    <option value="{{ $p->id }}">{{ $p->nama }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <!-- Pilih dokter -->
-        <div class="mb-3">
-            <label class="form-label text-pink-700">Dokter</label>
-            <select name="dokter_id" class="form-select border-pink-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200">
-                @foreach($dokters as $d)
-                    <option value="{{ $d->id }}">{{ $d->nama }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        @php
-        $fields = ['keluhan', 'diagnosa', 'tindakan', 'resep_obat', 'catatan'];
-        @endphp
-
-        @foreach($fields as $field)
-            <div class="mb-3">
-                <label class="form-label text-pink-700">{{ ucfirst(str_replace('_', ' ', $field)) }}</label>
-                @if($field == 'catatan')
-                    <textarea name="{{ $field }}" class="form-control border-pink-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200"></textarea>
-                @else
-                    <input type="text" name="{{ $field }}" class="form-control border-pink-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200">
-                @endif
+        @if($errors->any())
+            <div class="bg-pink-100 text-pink-700 px-4 py-3 rounded shadow mb-4">
+                <ul class="list-disc pl-5">
+                    @foreach($errors->all() as $e)
+                        <li>{{ $e }}</li>
+                    @endforeach
+                </ul>
             </div>
-        @endforeach
+        @endif
 
-        <!-- Tanggal pemeriksaan -->
-        <div class="mb-3">
-            <label class="form-label text-pink-700">Tanggal Pemeriksaan</label>
-            <input type="date" name="tanggal_pemeriksaan" class="form-control border-pink-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200" value="{{ date('Y-m-d') }}">
-        </div>
+        <form action="{{ route('admin.rekam_medis.store') }}" method="POST">
+            @csrf
 
-        <!-- Tombol aksi -->
-        <div class="flex gap-2">
-            <button type="submit" class="btn btn-pink px-4 py-2 rounded shadow">Simpan</button>
-            <a href="{{ route('admin.rekam_medis.index') }}" class="btn btn-secondary px-4 py-2 rounded shadow">Batal</a>
-        </div>
+            <div class="mb-3">
+                <label for="pasien_id" class="form-label fw-semibold text-pink-700">Pasien</label>
+                <select name="pasien_id" id="pasien_id" class="form-select border-pink-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200" required>
+                    <option value="">-- Pilih Pasien --</option>
+                    @foreach($pasiens as $pasien)
+                        <option value="{{ $pasien->id }}" {{ old('pasien_id')==$pasien->id ? 'selected' : '' }}>
+                            {{ $pasien->nama }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-    </form>
+            <div class="mb-3">
+                <label for="dokter_id" class="form-label fw-semibold text-pink-700">Dokter</label>
+                <select name="dokter_id" id="dokter_id" class="form-select border-pink-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200" required>
+                    <option value="">-- Pilih Dokter --</option>
+                    @foreach($dokters as $dokter)
+                        <option value="{{ $dokter->id }}" {{ old('dokter_id')==$dokter->id ? 'selected' : '' }}>
+                            {{ $dokter->nama }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            @php
+                $fields = [
+                    'keluhan' => 'textarea',
+                    'diagnosa' => 'textarea',
+                    'tindakan' => 'textarea',
+                    'resep_obat' => 'textarea',
+                    'catatan_tambahan' => 'textarea'
+                ];
+            @endphp
+
+            @foreach($fields as $name => $type)
+                <div class="mb-3">
+                    <label for="{{ $name }}" class="form-label fw-semibold text-pink-700">{{ ucwords(str_replace('_',' ',$name)) }}</label>
+                    @if($type === 'textarea')
+                        <textarea name="{{ $name }}" id="{{ $name }}" class="form-control border-pink-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200">{{ old($name) }}</textarea>
+                    @else
+                        <input type="text" name="{{ $name }}" id="{{ $name }}" class="form-control border-pink-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200" value="{{ old($name) }}">
+                    @endif
+                </div>
+            @endforeach
+
+            <div class="mb-3">
+                <label for="tanggal_pemeriksaan" class="form-label fw-semibold text-pink-700">Tanggal Pemeriksaan</label>
+                <input type="date" name="tanggal_pemeriksaan" id="tanggal_pemeriksaan" class="form-control border-pink-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200" value="{{ old('tanggal_pemeriksaan', date('Y-m-d')) }}" required>
+            </div>
+
+            <div class="d-flex gap-2">
+                <a href="{{ route('admin.rekam_medis.index') }}" class="btn btn-secondary flex-grow-1">Batal</a>
+                <button type="submit" class="btn btn-pink flex-grow-1" style="background-color:#db2777; color:#fff;">
+                    <i class="fas fa-save"></i> Simpan
+                </button>
+            </div>
+
+        </form>
+
+    </div>
 </div>
+
 @endsection

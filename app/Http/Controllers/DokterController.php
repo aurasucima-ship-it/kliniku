@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class DokterController extends Controller
 {
-    // Halaman dashboard dokter
+
     public function home()
     {
         $totalDokter = Dokter::count();
@@ -34,12 +34,18 @@ class DokterController extends Controller
             'nama'      => 'required|string|max:255',
             'spesialis' => 'required|string|max:255',
             'alamat'    => 'required|string|max:255',
+            'no_telp'   => 'nullable|string|max:20',
         ]);
 
         Dokter::create($validated);
 
         return redirect()->route('admin.dokter.index')
                          ->with('success', 'Data dokter berhasil ditambahkan!');
+    }
+
+    public function show(Dokter $dokter)
+    {
+        return view('admin.dokter.show', compact('dokter'));
     }
 
     public function edit(Dokter $dokter)
@@ -53,6 +59,7 @@ class DokterController extends Controller
             'nama'      => 'required|string|max:255',
             'spesialis' => 'required|string|max:255',
             'alamat'    => 'required|string|max:255',
+            'no_telp'   => 'nullable|string|max:20',
         ]);
 
         $dokter->update($validated);

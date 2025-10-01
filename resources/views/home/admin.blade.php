@@ -3,56 +3,55 @@
 @section('title', 'Dashboard Admin')
 
 @section('content')
-<div class="container-xxl flex-grow-1 container-p-y">
 
-    <!-- Judul -->
-    <h4 class="fw-bold py-3 mb-4 text-pink-600 d-flex align-items-center gap-2">
-        <i class="fas fa-hospital"></i> Dashboard Admin
-    </h4>
+<div class="card shadow-sm rounded-2xl mb-4" style="background: linear-gradient(90deg, #ffffff, #ffffff);">
+    <h5 class="card-header text-center fs-4 fw-bold d-flex justify-content-center align-items-center gap-2"
+        style="color:#f73e88; letter-spacing:1px; border-radius:1rem; padding:1rem 0;">
+        <i class="fas fa-hospital"></i>
+        Dashboard Admin
+    </h5>
+</div>
 
-    <!-- Statistik Cards -->
+
     <div class="row mb-4">
-        <!-- Total Admin -->
         <div class="col-lg-4 col-md-6 mb-3">
-            <div class="card text-white" style="background-color: rgba(255, 182, 193, 0.8);">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Total Admin</h5>
-                    <p class="card-text fs-4">{{ $totalAdmin }}</p>
+            <div class="card text-center shadow-sm rounded-2xl" style="background-color:#FBCFE8;">
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold text-pink-700">Total Admin</h5>
+                    <p class="card-text fs-4 fw-bold text-pink-900">{{ $totalAdmin }}</p>
                 </div>
             </div>
         </div>
 
-        <!-- Total Dokter -->
         <div class="col-lg-4 col-md-6 mb-3">
-            <div class="card text-white" style="background-color: rgba(255, 192, 203, 0.8);">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Total Dokter</h5>
-                    <p class="card-text fs-4">{{ $totalDokter }}</p>
+            <div class="card text-center shadow-sm rounded-2xl" style="background-color:#F9A8D4;">
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold text-pink-700">Total Dokter</h5>
+                    <p class="card-text fs-4 fw-bold text-pink-900">{{ $totalDokter }}</p>
                 </div>
             </div>
         </div>
 
-        <!-- Total Pasien -->
         <div class="col-lg-4 col-md-6 mb-3">
-            <div class="card text-white" style="background-color: rgba(255, 105, 180, 0.8);">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Total Pasien</h5>
-                    <p class="card-text fs-4">{{ $totalPasien }}</p>
+            <div class="card text-center shadow-sm rounded-2xl" style="background-color:#F472B6;">
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold text-pink-700">Total Pasien</h5>
+                    <p class="card-text fs-4 fw-bold text-pink-900">{{ $totalPasien }}</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Grafik Data -->
-    <div class="card mb-4">
-        <div class="card-header text-pink-600 d-flex align-items-center gap-2">
-            <i class="fas fa-chart-bar"></i>
-            Grafik Data Sistem
+    <div class="card mb-4 shadow-sm rounded-2xl">
+        <div class="card-header d-flex align-items-center gap-2 text-pink-600 fw-semibold" 
+             style="letter-spacing:0.5px;">
+            <i class="fas fa-chart-bar"></i> Grafik Data Sistem
         </div>
         <div class="card-body" style="height: 300px;">
             <canvas id="chartData" style="height:100%; width:100%;"></canvas>
         </div>
     </div>
+
 </div>
 @endsection
 
@@ -70,28 +69,25 @@ document.addEventListener('DOMContentLoaded', function () {
             datasets: [{
                 label: 'Jumlah',
                 data: [{{ $totalAdmin }}, {{ $totalDokter }}, {{ $totalPasien }}],
-                backgroundColor: [
-                    'rgba(255, 182, 193, 0.8)',
-                    'rgba(255, 192, 203, 0.8)',
-                    'rgba(255, 105, 180, 0.8)'
-                ],
-                borderColor: [
-                    'rgba(255, 182, 193, 1)',
-                    'rgba(255, 192, 203, 1)',
-                    'rgba(255, 105, 180, 1)'
-                ],
-                borderWidth: 1
+                backgroundColor: ['#FBCFE8', '#F9A8D4', '#F472B6'],
+                borderColor: ['#F9A8D4', '#F472B6', '#EC4899'],
+                borderWidth: 1,
+                borderRadius: 6,
+                barPercentage: 0.5
             }]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false, 
-            animation: false,
-            plugins: {
-                legend: { display: false }
-            },
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
             scales: {
-                y: { beginAtZero: true }
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                },
+                x: {
+                    grid: { display: false }
+                }
             }
         }
     });

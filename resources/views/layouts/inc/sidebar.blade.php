@@ -1,22 +1,15 @@
-<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+<aside id="layout-menu" class="layout-menu menu-vertical menu" style="background-color:#FCE7F3;">
 
-  <!-- Logo & Brand -->
   <div class="app-brand demo flex items-center justify-between px-4 py-3 border-b">
     <a href="{{ route('home') }}" class="app-brand-link flex items-center gap-2">
+      
       <span class="app-brand-logo demo">
-        <svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M0.00172773 0V6.85398C0.00172773 6.85398 -0.133178 9.01207 1.98092 10.8388L13.6912 21.9964L19.7809 21.9181L18.8042 9.88248L16.4951 7.17289L9.23799 0H0.00172773Z"
-            fill="#ec4899" />
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M7.77295 16.3566L23.6563 0H32V6.88383C32 6.88383 31.8262 9.17836 30.6591 10.4057L19.7824 22H13.6938L7.77295 16.3566Z"
-            fill="#db2777" />
-        </svg>
+    <img src="{{ asset('img/logo/logoklinik.JPEG') }}" alt="Logo KLINIKU" class="w-10 h-10 object-contain rounded">
       </span>
+
       <span class="app-brand-text demo menu-text fw-bold text-pink-600 text-lg">KLINIKU</span>
     </a>
 
-    <!-- Toggle -->
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
       <i class="ti menu-toggle-icon d-none d-xl-block align-middle"></i>
       <i class="ti ti-x d-block d-xl-none ti-md align-middle"></i>
@@ -25,10 +18,10 @@
 
   <div class="menu-inner-shadow"></div>
 
-  <!-- Menu Items -->
   <ul class="menu-inner py-1">
 
-    <!-- Dashboard -->
+    @php $role = Auth::user()->role; @endphp
+
     <li class="menu-item {{ request()->routeIs('home') ? 'active' : '' }}">
       <a href="{{ route('home') }}" class="menu-link">
         <i class="menu-icon tf-icons ti ti-home"></i>
@@ -36,9 +29,6 @@
       </a>
     </li>
 
-    @php $role = Auth::user()->role; @endphp
-
-    {{-- Admin Menu --}}
     @if($role === 'admin')
       <li class="menu-item {{ request()->routeIs('admin.pasien.*') ? 'active' : '' }}">
         <a href="{{ route('admin.pasien.index') }}" class="menu-link">
@@ -66,7 +56,6 @@
       </li>
     @endif
 
-    {{-- Dokter Menu --}}
     @if($role === 'dokter')
       <li class="menu-item {{ request()->routeIs('dokter.pasien.*') ? 'active' : '' }}">
         <a href="{{ route('dokter.pasien.index') }}" class="menu-link">
@@ -88,7 +77,6 @@
       </li>
     @endif
 
-    {{-- Pasien Menu --}}
     @if($role === 'pasien')
       <li class="menu-item {{ request()->routeIs('pasien.pendaftaran.*') ? 'active' : '' }}">
         <a href="{{ route('pasien.pendaftaran.create') }}" class="menu-link">
@@ -111,4 +99,25 @@
     @endif
 
   </ul>
+
+  <style>
+    #layout-menu {
+      background-color: #FCE7F3;
+    }
+
+    #layout-menu .menu-link {
+      color: #9d174d;
+    }
+
+    #layout-menu .menu-item:hover > .menu-link {
+      background-color: #FBCFE8;
+      color: #831843;
+    }
+
+    #layout-menu .menu-item.active > .menu-link {
+      background-color: #F9A8D4;
+      color: #6B0F42;
+      font-weight: 600;
+    }
+  </style>
 </aside>

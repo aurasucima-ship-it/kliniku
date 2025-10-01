@@ -1,52 +1,138 @@
-<x-guest-layout>
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | KLINIKU</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Public Sans', sans-serif;
+    }
+
+    .register-card {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+
+    .register-card img {
+      width: 120px;
+      border-radius: 15px;
+      margin-bottom: 15px;
+    }
+
+    .register-card h2 {
+      color: #e91e63;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .register-card p {
+      color: #555;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+
+    .register-card input {
+      width: 100%;
+      padding: 0.65rem 0.8rem;
+      border: 1px solid #f8bbd0;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+
+    .register-card input:focus {
+      border-color: #e91e63;
+      outline: none;
+      box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25);
+    }
+
+    .btn-register {
+      width: 60%;
+      padding: 0.55rem;
+      background: #e91e63;
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: 0.3s;
+    }
+
+    .btn-register:hover {
+      background: #d81b60;
+    }
+
+    .link-login {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .link-login a {
+      color: #e91e63;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .link-login a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="register-card">
+
+    <img src="{{ asset('img/logo/logoklinik.JPEG') }}" alt="Logo KLINIKU">
+
+    <h2>KLINIKU</h2>
+    <p>Silakan daftar untuk membuat akun pasien</p>
+
     <form method="POST" action="{{ route('register') }}">
-        @csrf
+      @csrf
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
+      <input type="text" name="name" placeholder="Nama Lengkap" value="{{ old('name') }}" required autofocus>
+      @error('name')
+      <div style="color:red;font-size:0.85rem;">{{ $message }}</div>
+      @enderror
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+      <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
+      @error('email')
+      <div style="color:red;font-size:0.85rem;">{{ $message }}</div>
+      @enderror
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+      <input type="password" name="password" placeholder="Password" required>
+      @error('password')
+      <div style="color:red;font-size:0.85rem;">{{ $message }}</div>
+      @enderror
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+      <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" required>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
+      <button type="submit" class="btn-register">Register</button>
     </form>
-</x-guest-layout>
+
+    <div class="link-login">
+      Sudah punya akun? <a href="{{ route('login') }}">Login di sini</a>
+    </div>
+  </div>
+
+</body>
+</html>

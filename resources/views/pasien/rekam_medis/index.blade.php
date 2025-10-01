@@ -12,7 +12,6 @@
         </h1>
     </div>
 
-    <!-- Table -->
     <div class="overflow-x-auto bg-white shadow-lg rounded-3xl p-4">
         @if($rekamMedis->isEmpty())
             <div class="text-center text-gray-500 py-10">
@@ -50,7 +49,6 @@
         @endif
     </div>
 
-    <!-- Back button -->
     <div class="mt-6">
         <a href="{{ url()->previous() }}" 
            class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded font-medium inline-flex items-center gap-2">

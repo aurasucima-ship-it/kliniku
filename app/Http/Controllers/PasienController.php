@@ -10,35 +10,32 @@ use Illuminate\Support\Facades\Auth;
 
 class PasienController extends Controller
 {
-    /**
-     * Dashboard pasien.
-     */
+
     public function home()
     {
         $user = Auth::user();
-        $pasien = $user->pasien; // ambil data pasien login
+        $pasien = $user->pasien;
 
-        $totalKunjungan = $pasien ? $pasien->count() : 0;
+        $totalKunjungan = $pasien ? 1 : 0; 
         $riwayatPembayaran = $pasien ? $pasien->pembayaran()->latest()->take(5)->get() : [];
 
         return view('home.pasien', compact('pasien', 'totalKunjungan', 'riwayatPembayaran'));
     }
 
-    /**
-     * Tampilkan daftar pasien sesuai role.
-     */
     public function index()
     {
         $user = Auth::user();
 
         if ($user->role === 'dokter') {
             $dokterId = $user->dokter?->id;
-            $pasiens = Pasien::with('pembayaran')->where('dokter_id', $dokterId)->get();
+            $pasiens = Pasien::with('pembayaran')
+                             ->where('dokter_id', $dokterId)
+                             ->get();
         } elseif ($user->role === 'pasien') {
             $pasiens = Pasien::with('dokter', 'pembayaran')
                              ->where('id', $user->pasien?->id)
                              ->get();
-        } else {
+        } else { 
             $pasiens = Pasien::with('dokter', 'pembayaran')->get();
         }
 
@@ -65,7 +62,7 @@ class PasienController extends Controller
             'no_telp'         => 'nullable|numeric|digits_between:8,15',
             'keluhan'         => 'nullable|string',
             'tanggal_berobat' => 'required|date',
-            'dokter_id'       => 'nullable|exists:dokters,id',
+            'dokter_id'       => 'nullable|exists:dokter,id', 
         ]);
 
         if ($user->role === 'dokter') {
@@ -102,7 +99,7 @@ class PasienController extends Controller
             'no_telp'         => 'nullable|numeric|digits_between:8,15',
             'keluhan'         => 'nullable|string',
             'tanggal_berobat' => 'required|date',
-            'dokter_id'       => 'nullable|exists:dokters,id',
+            'dokter_id'       => 'nullable|exists:dokter,id', 
         ]);
 
         if ($user->role === 'dokter') {
@@ -114,6 +111,7 @@ class PasienController extends Controller
         return redirect($this->redirectRoute())->with('success', 'Data pasien diperbarui.');
     }
 
+
     public function destroy(Pasien $pasien)
     {
         $pasien->delete();
@@ -123,6 +121,7 @@ class PasienController extends Controller
     private function redirectRoute()
     {
         $user = Auth::user();
+
         return match($user->role) {
             'admin'  => route('admin.pasien.index'),
             'dokter' => route('dokter.pasien.index'),
