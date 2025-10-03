@@ -4,7 +4,8 @@
     <a href="{{ route('home') }}" class="app-brand-link flex items-center gap-2">
       
       <span class="app-brand-logo demo">
-    <img src="{{ asset('img/logo/logoklinik.JPEG') }}" alt="Logo KLINIKU" class="w-10 h-10 object-contain rounded">
+<img src="{{ asset('img/logo/logoklinik.jpeg') }}" alt="Logo KLINIKU" class="max-h-16 max-w-16 object-contain rounded bg-white">
+
       </span>
 
       <span class="app-brand-text demo menu-text fw-bold text-pink-600 text-lg">KLINIKU</span>
@@ -79,7 +80,7 @@
 
     @if($role === 'pasien')
       <li class="menu-item {{ request()->routeIs('pasien.pendaftaran.*') ? 'active' : '' }}">
-        <a href="{{ route('pasien.pendaftaran.create') }}" class="menu-link">
+        <a href="{{ route('pasien.pendaftaran.index') }}" class="menu-link">
           <i class="menu-icon tf-icons ti ti-user"></i>
           Data Saya
         </a>

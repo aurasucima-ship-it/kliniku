@@ -22,6 +22,10 @@ class Pasien extends Model
         'dokter_id',
     ];
 
+    protected $casts = [
+        'tanggal_berobat' => 'date',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -62,5 +66,12 @@ class Pasien extends Model
     public function getBelumLunasAttribute()
     {
         return $this->pembayaran()->where('lunas', false)->exists();
+    }
+
+    public function getTanggalBerobatFormattedAttribute()
+    {
+        return $this->tanggal_berobat
+            ? $this->tanggal_berobat->format('d/m/Y')
+            : '-';
     }
 }

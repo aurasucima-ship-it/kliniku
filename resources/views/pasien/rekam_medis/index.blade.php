@@ -1,60 +1,67 @@
 @extends('layouts.app')
 
-@section('title', 'Rekam Medis Pasien')
+@section('title', 'Rekam Medis Saya')
 
 @section('content')
-<div class="container mx-auto p-4">
+<div class="max-w-6xl mx-auto py-6">
 
-    <!-- Header -->
-    <div class="bg-pink-100 rounded-3xl shadow p-6 mb-6 text-center">
-        <h1 class="text-3xl font-bold text-pink-700 flex justify-center items-center gap-2">
-            <i class="fas fa-notes-medical"></i> Rekam Medis Pasien
-        </h1>
-    </div>
+    <div class="card border border-pink-300 shadow-sm rounded-2xl">
 
-    <div class="overflow-x-auto bg-white shadow-lg rounded-3xl p-4">
-        @if($rekamMedis->isEmpty())
-            <div class="text-center text-gray-500 py-10">
-                Belum ada rekam medis. Data akan muncul jika dokter/admin sudah mengirim.
-            </div>
-        @else
-            <table class="min-w-full border border-pink-200 rounded-lg overflow-hidden">
-                <thead class="bg-pink-200 text-pink-800">
-                    <tr>
-                        <th class="py-2 px-4 border-b">No</th>
-                        <th class="py-2 px-4 border-b">Tanggal</th>
-                        <th class="py-2 px-4 border-b">Dokter</th>
-                        <th class="py-2 px-4 border-b">Keluhan</th>
-                        <th class="py-2 px-4 border-b">Diagnosa</th>
-                        <th class="py-2 px-4 border-b">Tindakan</th>
-                        <th class="py-2 px-4 border-b">Resep Obat</th>
-                        <th class="py-2 px-4 border-b">Catatan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($rekamMedis as $index => $rm)
-                        <tr class="hover:bg-pink-50">
-                            <td class="py-2 px-4 text-center border-b">{{ $index + 1 }}</td>
-                            <td class="py-2 px-4 border-b">{{ \Carbon\Carbon::parse($rm->tanggal_pemeriksaan)->format('d M Y') }}</td>
-                            <td class="py-2 px-4 border-b">{{ optional($rm->dokter)->nama ?? '-' }}</td>
-                            <td class="py-2 px-4 border-b">{{ $rm->keluhan }}</td>
-                            <td class="py-2 px-4 border-b">{{ $rm->diagnosa }}</td>
-                            <td class="py-2 px-4 border-b">{{ $rm->tindakan }}</td>
-                            <td class="py-2 px-4 border-b">{{ $rm->resep_obat }}</td>
-                            <td class="py-2 px-4 border-b">{{ $rm->catatan }}</td>
+        <!-- Header -->
+        <h5 class="card-header text-center fs-4 fw-bold d-flex justify-content-center align-items-center gap-2"
+            style="background: linear-gradient(90deg, #ffffff, #ffffff); color:#f73e88; letter-spacing:1px; border-top-left-radius:1rem; border-top-right-radius:1rem;">
+            <i class="fas fa-notes-medical"></i>
+            REKAM MEDIS SAYA
+        </h5>
+
+        <!-- Table -->
+        <div class="table-responsive p-3">
+            @if($rekamMedis->isEmpty())
+                <div class="text-center text-pink-500 py-3">
+                    Belum ada rekam medis. Data akan muncul jika dokter/admin sudah menginput.
+                </div>
+            @else
+                <table class="table table-bordered text-center align-middle mb-0 rounded-2xl" 
+                       style="border-color:#F9A8D4; border-radius:1rem; overflow:hidden;">
+                    <thead style="background-color:#FBCFE8; color:#9d174d; font-weight:600; letter-spacing:0.5px;">
+                        <tr>
+                            <th style="width:50px;">No</th>
+                            <th>Tanggal</th>
+                            <th>Dokter</th>
+                            <th>Keluhan</th>
+                            <th>Diagnosa</th>
+                            <th>Tindakan</th>
+                            <th>Resep Obat</th>
+                            <th>Catatan</th>
+                            <th style="width:100px;">Aksi</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @endif
+                    </thead>
+                    <tbody>
+                        @foreach($rekamMedis as $index => $rm)
+                            <tr style="transition:0.2s;" 
+                                onmouseover="this.style.backgroundColor='#FFE4ED'" 
+                                onmouseout="this.style.backgroundColor=''">
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ \Carbon\Carbon::parse($rm->tanggal_pemeriksaan)->format('d/m/Y') }}</td>
+                                <td>{{ optional($rm->dokter)->nama ?? '-' }}</td>
+                                <td>{{ $rm->keluhan }}</td>
+                                <td>{{ $rm->diagnosa }}</td>
+                                <td>{{ $rm->tindakan }}</td>
+                                <td>{{ $rm->resep_obat }}</td>
+                                <td>{{ $rm->catatan }}</td>
+                                <td>
+                                    <a href="{{ route('pasien.rekam_medis.show', $rm->id) }}" 
+                                       class="btn btn-sm text-white" 
+                                       style="background-color:#f73e88; border-radius:0.75rem;">
+                                        <i class="fas fa-eye"></i> Detail
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
+        </div>
     </div>
-
-    <div class="mt-6">
-        <a href="{{ url()->previous() }}" 
-           class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded font-medium inline-flex items-center gap-2">
-            <i class="fas fa-arrow-left"></i> Kembali
-        </a>
-    </div>
-
 </div>
 @endsection

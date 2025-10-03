@@ -10,35 +10,26 @@ use Illuminate\Support\Facades\Auth;
 
 class PasienController extends Controller
 {
-
     public function home()
     {
         $user = Auth::user();
         $pasien = $user->pasien;
-
         $totalKunjungan = $pasien ? 1 : 0; 
         $riwayatPembayaran = $pasien ? $pasien->pembayaran()->latest()->take(5)->get() : [];
-
         return view('home.pasien', compact('pasien', 'totalKunjungan', 'riwayatPembayaran'));
     }
 
     public function index()
     {
         $user = Auth::user();
-
         if ($user->role === 'dokter') {
             $dokterId = $user->dokter?->id;
-            $pasiens = Pasien::with('pembayaran')
-                             ->where('dokter_id', $dokterId)
-                             ->get();
+            $pasiens = Pasien::with('pembayaran')->where('dokter_id', $dokterId)->get();
         } elseif ($user->role === 'pasien') {
-            $pasiens = Pasien::with('dokter', 'pembayaran')
-                             ->where('id', $user->pasien?->id)
-                             ->get();
+            $pasiens = Pasien::with('dokter', 'pembayaran')->where('id', $user->pasien?->id)->get();
         } else { 
             $pasiens = Pasien::with('dokter', 'pembayaran')->get();
         }
-
         $viewPath = $user->role . '.pasien.index';
         return view($viewPath, compact('pasiens'));
     }
@@ -54,7 +45,6 @@ class PasienController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-
         $data = $request->validate([
             'nama'            => 'required|string|max:255',
             'alamat'          => 'nullable|string',
@@ -64,13 +54,10 @@ class PasienController extends Controller
             'tanggal_berobat' => 'required|date',
             'dokter_id'       => 'nullable|exists:dokter,id', 
         ]);
-
         if ($user->role === 'dokter') {
             $data['dokter_id'] = $user->dokter->id;
         }
-
         Pasien::create($data);
-
         return redirect($this->redirectRoute())->with('success', 'Pasien berhasil ditambahkan.');
     }
 
@@ -91,7 +78,6 @@ class PasienController extends Controller
     public function update(Request $request, Pasien $pasien)
     {
         $user = Auth::user();
-
         $data = $request->validate([
             'nama'            => 'required|string|max:255',
             'alamat'          => 'nullable|string',
@@ -101,16 +87,12 @@ class PasienController extends Controller
             'tanggal_berobat' => 'required|date',
             'dokter_id'       => 'nullable|exists:dokter,id', 
         ]);
-
         if ($user->role === 'dokter') {
             unset($data['dokter_id']);
         }
-
         $pasien->update($data);
-
         return redirect($this->redirectRoute())->with('success', 'Data pasien diperbarui.');
     }
-
 
     public function destroy(Pasien $pasien)
     {
@@ -118,10 +100,17 @@ class PasienController extends Controller
         return redirect($this->redirectRoute())->with('success', 'Pasien dihapus.');
     }
 
+    public function pembayaran()
+    {
+        $user = Auth::user();
+        $pasien = $user->pasien;
+        $pembayarans = Pembayaran::with('dokter')->where('pasien_id', $pasien->id)->orderBy('tanggal', 'desc')->get();
+        return view('pasien.pembayaran.index', compact('pembayarans'));
+    }
+
     private function redirectRoute()
     {
         $user = Auth::user();
-
         return match($user->role) {
             'admin'  => route('admin.pasien.index'),
             'dokter' => route('dokter.pasien.index'),

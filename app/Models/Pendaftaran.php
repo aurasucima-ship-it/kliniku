@@ -9,13 +9,15 @@ class Pendaftaran extends Model
 {
     use HasFactory;
 
+    protected $table = 'pendaftarans';
+
     protected $fillable = [
         'user_id',
         'pasien_id',
         'dokter_id',
         'nama',
-        'jenis_kelamin',
         'no_telp',
+        'jenis_kelamin',
         'alamat',
         'keluhan',
         'tanggal_berobat',
@@ -26,13 +28,11 @@ class Pendaftaran extends Model
         return $this->belongsTo(User::class);
     }
 
-
     public function pasien()
     {
         return $this->belongsTo(Pasien::class);
     }
 
-  
     public function dokter()
     {
         return $this->belongsTo(Dokter::class);

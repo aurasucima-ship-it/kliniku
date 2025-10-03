@@ -5,7 +5,6 @@
 @section('content')
 <div class="card border border-pink-400 shadow-sm mx-auto" style="max-width:600px;">
 
-    <!-- Header -->
     <h5 class="card-header bg-pink-500 text-white text-center fs-5 fw-semibold d-flex justify-content-center align-items-center gap-2">
         <i class="fas fa-credit-card"></i>
         EDIT PEMBAYARAN
@@ -16,7 +15,6 @@
             @csrf
             @method('PUT')
 
-            <!-- Pasien -->
             <div class="mb-3">
                 <label for="pasien_id" class="form-label fw-semibold text-pink-700">Pasien</label>
                 <select name="pasien_id" id="pasien_id" class="form-select border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('pasien_id') is-invalid @enderror" required>
@@ -32,7 +30,6 @@
                 @enderror
             </div>
 
-            <!-- Jumlah -->
             <div class="mb-3">
                 <label for="jumlah" class="form-label fw-semibold text-pink-700">Jumlah</label>
                 <input type="number" name="jumlah" id="jumlah" class="form-control border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('jumlah') is-invalid @enderror" value="{{ old('jumlah', $pembayaran->jumlah) }}" placeholder="Masukkan jumlah pembayaran" required>
@@ -41,7 +38,6 @@
                 @enderror
             </div>
 
-            <!-- Metode -->
             <div class="mb-3">
                 <label for="metode" class="form-label fw-semibold text-pink-700">Metode Pembayaran</label>
                 <select name="metode" id="metode" class="form-select border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('metode') is-invalid @enderror" required>
@@ -57,7 +53,6 @@
                 @enderror
             </div>
 
-            <!-- Tanggal -->
             <div class="mb-3">
                 <label for="tanggal" class="form-label fw-semibold text-pink-700">Tanggal</label>
                 <input type="date" name="tanggal" id="tanggal" class="form-control border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('tanggal') is-invalid @enderror" value="{{ old('tanggal', $pembayaran->tanggal->format('Y-m-d')) }}" required>
@@ -66,7 +61,6 @@
                 @enderror
             </div>
 
-            <!-- Keterangan -->
             <div class="mb-3">
                 <label for="keterangan" class="form-label fw-semibold text-pink-700">Keterangan</label>
                 <textarea name="keterangan" id="keterangan" class="form-control border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('keterangan') is-invalid @enderror" rows="3">{{ old('keterangan', $pembayaran->keterangan) }}</textarea>
@@ -75,7 +69,18 @@
                 @enderror
             </div>
 
-            <!-- Submit / Batal -->
+            <div class="mb-3">
+                <label for="status" class="form-label fw-semibold text-pink-700">Status</label>
+                <select name="status" id="status" class="form-select border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('status') is-invalid @enderror" required>
+                    @foreach(['belum' => 'Belum Lunas', 'nunggu' => 'Menunggu Konfirmasi', 'lunas' => 'Lunas'] as $key => $label)
+                        <option value="{{ $key }}" {{ old('status', $pembayaran->status) == $key ? 'selected' : '' }}>{{ $label }}</option>
+                    @endforeach
+                </select>
+                @error('status')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
             <div class="mt-4 d-flex gap-2">
                 <button type="submit" class="btn btn-pink bg-pink-500 hover:bg-pink-600 text-white flex-grow-1 shadow-sm">Update Pembayaran</button>
                 <a href="{{ route('dokter.pembayaran.index') }}" class="btn btn-pink bg-pink-300 hover:bg-pink-400 text-white flex-grow-1 shadow-sm">Batal</a>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pembayaran;
 use App\Models\Pasien;
 use App\Models\Dokter;
+use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,22 +16,18 @@ class PembayaranController extends Controller
         $user = Auth::user();
 
         if ($user->role === 'admin') {
-            $pembayaran = Pembayaran::with('pasien')->latest()->get();
-            return view('admin.pembayaran.index', compact('pembayaran'));
+            $pembayarans = Pembayaran::with(['pasien', 'dokter'])->latest()->get();
+            return view('admin.pembayaran.index', compact('pembayarans'));
         }
 
         if ($user->role === 'dokter') {
-            $pembayaran = Pembayaran::with('pasien')
-                ->where('dokter_id', $user->id)
-                ->latest()->get();
-            return view('dokter.pembayaran.index', compact('pembayaran'));
+            $pembayarans = Pembayaran::with('pasien')->where('dokter_id', $user->id)->latest()->get();
+            return view('dokter.pembayaran.index', compact('pembayarans'));
         }
 
         if ($user->role === 'pasien') {
-            $pembayaran = Pembayaran::with('pasien')
-                ->where('pasien_id', $user->pasien->id ?? 0)
-                ->latest()->get();
-            return view('pasien.pembayaran.index', compact('pembayaran'));
+            $pembayarans = Pembayaran::with('dokter')->where('pasien_id', $user->pasien->id ?? 0)->latest()->get();
+            return view('pasien.pembayaran.index', compact('pembayarans'));
         }
 
         abort(403);
@@ -57,19 +54,68 @@ class PembayaranController extends Controller
         abort(403);
     }
 
+    public function pembayaranForm($pendaftaranId)
+    {
+        $user = Auth::user();
+
+        if ($user->role !== 'pasien') {
+            abort(403);
+        }
+
+        $pendaftaran = Pendaftaran::with('dokter')->findOrFail($pendaftaranId);
+        $dokter = $pendaftaran->dokter;
+        $biaya = $pendaftaran->biaya ?? 0;
+
+        return view('pasien.pembayaran.form', compact('dokter', 'biaya', 'pendaftaran'));
+    }
+
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'pasien_id'   => 'required|exists:pasien,id',
-            'jumlah'      => 'required|numeric|min:0',
-            'metode'      => 'required|string',
-            'tanggal'     => 'required|date',
-            'keterangan'  => 'nullable|string',
-        ]);
-
-        $pembayaran = Pembayaran::create($data);
-
         $user = Auth::user();
+
+        $rules = [
+            'jumlah' => 'required|numeric|min:0',
+            'tanggal' => 'required|date',
+        ];
+
+        if ($user->role === 'admin' || $user->role === 'dokter') {
+            $rules['pasien_id'] = 'required|exists:pasien,id';
+        }
+
+        if ($user->role === 'admin') {
+            $rules['dokter_id'] = 'required|exists:dokter,id';
+        }
+
+        if ($user->role === 'pasien') {
+            $rules['metode'] = 'required|string';
+            $rules['pendaftaran_id'] = 'required|exists:pendaftarans,id';
+        }
+
+        $data = $request->validate($rules);
+
+        if ($user->role === 'dokter') {
+            $data['dokter_id'] = $user->id;
+            $data['status'] = 'belum';
+            $data['metode'] = 'offline';
+            $data['keterangan'] = $request->keterangan ?? '';
+        }
+
+        if ($user->role === 'admin') {
+            $data['status'] = 'belum';
+            $data['metode'] = 'offline';
+            $data['keterangan'] = $request->keterangan ?? '';
+        }
+
+        if ($user->role === 'pasien') {
+            $data['pasien_id'] = $user->pasien->id;
+            $pendaftaran = Pendaftaran::findOrFail($request->pendaftaran_id);
+            $data['dokter_id'] = $pendaftaran->dokter_id ?? null;
+            $data['status'] = 'lunas';
+            $data['keterangan'] = $request->keterangan ?? '';
+        }
+
+        Pembayaran::create($data);
+
         if ($user->role === 'admin') {
             return redirect()->route('admin.pembayaran.index')->with('success', 'Pembayaran berhasil disimpan.');
         }
@@ -93,7 +139,7 @@ class PembayaranController extends Controller
             return view('admin.pembayaran.show', compact('pembayaran'));
         }
 
-        if ($user->role === 'dokter') {
+        if ($user->role === 'dokter' && $pembayaran->dokter_id == $user->id) {
             return view('dokter.pembayaran.show', compact('pembayaran'));
         }
 
@@ -110,10 +156,11 @@ class PembayaranController extends Controller
         $user = Auth::user();
 
         if ($user->role === 'admin') {
-            return view('admin.pembayaran.edit', compact('pembayaran', 'pasiens'));
+            $dokter = Dokter::all();
+            return view('admin.pembayaran.edit', compact('pembayaran', 'pasiens', 'dokter'));
         }
 
-        if ($user->role === 'dokter') {
+        if ($user->role === 'dokter' && $pembayaran->dokter_id == $user->id) {
             return view('dokter.pembayaran.edit', compact('pembayaran', 'pasiens'));
         }
 
@@ -122,17 +169,34 @@ class PembayaranController extends Controller
 
     public function update(Request $request, Pembayaran $pembayaran)
     {
-        $data = $request->validate([
-            'pasien_id'   => 'required|exists:pasien,id',
-            'jumlah'      => 'required|numeric|min:0',
-            'metode'      => 'required|string',
-            'tanggal'     => 'required|date',
-            'keterangan'  => 'nullable|string',
-        ]);
+        $user = Auth::user();
+
+        $rules = [
+            'jumlah' => 'required|numeric|min:0',
+            'tanggal' => 'required|date',
+            'status' => 'required|string|in:belum,nunggu,lunas',
+        ];
+
+        if ($user->role === 'admin' || $user->role === 'dokter') {
+            $rules['pasien_id'] = 'required|exists:pasien,id';
+        }
+
+        $data = $request->validate($rules);
+
+        if ($user->role === 'dokter') {
+            $data['dokter_id'] = $user->id;
+            $data['metode'] = 'offline';
+            $data['keterangan'] = $request->keterangan ?? '';
+        }
+
+        if ($user->role === 'admin') {
+            $data['dokter_id'] = $request->dokter_id;
+            $data['metode'] = 'offline';
+            $data['keterangan'] = $request->keterangan ?? '';
+        }
 
         $pembayaran->update($data);
 
-        $user = Auth::user();
         if ($user->role === 'admin') {
             return redirect()->route('admin.pembayaran.index')->with('success', 'Pembayaran berhasil diperbarui.');
         }
@@ -146,15 +210,18 @@ class PembayaranController extends Controller
 
     public function destroy(Pembayaran $pembayaran)
     {
-        $pembayaran->delete();
-
         $user = Auth::user();
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.pembayaran.index')->with('success', 'Pembayaran berhasil dihapus.');
-        }
 
-        if ($user->role === 'dokter') {
-            return redirect()->route('dokter.pembayaran.index')->with('success', 'Pembayaran berhasil dihapus.');
+        if ($user->role === 'admin' || ($user->role === 'dokter' && $pembayaran->dokter_id == $user->id)) {
+            $pembayaran->delete();
+
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.pembayaran.index')->with('success', 'Pembayaran berhasil dihapus.');
+            }
+
+            if ($user->role === 'dokter') {
+                return redirect()->route('dokter.pembayaran.index')->with('success', 'Pembayaran berhasil dihapus.');
+            }
         }
 
         abort(403);

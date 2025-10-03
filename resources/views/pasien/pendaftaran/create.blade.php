@@ -4,11 +4,7 @@
 
 @section('content')
 <div class="container my-6">
-
-   
     <div class="bg-white shadow-lg rounded-3xl p-6">
-
-        
         <div class="text-center mb-5">
             <h1 class="fw-bold d-flex justify-content-center align-items-center gap-2"
                 style="font-family: 'Poppins', sans-serif; font-size: 2rem; color:#db2777;">
@@ -21,7 +17,7 @@
             <div class="d-flex flex-wrap gap-4 mb-3">
                 <div style="flex: 1 1 250px;">
                     <label for="nama" class="form-label fw-semibold" style="color:#db2777; font-size:1.1rem;">Nama Pasien</label>
-                    <input type="text" name="nama" id="nama" class="form-control form-control-sm border-pink" value="{{ old('nama') }}" required>
+                    <input type="text" name="nama" id="nama" class="form-control form-control-sm border-pink" value="{{ old('nama', Auth::user()->name) }}" required>
                 </div>
 
                 <div style="flex: 1 1 180px;">
@@ -63,24 +59,16 @@
                 </div>
             </div>
 
-       
             <div class="mb-3" style="max-width: 400px;">
                 <label for="keluhan" class="form-label fw-semibold" style="color:#db2777; font-size:1.1rem;">Keluhan</label>
                 <input type="text" name="keluhan" id="keluhan" class="form-control form-control-sm border-pink" value="{{ old('keluhan') }}" required>
             </div>
 
-        
             <div class="d-flex gap-2 mt-4">
-                <button type="submit" class="btn" style="background-color:#ec4899; color:white;">
-                    Simpan
-                </button>
-                <a href="{{ route('pasien.pendaftaran.index') }}" class="btn" style="background-color:#f9a8d4; color:white;">
-                    Batal
-                </a>
+                <button type="submit" class="btn" style="background-color:#ec4899; color:white;">Simpan</button>
+                <a href="{{ route('pasien.pendaftaran.index') }}" class="btn" style="background-color:#f9a8d4; color:white;">Batal</a>
             </div>
-
         </form>
     </div>
-
 </div>
 @endsection

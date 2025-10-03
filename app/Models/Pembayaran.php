@@ -12,6 +12,7 @@ class Pembayaran extends Model
     protected $table = 'pembayaran';
 
     protected $fillable = [
+        'pendaftaran_id',
         'dokter_id',
         'pasien_id',
         'tanggal',
@@ -39,6 +40,11 @@ class Pembayaran extends Model
     public function dokter()
     {
         return $this->belongsTo(Dokter::class, 'dokter_id');
+    }
+
+    public function pendaftaran()
+    {
+        return $this->belongsTo(Pendaftaran::class, 'pendaftaran_id');
     }
 
     public function getStatusPembayaranAttribute()

@@ -13,7 +13,6 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\ProfileController;
 
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -21,7 +20,6 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
 
 Route::get('/home', function () {
     $user = auth()->user();
@@ -55,11 +53,9 @@ Route::get('/home', function () {
     } 
 
     if ($user->role === 'pasien') {
-    
-        $pasienId = $user->id; 
-
-        $myRekamMedis = RekamMedis::where('pasien_id', $pasienId)->count();
-        $myPembayaran = Pembayaran::where('pasien_id', $pasienId)->count();
+        $pasien = $user->pasien;
+        $myRekamMedis = $pasien ? RekamMedis::where('pasien_id', $pasien->id)->count() : 0;
+        $myPembayaran = $pasien ? Pembayaran::where('pasien_id', $pasien->id)->count() : 0;
 
         return view('home.pasien', compact(
             'myRekamMedis',
@@ -70,8 +66,6 @@ Route::get('/home', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('home');
 
-
-
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
@@ -80,7 +74,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('admin/rekam_medis', RekamMedisController::class)->names('admin.rekam_medis');
     Route::resource('admin/pembayaran', PembayaranController::class)->names('admin.pembayaran');
 });
-
 
 Route::middleware(['auth', 'role:dokter'])->group(function () {
     Route::get('/dokter', [DokterController::class, 'index'])->name('dokter.dashboard');
@@ -91,21 +84,19 @@ Route::middleware(['auth', 'role:dokter'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:pasien'])->prefix('pasien')->as('pasien.')->group(function () {
- 
     Route::get('/', [PasienController::class, 'index'])->name('dashboard');
+
+    Route::get('pembayaran', [PembayaranController::class, 'index'])->name('pembayaran.index');
+    Route::get('pembayaran/{pendaftaran}/form', [PembayaranController::class, 'pembayaranForm'])->name('pembayaran.form');
+    Route::post('pembayaran/store', [PembayaranController::class, 'store'])->name('pembayaran.store');
 
     Route::resource('pendaftaran', PendaftaranController::class)->names('pendaftaran');
 
-    Route::get('rekam-medis', [RekamMedisController::class, 'index'])
-        ->name('rekam_medis.index');
-
-    Route::get('pembayaran', [PembayaranController::class, 'index'])
-        ->name('pembayaran.index');
-    Route::get('pembayaran/{pembayaran}/form', [PembayaranController::class, 'pembayaranForm'])
-        ->name('pembayaran.form');
-    Route::post('pembayaran/{pembayaran}/bayar', [PembayaranController::class, 'pembayaranBayar'])
-        ->name('pembayaran.bayar');
+    Route::get('rekam_medis', [RekamMedisController::class, 'index'])->name('rekam_medis.index');
+    Route::get('rekam_medis/{rekamMedis}', [RekamMedisController::class, 'show'])->name('rekam_medis.show');
 });
+
+
 
 
 Route::middleware('auth')->group(function () {

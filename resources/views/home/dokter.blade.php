@@ -1,52 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container py-4">
 
-<h1 class="text-2xl font-bold text-pink-600 text-center mb-6 d-flex justify-content-center align-items-center gap-2"
-    style="font-family: 'Poppins', sans-serif; letter-spacing: 1px; text-shadow: 1px 1px 3px rgba(0,0,0,0.05);">
-    <i class="fas fa-user-doctor"></i>
-    DASHBOARD DOKTER
-</h1>
+    <div class="card shadow-sm rounded-2xl mb-4" style="background: #fff;">
+        <h5 class="card-header text-center fs-4 fw-bold d-flex justify-content-center align-items-center gap-2"
+            style="color:#f73e88; letter-spacing:1px; border-radius:1rem; padding:1rem 0;">
+            <i class="fas fa-user-doctor"></i> DASHBOARD DOKTER
+        </h5>
+    </div>
 
-<div class="row mb-4">
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4 text-white" 
+                 style="background: linear-gradient(135deg, rgba(251,182,206,1), rgba(251,182,206,0.8));">
+                <div class="card-body text-center py-4">
+                    <h5 class="card-title mb-2">Total Pasien</h5>
+                    <p class="card-text fs-3 fw-bold">{{ $totalPasien }}</p>
+                </div>
+            </div>
+        </div>
 
-    <div class="col-md-4">
-        <div class="card mb-3 text-white" style="background-color: rgba(255, 182, 193, 0.8);">
-            <div class="card-body text-center">
-                <h5 class="card-title">Total Pasien</h5>
-                <p class="card-text fs-4">{{ $totalPasien }}</p>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4 text-white" 
+                 style="background: linear-gradient(135deg, rgba(251,207,232,1), rgba(251,207,232,0.8));">
+                <div class="card-body text-center py-4">
+                    <h5 class="card-title mb-2">Total Rekam Medis</h5>
+                    <p class="card-text fs-3 fw-bold">{{ $totalRekamMedis }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4 text-white" 
+                 style="background: linear-gradient(135deg, rgba(253,164,175,1), rgba(253,164,175,0.8));">
+                <div class="card-body text-center py-4">
+                    <h5 class="card-title mb-2">Total Pembayaran Masuk</h5>
+                    <p class="card-text fs-3 fw-bold">{{ $totalPembayaran }}</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card mb-3 text-white" style="background-color: rgba(255, 192, 203, 0.8);">
-            <div class="card-body text-center">
-                <h5 class="card-title">Total Rekam Medis</h5>
-                <p class="card-text fs-4">{{ $totalRekamMedis }}</p>
-            </div>
+    <div class="card mb-4 shadow-sm rounded-2xl">
+        <div class="card-header d-flex align-items-center gap-2 fw-semibold"
+             style="color:#f73e88; letter-spacing:0.5px;">
+            <i class="fas fa-chart-bar"></i> Grafik Data Dokter
+        </div>
+        <div class="card-body" style="height: 320px;">
+            <canvas id="chartData" style="height:100%; width:100%;"></canvas>
         </div>
     </div>
-
-    <div class="col-md-4">
-        <div class="card mb-3 text-white" style="background-color: rgba(255, 105, 180, 0.8);">
-            <div class="card-body text-center">
-                <h5 class="card-title">Total Pembayaran Masuk</h5>
-                <p class="card-text fs-4">{{ $totalPembayaran }}</p>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<div class="bg-white shadow rounded-lg p-6">
-    <h2 class="text-xl font-semibold text-pink-600 mb-4 text-center d-flex justify-content-center align-items-center gap-2">
-        <i class="fas fa-chart-bar"></i>
-        Grafik Data Dokter
-    </h2>
-    <canvas id="chartData"></canvas>
-</div>
 
 </div>
 @endsection
@@ -65,16 +69,17 @@
                 label: 'Jumlah',
                 data: [{{ $totalPasien }}, {{ $totalRekamMedis }}, {{ $totalPembayaran }}],
                 backgroundColor: [
-                    'rgba(255, 182, 193, 0.6)',
-                    'rgba(255, 192, 203, 0.6)',
-                    'rgba(255, 105, 180, 0.6)'
+                    'rgba(251, 182, 206, 0.8)', 
+                    'rgba(251, 207, 232, 0.8)', 
+                    'rgba(253, 164, 175, 0.8)' 
                 ],
                 borderColor: [
-                    'rgba(255, 182, 193, 1)',
-                    'rgba(255, 192, 203, 1)',
-                    'rgba(255, 105, 180, 1)'
+                    'rgba(251, 182, 206, 1)',
+                    'rgba(251, 207, 232, 1)',
+                    'rgba(253, 164, 175, 1)'
                 ],
-                borderWidth: 1
+                borderWidth: 2,
+                borderRadius: 6
             }]
         },
         options: {
