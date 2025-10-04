@@ -14,7 +14,7 @@
     <nav class="bg-white/70 backdrop-blur-md shadow-md fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <img src="{{ asset('img/logo/logoklinik.JPEG') }}" alt="Logo Kliniku" class="h-10 w-10 rounded-full shadow">
+                <img src="{{ asset('img/logo/logoklinik.png') }}" alt="Logo Kliniku" class="h-10 w-10 rounded-full shadow">
                 <h1 class="text-2xl font-bold text-pink-600">Kliniku</h1>
             </div>
 

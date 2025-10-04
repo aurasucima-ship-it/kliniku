@@ -2,15 +2,13 @@
 
   <div class="app-brand demo flex items-center justify-between px-4 py-3 border-b">
     <a href="{{ route('home') }}" class="app-brand-link flex items-center gap-2">
-      
       <span class="app-brand-logo demo">
-<img src="{{ asset('img/logo/logoklinik.jpeg') }}" alt="Logo KLINIKU" class="max-h-16 max-w-16 object-contain rounded bg-white">
+<img src="{{ asset('img/logo/logoklinik.png') }}" style="width:40px; height:40px;">
+
 
       </span>
-
-      <span class="app-brand-text demo menu-text fw-bold text-pink-600 text-lg">KLINIKU</span>
+      <span class="app-brand-text demo menu-text fw-bold text-lg text-pink-600">KLINIKU</span>
     </a>
-
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
       <i class="ti menu-toggle-icon d-none d-xl-block align-middle"></i>
       <i class="ti ti-x d-block d-xl-none ti-md align-middle"></i>
@@ -20,7 +18,6 @@
   <div class="menu-inner-shadow"></div>
 
   <ul class="menu-inner py-1">
-
     @php $role = Auth::user()->role; @endphp
 
     <li class="menu-item {{ request()->routeIs('home') ? 'active' : '' }}">
@@ -98,27 +95,26 @@
         </a>
       </li>
     @endif
-
   </ul>
 
   <style>
     #layout-menu {
       background-color: #FCE7F3;
     }
-
     #layout-menu .menu-link {
       color: #9d174d;
     }
-
     #layout-menu .menu-item:hover > .menu-link {
       background-color: #FBCFE8;
       color: #831843;
     }
-
     #layout-menu .menu-item.active > .menu-link {
       background-color: #F9A8D4;
       color: #6B0F42;
       font-weight: 600;
+    }
+    #layout-menu .app-brand-text {
+      color: #db2777 !important;
     }
   </style>
 </aside>

@@ -88,7 +88,7 @@
 <body>
 
   <div class="login-card">
-    <img src="{{ asset('img/logo/logoklinik.JPEG') }}" alt="Logo KLINIKU">
+    <img src="{{ asset('img/logo/logoklinik.png') }}" alt="Logo KLINIKU">
 
     <h2>KLINIKU</h2>
     <p>Silakan login untuk melanjutkan</p>
