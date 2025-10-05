@@ -12,7 +12,7 @@
         </h5>
 
         <div class="table-responsive p-3">
-            @if($pembayarans->isEmpty())
+            @if($pembayaran->isEmpty())
                 <div class="text-center text-pink-500 py-4">
                     <p class="fs-5">Belum ada pembayaran.</p>
                 </div>
@@ -31,7 +31,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($pembayarans as $index => $p)
+                        @foreach($pembayaran as $index => $p)
                             <tr style="transition:0.2s;" 
                                 onmouseover="this.style.backgroundColor='#FFE4ED'" 
                                 onmouseout="this.style.backgroundColor=''">

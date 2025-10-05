@@ -36,9 +36,8 @@
                 <label for="metode" class="form-label fw-semibold text-pink-700">Metode Pembayaran</label>
                 <select name="metode" id="metode" class="form-select border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('metode') is-invalid @enderror" required>
                     <option value="">-- Pilih Metode --</option>
-                    <option value="transfer" {{ old('metode') == 'transfer' ? 'selected' : '' }}>Transfer Bank</option>
-                    <option value="cash" {{ old('metode') == 'cash' ? 'selected' : '' }}>Tunai</option>
-                    <option value="ewallet" {{ old('metode') == 'ewallet' ? 'selected' : '' }}>E-Wallet (Dana, OVO, Gopay)</option>
+                    <option value="Cash" {{ old('metode') == 'Cash' ? 'selected' : '' }}>Cash</option>
+                    <option value="Transfer" {{ old('metode') == 'Transfer' ? 'selected' : '' }}>Transfer Bank</option>
                 </select>
                 @error('metode')
                     <div class="invalid-feedback">{{ $message }}</div>

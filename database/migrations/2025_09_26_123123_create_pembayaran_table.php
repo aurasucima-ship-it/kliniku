@@ -11,9 +11,9 @@ return new class extends Migration
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->id();
             
-            // kolom foreign key ke tabel pasien
-            $table->unsignedBigInteger('pasien_id');
-            $table->foreign('pasien_id')->references('id')->on('pasien')->onDelete('cascade');
+          
+$table->unsignedBigInteger('pasien_id');
+$table->foreign('pasien_id')->references('id')->on('users')->onDelete('cascade');
             
             $table->decimal('jumlah', 15, 2);
             $table->string('metode');

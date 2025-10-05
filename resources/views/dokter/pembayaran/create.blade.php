@@ -8,16 +8,18 @@
         <i class="fas fa-credit-card"></i>
         TAMBAH PEMBAYARAN
     </h5>
+
     <div class="card-body">
         <form action="{{ route('dokter.pembayaran.store') }}" method="POST">
             @csrf
+
             <div class="mb-3">
                 <label for="pasien_id" class="form-label fw-semibold text-pink-700">Pasien</label>
                 <select name="pasien_id" id="pasien_id" class="form-select border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('pasien_id') is-invalid @enderror" required>
                     <option value="">-- Pilih Pasien --</option>
                     @foreach($pasiens as $pasien)
                         <option value="{{ $pasien->id }}" {{ old('pasien_id') == $pasien->id ? 'selected' : '' }}>
-                            {{ $pasien->nama }}
+                            {{ $pasien->name }}
                         </option>
                     @endforeach
                 </select>
@@ -30,6 +32,18 @@
                 <label for="jumlah" class="form-label fw-semibold text-pink-700">Jumlah</label>
                 <input type="number" name="jumlah" id="jumlah" class="form-control border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('jumlah') is-invalid @enderror" value="{{ old('jumlah') }}" placeholder="Masukkan jumlah pembayaran" required>
                 @error('jumlah')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <label for="metode" class="form-label fw-semibold text-pink-700">Metode Pembayaran</label>
+                <select name="metode" id="metode" class="form-select border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('metode') is-invalid @enderror" required>
+                    <option value="">-- Pilih Metode --</option>
+                  <option value="cash" {{ old('metode') == 'cash' ? 'selected' : '' }}>Cash</option>
+                  <option value="transfer" {{ old('metode') == 'transfer' ? 'selected' : '' }}>Transfer</option>
+                </select>
+                @error('metode')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
@@ -51,8 +65,12 @@
             </div>
 
             <div class="mt-4 d-flex gap-2">
-                <button type="submit" class="btn btn-pink bg-pink-500 hover:bg-pink-600 text-white flex-grow-1 shadow-sm">Simpan Pembayaran</button>
-                <a href="{{ route('dokter.pembayaran.index') }}" class="btn btn-pink bg-pink-300 hover:bg-pink-400 text-white flex-grow-1 shadow-sm">Batal</a>
+                <button type="submit" class="btn btn-pink bg-pink-500 hover:bg-pink-600 text-white flex-grow-1 shadow-sm">
+                    Simpan Pembayaran
+                </button>
+                <a href="{{ route('dokter.pembayaran.index') }}" class="btn btn-pink bg-pink-300 hover:bg-pink-400 text-white flex-grow-1 shadow-sm">
+                    Batal
+                </a>
             </div>
         </form>
     </div>

@@ -28,13 +28,20 @@ class Pendaftaran extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function pasien()
-    {
-        return $this->belongsTo(Pasien::class);
-    }
+public function pasien()
+{
+    return $this->belongsTo(User::class, 'pasien_id');
+}
 
-    public function dokter()
+
+
+   public function dokter()
+{
+    return $this->belongsTo(User::class, 'dokter_id');
+}
+
+    public function pembayaran()
     {
-        return $this->belongsTo(Dokter::class);
+        return $this->hasOne(Pembayaran::class, 'pendaftaran_id');
     }
 }

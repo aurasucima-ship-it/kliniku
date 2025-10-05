@@ -21,7 +21,7 @@
                     <option value="">-- Pilih Pasien --</option>
                     @foreach($pasiens as $pasien)
                         <option value="{{ $pasien->id }}" {{ old('pasien_id', $pembayaran->pasien_id) == $pasien->id ? 'selected' : '' }}>
-                            {{ $pasien->nama }}
+                            {{ $pasien->name }}
                         </option>
                     @endforeach
                 </select>
@@ -42,9 +42,9 @@
                 <label for="metode" class="form-label fw-semibold text-pink-700">Metode Pembayaran</label>
                 <select name="metode" id="metode" class="form-select border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('metode') is-invalid @enderror" required>
                     <option value="">-- Pilih Metode --</option>
-                    @foreach(['tunai','transfer','e-wallet','kartu-kredit','asuransi'] as $met)
+                    @foreach(['cash', 'transfer'] as $met)
                         <option value="{{ $met }}" {{ old('metode', $pembayaran->metode) == $met ? 'selected' : '' }}>
-                            {{ ucwords(str_replace('-', ' ', $met)) }}
+                            {{ ucwords($met) }}
                         </option>
                     @endforeach
                 </select>

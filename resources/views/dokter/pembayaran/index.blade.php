@@ -35,10 +35,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($pembayarans as $index => $p)
+                    @forelse ($pembayaran as $index => $p)
                         <tr class="transition duration-200 hover:bg-pink-100">
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $p->pasien->nama ?? '-' }}</td>
+                          <td>{{ $p->pasien->name ?? '-' }}</td>
                             <td>Rp {{ number_format($p->jumlah, 0, ',', '.') }}</td>
                             <td>{{ ucfirst($p->metode ?? '-') }}</td>
                             <td>{{ $p->tanggal->format('d/m/Y') }}</td>

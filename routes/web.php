@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Models\RekamMedis;
 use App\Models\Pembayaran;
-
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PasienController;
@@ -25,9 +24,9 @@ Route::get('/home', function () {
     $user = auth()->user();
 
     if ($user->role === 'admin') {
-        $totalAdmin      = User::where('role', 'admin')->count();
-        $totalDokter     = User::where('role', 'dokter')->count();
-        $totalPasien     = User::where('role', 'pasien')->count();
+        $totalAdmin = User::where('role', 'admin')->count();
+        $totalDokter = User::where('role', 'dokter')->count();
+        $totalPasien = User::where('role', 'pasien')->count();
         $totalRekamMedis = RekamMedis::count();
         $totalPembayaran = Pembayaran::count();
 
@@ -38,10 +37,10 @@ Route::get('/home', function () {
             'totalRekamMedis',
             'totalPembayaran'
         ));
-    } 
+    }
 
     if ($user->role === 'dokter') {
-        $totalPasien     = User::where('role', 'pasien')->count();
+        $totalPasien = User::where('role', 'pasien')->count();
         $totalRekamMedis = RekamMedis::count();
         $totalPembayaran = Pembayaran::count();
 
@@ -50,7 +49,7 @@ Route::get('/home', function () {
             'totalRekamMedis',
             'totalPembayaran'
         ));
-    } 
+    }
 
     if ($user->role === 'pasien') {
         $pasien = $user->pasien;
@@ -80,30 +79,33 @@ Route::middleware(['auth', 'role:dokter'])->group(function () {
 
     Route::resource('dokter/pasien', PasienController::class)->names('dokter.pasien');
     Route::resource('dokter/rekam_medis', RekamMedisController::class)->names('dokter.rekam_medis');
+
     Route::resource('dokter/pembayaran', PembayaranController::class)->names('dokter.pembayaran');
 });
 
+
 Route::middleware(['auth', 'role:pasien'])->prefix('pasien')->as('pasien.')->group(function () {
     Route::get('/', [PasienController::class, 'index'])->name('dashboard');
+
+    Route::get('pendaftaran', [PendaftaranController::class, 'index'])->name('pendaftaran.index');
+    Route::get('pendaftaran/create', [PendaftaranController::class, 'create'])->name('pendaftaran.create');
+    Route::post('pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
+    Route::get('pendaftaran/{pendaftaran}/edit', [PendaftaranController::class, 'edit'])->name('pendaftaran.edit');
+    Route::put('pendaftaran/{pendaftaran}', [PendaftaranController::class, 'update'])->name('pendaftaran.update');
+    Route::delete('pendaftaran/{pendaftaran}', [PendaftaranController::class, 'destroy'])->name('pendaftaran.destroy');
 
     Route::get('pembayaran', [PembayaranController::class, 'index'])->name('pembayaran.index');
     Route::get('pembayaran/{pendaftaran}/form', [PembayaranController::class, 'pembayaranForm'])->name('pembayaran.form');
     Route::post('pembayaran/store', [PembayaranController::class, 'store'])->name('pembayaran.store');
 
-    Route::resource('pendaftaran', PendaftaranController::class)->names('pendaftaran');
-
     Route::get('rekam_medis', [RekamMedisController::class, 'index'])->name('rekam_medis.index');
     Route::get('rekam_medis/{rekamMedis}', [RekamMedisController::class, 'show'])->name('rekam_medis.show');
 });
-
-
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
     Route::post('/profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.photo.update');
 });
 
