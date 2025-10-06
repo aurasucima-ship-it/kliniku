@@ -30,6 +30,21 @@
             </div>
 
             <div class="mb-3">
+                <label for="dokter_id" class="form-label fw-semibold">Dokter</label>
+                <select name="dokter_id" id="dokter_id" class="form-select @error('dokter_id') is-invalid @enderror">
+                    <option value="">-- Pilih Dokter --</option>
+                    @foreach($dokters as $dokter)
+                        <option value="{{ $dokter->id }}" {{ old('dokter_id') == $dokter->id ? 'selected' : '' }}>
+                            {{ $dokter->nama }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('dokter_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
                 <label for="jumlah" class="form-label fw-semibold">Jumlah</label>
                 <input type="number" name="jumlah" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" value="{{ old('jumlah') }}" placeholder="Masukkan jumlah pembayaran" required>
                 @error('jumlah')
@@ -41,11 +56,8 @@
                 <label for="metode" class="form-label fw-semibold">Metode Pembayaran</label>
                 <select name="metode" id="metode" class="form-select @error('metode') is-invalid @enderror" required>
                     <option value="">-- Pilih Metode --</option>
-                    <option value="tunai" {{ old('metode') == 'tunai' ? 'selected' : '' }}>Tunai</option>
+                    <option value="cash" {{ old('metode') == 'cash' ? 'selected' : '' }}>Cash</option>
                     <option value="transfer" {{ old('metode') == 'transfer' ? 'selected' : '' }}>Transfer</option>
-                    <option value="e-wallet" {{ old('metode') == 'e-wallet' ? 'selected' : '' }}>E-Wallet</option>
-                    <option value="kartu-kredit" {{ old('metode') == 'kartu-kredit' ? 'selected' : '' }}>Kartu Kredit</option>
-                    <option value="asuransi" {{ old('metode') == 'asuransi' ? 'selected' : '' }}>Asuransi</option>
                 </select>
                 @error('metode')
                     <div class="invalid-feedback">{{ $message }}</div>

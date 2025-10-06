@@ -8,7 +8,7 @@
     <div class="card border border-pink-300 shadow-sm rounded-2xl">
 
         <h5 class="card-header text-center fs-4 fw-bold d-flex justify-content-center align-items-center gap-2"
-            style="background: linear-gradient(90deg, #ffffff, #ffffff); color:#f73e88; letter-spacing:1px; border-top-left-radius:1rem; border-top-right-radius:1rem;">
+            style="color:#f73e88; letter-spacing:1px; border-top-left-radius:1rem; border-top-right-radius:1rem;">
             <i class="fas fa-credit-card"></i>
             DATA PEMBAYARAN KLINIKU
         </h5>
@@ -27,6 +27,7 @@
                     <tr>
                         <th style="width:50px;">No</th>
                         <th>Pasien</th>
+                        <th>Dokter</th>
                         <th>Jumlah</th>
                         <th>Metode</th>
                         <th>Tanggal</th>
@@ -41,6 +42,7 @@
                             onmouseout="this.style.backgroundColor=''">
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $p->pasien->nama ?? '-' }}</td>
+                            <td>{{ $p->dokter->nama ?? '-' }}</td>
                             <td>Rp {{ number_format($p->jumlah, 0, ',', '.') }}</td>
                             <td>{{ ucfirst($p->metode) }}</td>
                             <td>{{ $p->tanggal->format('d-m-Y') }}</td>
@@ -57,7 +59,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center text-pink-500 py-2">Belum ada data pembayaran</td>
+                            <td colspan="8" class="text-center text-pink-500 py-2">Belum ada data pembayaran</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -94,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
         btn.addEventListener("click", function(e) {
             e.preventDefault();
             Swal.fire({
-                title: 'Yakin mau hapus pasien ini?',
+                title: 'Yakin mau hapus pembayaran ini?',
                 text: "Data yang dihapus tidak bisa dikembalikan.",
                 icon: 'warning',
                 showCancelButton: true,
@@ -136,7 +138,6 @@ document.addEventListener("DOMContentLoaded", function () {
     background-color: #f9a8d4;
     transform: scale(1.05);
 }
-
 
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {transform: translateY(0);}

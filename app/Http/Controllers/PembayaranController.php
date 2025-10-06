@@ -41,7 +41,7 @@ class PembayaranController extends Controller
     public function create()
     {
         $pasiens = User::where('role', 'pasien')->get();
-        $pendaftaran = Pendaftaran::with('pasien')->get()->map(function($p) {
+        $pendaftaran = Pendaftaran::with('pasien')->get()->map(function ($p) {
             return [
                 'id' => $p->id,
                 'pasien_id' => $p->pasien_id,
@@ -55,37 +55,53 @@ class PembayaranController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'pasien_id' => 'required|exists:users,id',
+            'pasien_id' => 'nullable|exists:users,id',
             'jumlah' => 'required|numeric',
-            'metode' => 'required|string|in:cash,transfer',
+            'metode' => 'required|string',
             'tanggal' => 'required|date',
             'keterangan' => 'nullable|string',
+            'dokter_id' => 'nullable|exists:users,id',
             'pendaftaran_id' => 'nullable|exists:pendaftaran,id',
         ]);
 
         $user = Auth::user();
 
         $data = [
-            'pendaftaran_id' => $request->pendaftaran_id ?? null,
             'pasien_id' => $request->pasien_id,
+            'pendaftaran_id' => $request->pendaftaran_id ?? null,
             'jumlah' => $request->jumlah,
             'metode' => $request->metode,
             'tanggal' => $request->tanggal,
             'keterangan' => $request->keterangan,
             'status' => 'lunas',
+            'lunas' => true,
         ];
 
-        if ($user->role === 'dokter') $data['dokter_id'] = $user->id;
-        if ($user->role === 'admin') $data['admin_id'] = $user->id;
+        if (!$data['pasien_id'] && $data['pendaftaran_id']) {
+            $pendaftaran = Pendaftaran::find($data['pendaftaran_id']);
+            if ($pendaftaran) {
+                $data['pasien_id'] = $pendaftaran->pasien_id;
+            }
+        }
 
-        $pembayaran = Pembayaran::create($data);
+        if ($user->role === 'dokter') {
+            $data['dokter_id'] = $user->id;
+        }
+
+        if ($request->dokter_id) {
+            $data['dokter_id'] = $request->dokter_id;
+        }
+
+        Pembayaran::create($data);
 
         if ($data['pendaftaran_id']) {
             $pendaftaran = Pendaftaran::find($data['pendaftaran_id']);
-            if ($pendaftaran) $pendaftaran->update(['status_pembayaran' => 'lunas']);
+            if ($pendaftaran) {
+                $pendaftaran->update(['status_pembayaran' => 'lunas']);
+            }
         }
 
-        return redirect()->route($user->role.'.pembayaran.index')->with('success', 'Pembayaran berhasil ditambahkan.');
+        return redirect()->route($user->role . '.pembayaran.index')->with('success', 'Pembayaran berhasil ditambahkan.');
     }
 
     public function edit(Pembayaran $pembayaran)
@@ -99,7 +115,7 @@ class PembayaranController extends Controller
         $request->validate([
             'pasien_id' => 'required|exists:users,id',
             'jumlah' => 'required|numeric',
-            'metode' => 'required|string|in:cash,transfer',
+            'metode' => 'required|string',
             'status' => 'required|string|in:lunas,nunggu,belum',
             'tanggal' => 'required|date',
             'keterangan' => 'nullable|string',
@@ -120,14 +136,12 @@ class PembayaranController extends Controller
             $pembayaran->pendaftaran->update(['status_pembayaran' => $request->status]);
         }
 
-        $user = Auth::user();
-        return redirect()->route($user->role.'.pembayaran.index')->with('success', 'Data pembayaran berhasil diperbarui.');
+        return redirect()->route(Auth::user()->role . '.pembayaran.index')->with('success', 'Data pembayaran berhasil diperbarui.');
     }
 
     public function destroy(Pembayaran $pembayaran)
     {
         $pembayaran->delete();
-        $user = Auth::user();
-        return redirect()->route($user->role.'.pembayaran.index')->with('success', 'Data pembayaran berhasil dihapus.');
+        return redirect()->route(Auth::user()->role . '.pembayaran.index')->with('success', 'Data pembayaran berhasil dihapus.');
     }
 }
