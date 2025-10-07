@@ -13,7 +13,7 @@ class PendaftaranController extends Controller
 {
     public function index()
     {
-        $pendaftarans = Pendaftaran::with('dokter')
+        $pendaftarans = Pendaftaran::with(['pasien', 'dokter'])
             ->where('user_id', Auth::id())
             ->get();
 
@@ -33,7 +33,7 @@ class PendaftaranController extends Controller
 
     public function indexAdmin()
     {
-        $pendaftarans = Pendaftaran::with(['dokter', 'user', 'pasien'])->get();
+        $pendaftarans = Pendaftaran::with(['pasien', 'dokter'])->get();
 
         return view('admin.pendaftaran.index', compact('pendaftarans'));
     }
@@ -41,6 +41,7 @@ class PendaftaranController extends Controller
     public function create()
     {
         $dokters = Dokter::all();
+
         return view('pasien.pendaftaran.create', compact('dokters'));
     }
 
@@ -60,14 +61,15 @@ class PendaftaranController extends Controller
             $pasien = Auth::user()->pasien;
 
             if ($pasien) {
-                $pasien->dokter_id       = $validated['dokter_id'];
-                $pasien->keluhan         = $validated['keluhan'];
-                $pasien->nama            = $validated['nama'];
-                $pasien->alamat          = $validated['alamat'];
-                $pasien->jenis_kelamin   = $validated['jenis_kelamin'];
-                $pasien->no_telp         = $validated['no_telp'];
-                $pasien->tanggal_berobat = $validated['tanggal_berobat'];
-                $pasien->save();
+                $pasien->update([
+                    'dokter_id'       => $validated['dokter_id'],
+                    'keluhan'         => $validated['keluhan'],
+                    'nama'            => $validated['nama'],
+                    'alamat'          => $validated['alamat'],
+                    'jenis_kelamin'   => $validated['jenis_kelamin'],
+                    'no_telp'         => $validated['no_telp'],
+                    'tanggal_berobat' => $validated['tanggal_berobat'],
+                ]);
             } else {
                 $pasien = Pasien::create([
                     'user_id'         => Auth::id(),
@@ -82,15 +84,15 @@ class PendaftaranController extends Controller
             }
 
             Pendaftaran::create([
-                'user_id'        => Auth::id(),
-                'pasien_id'      => $pasien->id,
-                'dokter_id'      => $validated['dokter_id'],
-                'nama'           => $pasien->nama,
-                'no_telp'        => $pasien->no_telp,
-                'jenis_kelamin'  => $pasien->jenis_kelamin,
-                'alamat'         => $pasien->alamat,
-                'keluhan'        => $validated['keluhan'],
-                'tanggal_berobat'=> $validated['tanggal_berobat'],
+                'user_id'         => Auth::id(),
+                'pasien_id'       => $pasien->id,
+                'dokter_id'       => $validated['dokter_id'],
+                'nama'            => $pasien->nama,
+                'no_telp'         => $pasien->no_telp,
+                'jenis_kelamin'   => $pasien->jenis_kelamin,
+                'alamat'          => $pasien->alamat,
+                'keluhan'         => $validated['keluhan'],
+                'tanggal_berobat' => $validated['tanggal_berobat'],
             ]);
         });
 

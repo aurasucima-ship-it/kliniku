@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pasien;
 use App\Models\Dokter;
 use App\Models\Pembayaran;
+use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +15,7 @@ class PasienController extends Controller
     {
         $user = Auth::user();
         $pasien = $user->pasien;
-        $totalKunjungan = $pasien ? 1 : 0; 
+        $totalKunjungan = $pasien ? 1 : 0;
         $riwayatPembayaran = $pasien ? $pasien->pembayaran()->latest()->take(5)->get() : [];
         return view('home.pasien', compact('pasien', 'totalKunjungan', 'riwayatPembayaran'));
     }
@@ -27,7 +28,7 @@ class PasienController extends Controller
             $pasiens = Pasien::with('pembayaran')->where('dokter_id', $dokterId)->get();
         } elseif ($user->role === 'pasien') {
             $pasiens = Pasien::with('dokter', 'pembayaran')->where('id', $user->pasien?->id)->get();
-        } else { 
+        } else {
             $pasiens = Pasien::with('dokter', 'pembayaran')->get();
         }
         $viewPath = $user->role . '.pasien.index';
@@ -46,19 +47,32 @@ class PasienController extends Controller
     {
         $user = Auth::user();
         $data = $request->validate([
-            'nama'            => 'required|string|max:255',
-            'alamat'          => 'nullable|string',
-            'jenis_kelamin'   => 'required|in:L,P',
-            'no_telp'         => 'nullable|numeric|digits_between:8,15',
-            'keluhan'         => 'nullable|string',
+            'nama' => 'required|string|max:255',
+            'alamat' => 'nullable|string',
+            'jenis_kelamin' => 'required|in:L,P',
+            'no_telp' => 'nullable|numeric|digits_between:8,15',
+            'keluhan' => 'nullable|string',
             'tanggal_berobat' => 'required|date',
-            'dokter_id'       => 'nullable|exists:dokter,id', 
+            'dokter_id' => 'nullable|exists:dokter,id',
         ]);
+
         if ($user->role === 'dokter') {
             $data['dokter_id'] = $user->dokter->id;
         }
-        Pasien::create($data);
-        return redirect($this->redirectRoute())->with('success', 'Pasien berhasil ditambahkan.');
+
+        $pasien = Pasien::create($data);
+
+        if ($user->role === 'dokter') {
+            Pendaftaran::create([
+                'user_id' => $user->id,
+                'dokter_id' => $user->dokter->id,
+                'pasien_id' => $pasien->id,
+                'tanggal' => now(),
+                'status' => 'terdaftar',
+            ]);
+        }
+
+        return redirect($this->redirectRoute())->with('success', 'Pasien berhasil ditambahkan dan otomatis terdaftar.');
     }
 
     public function show(Pasien $pasien)
@@ -79,17 +93,19 @@ class PasienController extends Controller
     {
         $user = Auth::user();
         $data = $request->validate([
-            'nama'            => 'required|string|max:255',
-            'alamat'          => 'nullable|string',
-            'jenis_kelamin'   => 'required|in:L,P',
-            'no_telp'         => 'nullable|numeric|digits_between:8,15',
-            'keluhan'         => 'nullable|string',
+            'nama' => 'required|string|max:255',
+            'alamat' => 'nullable|string',
+            'jenis_kelamin' => 'required|in:L,P',
+            'no_telp' => 'nullable|numeric|digits_between:8,15',
+            'keluhan' => 'nullable|string',
             'tanggal_berobat' => 'required|date',
-            'dokter_id'       => 'nullable|exists:dokter,id', 
+            'dokter_id' => 'nullable|exists:dokter,id',
         ]);
+
         if ($user->role === 'dokter') {
             unset($data['dokter_id']);
         }
+
         $pasien->update($data);
         return redirect($this->redirectRoute())->with('success', 'Data pasien diperbarui.');
     }
@@ -111,11 +127,11 @@ class PasienController extends Controller
     private function redirectRoute()
     {
         $user = Auth::user();
-        return match($user->role) {
-            'admin'  => route('admin.pasien.index'),
+        return match ($user->role) {
+            'admin' => route('admin.pasien.index'),
             'dokter' => route('dokter.pasien.index'),
             'pasien' => route('pasien.pasien.index'),
-            default  => route('home')
+            default => route('home')
         };
     }
 }

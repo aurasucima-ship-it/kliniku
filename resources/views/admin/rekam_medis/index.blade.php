@@ -7,19 +7,23 @@
     <div class="card border border-pink-300 shadow-sm rounded-2xl">
 
         <h5 class="card-header text-center fs-4 fw-bold d-flex justify-content-center align-items-center gap-2"
-            style="background: linear-gradient(90deg, #ffffff, #ffffff); color:#f73e88; letter-spacing:1px; border-top-left-radius:1rem; border-top-right-radius:1rem;">
+            style="background: #fff; color:#f73e88; letter-spacing:1px; border-top-left-radius:1rem; border-top-right-radius:1rem;">
             <i class="fas fa-notes-medical"></i>
             DATA REKAM MEDIS KLINIKU
         </h5>
 
-        <div class="p-3 text-start"> 
+        <div class="p-3 d-flex justify-between items-center gap-3 flex-wrap">
             <a href="{{ route('admin.rekam_medis.create') }}" 
-               class="btn px-4 py-2 rounded-full shadow-sm transition duration-200"
+               class="btn px-4 py-2 rounded-full shadow-sm"
                style="background-color:#ef97be; color:#fff; font-weight:600; font-size:0.95rem;">
                + Tambah Rekam Medis
             </a>
+
+            <input type="text" id="searchInput" placeholder="Cari rekam medis pasien..." 
+                   class="form-control rounded-full px-3 py-2 border border-pink-300 shadow-sm"
+                   style="max-width:250px;">
         </div>
-        
+
         <div class="p-3" style="overflow-x:auto; white-space:nowrap;">
             <table class="table table-bordered text-center align-middle mb-0" 
                    style="border-color:#F9A8D4; min-width:1200px; border-radius:1rem; overflow:hidden;">
@@ -37,7 +41,7 @@
                         <th style="width:160px;">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="rekamMedisTable">
                     @forelse ($rekamMedis as $index => $rm)
                         <tr class="hover-row">
                             <td>{{ $index + 1 }}</td>
@@ -50,20 +54,16 @@
                             <td>{{ $rm->catatan ?? '-' }}</td>
                             <td>{{ $rm->tanggal_pemeriksaan ? \Carbon\Carbon::parse($rm->tanggal_pemeriksaan)->format('d-m-Y') : '-' }}</td>
                             <td class="d-flex justify-center gap-2 flex-wrap">
-                                <a href="{{ route('admin.rekam_medis.show', $rm->id) }}" 
-                                   class="btn-icon-lightpink" title="Lihat">
+                                <a href="{{ route('admin.rekam_medis.show', $rm->id) }}" class="btn-icon-lightpink">
                                     <i class="fas fa-eye"></i>
                                 </a>
-
-                                <a href="{{ route('admin.rekam_medis.edit', $rm->id) }}" 
-                                   class="btn-icon-lightpink" title="Edit">
+                                <a href="{{ route('admin.rekam_medis.edit', $rm->id) }}" class="btn-icon-lightpink">
                                     <i class="fas fa-edit"></i>
                                 </a>
-
                                 <form action="{{ route('admin.rekam_medis.destroy', $rm->id) }}" method="POST" class="inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn-icon-lightpink btn-delete" title="Hapus">
+                                    <button type="button" class="btn-icon-lightpink btn-delete">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
@@ -123,6 +123,16 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     });
+
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('keyup', function() {
+        const filter = this.value.toLowerCase();
+        document.querySelectorAll('#rekamMedisTable tr').forEach(row => {
+            row.style.display = Array.from(row.cells)
+                .some(td => td.textContent.toLowerCase().includes(filter)) ? '' : 'none';
+        });
+    });
+
 });
 </script>
 @endpush
@@ -145,7 +155,6 @@ document.addEventListener("DOMContentLoaded", function () {
     background-color: #f9a8d4;
     transform: scale(1.05);
 }
-
 .hover-row {
     transition: 0.2s;
 }
@@ -153,7 +162,6 @@ document.addEventListener("DOMContentLoaded", function () {
     background-color: #FFE4ED;
     box-shadow: 0 4px 8px rgba(255, 192, 203, 0.2);
 }
-
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
     40% {transform: translateY(-10px);}

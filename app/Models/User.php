@@ -66,4 +66,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Pembayaran::class, 'user_id');
     }
+
+    public function getNamaAttribute()
+{
+    return $this->name;
+}
+
 }

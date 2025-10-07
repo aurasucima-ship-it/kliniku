@@ -3,52 +3,40 @@
 @section('title', 'Form Pembayaran')
 
 @section('content')
-<div class="card border border-pink-400 shadow-sm mx-auto" style="max-width:600px;">
-    <h5 class="card-header bg-pink-500 text-white text-center fs-5 fw-semibold d-flex justify-content-center align-items-center gap-2">
-        <i class="fas fa-credit-card"></i>
-        FORM PEMBAYARAN
-    </h5>
+<div class="card border border-pink-400 shadow-sm p-4 mx-auto" style="max-width: 600px;">
+    <h5 class="card-header mb-4 text-center text-pink-600 fw-bold">Form Pembayaran</h5>
 
-    <div class="card-body">
-        <form action="{{ route('pasien.pembayaran.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="pendaftaran_id" value="{{ $pendaftaran->id }}">
+    <form action="{{ route('pasien.pembayaran.proses', $pembayaran->id) }}" method="POST">
+        @csrf
 
-            <div class="mb-3">
-                <label class="form-label fw-semibold text-pink-700">Dokter</label>
-                <input type="text" class="form-control border-pink-300" value="{{ $dokter->nama ?? '-' }}" disabled>
-            </div>
+        <div class="mb-3">
+            <label class="form-label text-pink-700 fw-semibold">Nama Pasien</label>
+            <input type="text" value="{{ $pasien->name }}" class="form-control border-pink-300 bg-pink-50" readonly>
+        </div>
 
-            <div class="mb-3">
-                <label class="form-label fw-semibold text-pink-700">Total Biaya</label>
-                <input type="text" class="form-control border-pink-300" value="Rp {{ number_format($biaya ?? 0, 0, ',', '.') }}" disabled>
-            </div>
+        <div class="mb-3">
+            <label class="form-label text-pink-700 fw-semibold">Nama Dokter</label>
+            <input type="text" value="{{ $dokter->name ?? '-' }}" class="form-control border-pink-300 bg-pink-50" readonly>
+        </div>
 
-            <div class="mb-3">
-                <label for="jumlah" class="form-label fw-semibold text-pink-700">Jumlah Dibayar</label>
-                <input type="number" name="jumlah" id="jumlah" class="form-control border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('jumlah') is-invalid @enderror" value="{{ old('jumlah') }}" required>
-                @error('jumlah')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
+        <div class="mb-3">
+            <label class="form-label text-pink-700 fw-semibold">Total Biaya</label>
+            <input type="text" value="Rp {{ number_format($biaya, 0, ',', '.') }}" class="form-control border-pink-300 bg-pink-50" readonly>
+        </div>
 
-            <div class="mb-3">
-                <label for="metode" class="form-label fw-semibold text-pink-700">Metode Pembayaran</label>
-                <select name="metode" id="metode" class="form-select border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('metode') is-invalid @enderror" required>
-                    <option value="">-- Pilih Metode --</option>
-                    <option value="Cash" {{ old('metode') == 'Cash' ? 'selected' : '' }}>Cash</option>
-                    <option value="Transfer" {{ old('metode') == 'Transfer' ? 'selected' : '' }}>Transfer Bank</option>
-                </select>
-                @error('metode')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
+        <div class="mb-3">
+            <label class="form-label text-pink-700 fw-semibold">Metode Pembayaran</label>
+            <select name="metode" class="form-select border-pink-300 bg-white" required>
+                <option value="">-- Pilih Metode --</option>
+                <option value="Tunai">Cash</option>
+                <option value="Transfer">Transfer</option>
+            </select>
+        </div>
 
-            <div class="mt-4 d-flex gap-2">
-                <a href="{{ route('pasien.pembayaran.index') }}" class="btn bg-pink-300 hover:bg-pink-400 text-white flex-grow-1 shadow-sm">Kembali</a>
-                <button type="submit" class="btn bg-pink-500 hover:bg-pink-600 text-white flex-grow-1 shadow-sm">Kirim Pembayaran</button>
-            </div>
-        </form>
-    </div>
+        <div class="d-flex gap-2 justify-content-center mt-4">
+            <button type="submit" class="btn btn-pink px-4">Bayar Sekarang</button>
+            <a href="{{ route('pasien.pembayaran.index') }}" class="btn btn-secondary px-4">Batal</a>
+        </div>
+    </form>
 </div>
 @endsection

@@ -13,16 +13,20 @@
             DATA PASIEN KLINIKU
         </h5>
 
-        <div class="p-3 text-start"> 
+        <div class="p-3 d-flex justify-between items-center gap-3 flex-wrap">
             <a href="{{ route('admin.pasien.create') }}" 
                class="btn px-4 py-2 rounded-full shadow-sm"
                style="background-color:#ef97be; color:#fff; font-weight:600; font-size:0.95rem;">
                + Tambah Pasien
             </a>
+
+            <input type="text" id="searchInput" placeholder="Cari pasien disini..." 
+                class="form-control rounded-full px-3 py-2 border border-pink-300 shadow-sm"
+                style="max-width:250px;">
         </div>
 
         <div class="table-responsive p-3">
-            <table class="table table-bordered text-center align-middle mb-0 rounded-2xl" style="border-color:#F9A8D4; border-radius:1rem; overflow:hidden;">
+            <table id="pasienTable" class="table table-bordered text-center align-middle mb-0 rounded-2xl" style="border-color:#F9A8D4; border-radius:1rem; overflow:hidden;">
                 <thead style="background-color:#FBCFE8; color:#9d174d; font-weight:600; letter-spacing:0.5px;">
                     <tr>
                         <th style="width:45px;">No</th>
@@ -82,6 +86,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
+    // SweetAlert success
     @if(session('success'))
         Swal.fire({
             position: 'center',
@@ -98,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     @endif
 
+    // SweetAlert delete
     const deleteButtons = document.querySelectorAll(".btn-delete");
     deleteButtons.forEach(btn => {
         btn.addEventListener("click", function(e) {
@@ -123,6 +129,19 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     });
+
+    // Simple search filter
+    const searchInput = document.getElementById("searchInput");
+    const tableRows = document.querySelectorAll("#pasienTable tbody tr");
+
+    searchInput.addEventListener("keyup", function() {
+        const filter = this.value.toLowerCase();
+        tableRows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? "" : "none";
+        });
+    });
+
 });
 </script>
 @endpush
@@ -145,7 +164,6 @@ document.addEventListener("DOMContentLoaded", function () {
     background-color: #f9a8d4;
     transform: scale(1.05);
 }
-
 
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {transform: translateY(0);}

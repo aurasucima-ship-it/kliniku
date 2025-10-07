@@ -23,22 +23,15 @@ class Pendaftaran extends Model
         'tanggal_berobat',
     ];
 
-    public function user()
+    public function pasien()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'pasien_id');
     }
 
-public function pasien()
-{
-    return $this->belongsTo(User::class, 'pasien_id');
-}
-
-
-
-   public function dokter()
-{
-    return $this->belongsTo(User::class, 'dokter_id');
-}
+    public function dokter()
+    {
+        return $this->belongsTo(Dokter::class, 'dokter_id');
+    }
 
     public function pembayaran()
     {
