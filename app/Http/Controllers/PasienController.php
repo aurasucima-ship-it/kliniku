@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Pasien;
 use App\Models\Dokter;
-use App\Models\Pembayaran;
 use App\Models\Pendaftaran;
+use App\Models\Pembayaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,9 +48,9 @@ class PasienController extends Controller
         $user = Auth::user();
         $data = $request->validate([
             'nama' => 'required|string|max:255',
-            'alamat' => 'nullable|string',
+            'alamat' => 'required|string',
             'jenis_kelamin' => 'required|in:L,P',
-            'no_telp' => 'nullable|numeric|digits_between:8,15',
+            'no_telp' => 'required|string|max:20',
             'keluhan' => 'nullable|string',
             'tanggal_berobat' => 'required|date',
             'dokter_id' => 'nullable|exists:dokter,id',
@@ -67,6 +67,11 @@ class PasienController extends Controller
                 'user_id' => $user->id,
                 'dokter_id' => $user->dokter->id,
                 'pasien_id' => $pasien->id,
+                'nama' => $pasien->nama,
+                'no_telp' => $pasien->no_telp,
+                'alamat' => $pasien->alamat,
+                'keluhan' => $pasien->keluhan ?? '',
+                'tanggal_berobat' => $pasien->tanggal_berobat,
                 'tanggal' => now(),
                 'status' => 'terdaftar',
             ]);
@@ -94,9 +99,9 @@ class PasienController extends Controller
         $user = Auth::user();
         $data = $request->validate([
             'nama' => 'required|string|max:255',
-            'alamat' => 'nullable|string',
+            'alamat' => 'required|string',
             'jenis_kelamin' => 'required|in:L,P',
-            'no_telp' => 'nullable|numeric|digits_between:8,15',
+            'no_telp' => 'required|string|max:20',
             'keluhan' => 'nullable|string',
             'tanggal_berobat' => 'required|date',
             'dokter_id' => 'nullable|exists:dokter,id',

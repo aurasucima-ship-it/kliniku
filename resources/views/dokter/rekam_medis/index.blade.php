@@ -34,7 +34,7 @@
                         <th style="border:1px solid #F9A8D4;">Keluhan</th>
                         <th style="border:1px solid #F9A8D4;">Diagnosa</th>
                         <th style="border:1px solid #F9A8D4;">Tindakan</th>
-                        <th style="width:140px;border:1px solid #F9A8D4;">Aksi</th>
+                        <th style="width:180px;border:1px solid #F9A8D4;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,13 +48,16 @@
                             <td style="border:1px solid #F9A8D4;">{{ $rm->diagnosa }}</td>
                             <td style="border:1px solid #F9A8D4;">{{ $rm->tindakan }}</td>
                             <td style="border:1px solid #F9A8D4;" class="d-flex justify-center gap-2">
-                                <a href="{{ route('dokter.rekam_medis.show', $rm->id) }}" class="btn-icon-lightpink">
+                                <a href="{{ route('dokter.rekam_medis.show', $rm->id) }}" class="btn-icon-lightpink" title="Lihat">
                                     <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ route('dokter.rekam_medis.edit', $rm->id) }}" class="btn-icon-lightpink" title="Edit">
+                                    <i class="fas fa-edit"></i>
                                 </a>
                                 <form action="{{ route('dokter.rekam_medis.destroy', $rm->id) }}" method="POST" class="inline-block form-delete">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn-icon-lightpink btn-delete">
+                                    <button type="button" class="btn-icon-lightpink btn-delete" title="Hapus">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>

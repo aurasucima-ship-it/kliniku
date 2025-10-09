@@ -56,10 +56,14 @@ class User extends Authenticatable
         return $this->hasOne(Pasien::class, 'user_id');
     }
 
-    public function rekamMedis()
+    public function rekamMedisDokter()
     {
-        return $this->hasMany(RekamMedis::class, 'dokter_id')
-            ->orWhere('pasien_id', $this->id);
+        return $this->hasMany(RekamMedis::class, 'dokter_id');
+    }
+
+    public function rekamMedisPasien()
+    {
+        return $this->hasMany(RekamMedis::class, 'pasien_id');
     }
 
     public function pembayaran()
@@ -68,8 +72,7 @@ class User extends Authenticatable
     }
 
     public function getNamaAttribute()
-{
-    return $this->name;
-}
-
+    {
+        return $this->name;
+    }
 }

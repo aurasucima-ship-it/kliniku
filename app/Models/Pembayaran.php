@@ -34,15 +34,16 @@ class Pembayaran extends Model
         'jumlah'  => 'decimal:2',
     ];
 
-    public function pasien()
-    {
-        return $this->belongsTo(User::class, 'pasien_id');
-    }
+public function pasien()
+{
+    return $this->belongsTo(\App\Models\Pasien::class, 'pasien_id');
+}
 
-    public function dokter()
-    {
-        return $this->belongsTo(User::class, 'dokter_id');
-    }
+public function dokter()
+{
+    return $this->belongsTo(\App\Models\Dokter::class, 'dokter_id');
+}
+
 
     public function pendaftaran()
     {

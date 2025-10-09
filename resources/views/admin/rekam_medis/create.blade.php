@@ -49,15 +49,16 @@
                 </select>
             </div>
 
-            @php
-                $fields = [
-                    'keluhan' => 'textarea',
-                    'diagnosa' => 'textarea',
-                    'tindakan' => 'textarea',
-                    'resep_obat' => 'textarea',
-                    'catatan_tambahan' => 'textarea'
-                ];
-            @endphp
+@php
+    $fields = [
+        'keluhan' => 'textarea',
+        'diagnosa' => 'textarea',
+        'tindakan' => 'textarea',
+        'resep_obat' => 'textarea',
+        'catatan' => 'textarea'
+    ];
+@endphp
+
 
             @foreach($fields as $name => $type)
                 <div class="mb-3">

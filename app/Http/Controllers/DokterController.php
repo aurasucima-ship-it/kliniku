@@ -4,17 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Dokter;
 use App\Models\Pasien;
+use App\Models\RekamMedis;
+use App\Models\Pembayaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DokterController extends Controller
 {
-
     public function home()
     {
+        $user = Auth::user();
         $totalDokter = Dokter::count();
-        $totalPasien = Pasien::count();
+        $totalPasien = Pasien::where('dokter_id', $user->dokter->id)->count();
+        $totalRekamMedis = RekamMedis::whereHas('pasien', function($q) use ($user) {
+            $q->where('dokter_id', $user->dokter->id);
+        })->count();
+        $totalPembayaran = Pembayaran::whereHas('pasien', function($q) use ($user) {
+            $q->where('dokter_id', $user->dokter->id);
+        })->count();
 
-        return view('home.dokter', compact('totalDokter', 'totalPasien'));
+        return view('home.dokter', compact('totalDokter', 'totalPasien', 'totalRekamMedis', 'totalPembayaran'));
     }
 
     public function index()

@@ -11,6 +11,8 @@ use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use App\Models\RekamMedis;
 use App\Models\Pembayaran;
+use App\Models\Dokter;
+use App\Models\Pasien;
 
 Route::get('/', fn() => view('welcome'));
 
@@ -23,15 +25,15 @@ Route::get('/home', function () {
 
     if ($user->role === 'admin') {
         $totalAdmin = User::where('role', 'admin')->count();
-        $totalDokter = User::where('role', 'dokter')->count();
-        $totalPasien = User::where('role', 'pasien')->count();
+        $totalDokter = Dokter::count();
+        $totalPasien = Pasien::count();
         $totalRekamMedis = RekamMedis::count();
         $totalPembayaran = Pembayaran::count();
         return view('home.admin', compact('totalAdmin', 'totalDokter', 'totalPasien', 'totalRekamMedis', 'totalPembayaran'));
     }
 
     if ($user->role === 'dokter') {
-        $totalPasien = User::where('role', 'pasien')->count();
+        $totalPasien = Pasien::count();
         $totalRekamMedis = RekamMedis::count();
         $totalPembayaran = Pembayaran::count();
         return view('home.dokter', compact('totalPasien', 'totalRekamMedis', 'totalPembayaran'));

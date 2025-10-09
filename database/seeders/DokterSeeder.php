@@ -12,7 +12,6 @@ class DokterSeeder extends Seeder
     public function run(): void
     {
         $dokters = [
-            ['nama' => 'dr. Andi Pratama', 'spesialis' => 'Umum', 'alamat' => 'Jl. Merdeka No. 1'],
             ['nama' => 'dr. Riki Sanjaya', 'spesialis' => 'Gigi', 'alamat' => 'Jl. Sudirman No. 2'],
             ['nama' => 'dr. Budi Santoso', 'spesialis' => 'Anak', 'alamat' => 'Jl. Diponegoro No. 3'],
             ['nama' => 'dr. Jenara Alesa', 'spesialis' => 'Jantung', 'alamat' => 'Jl. Malio No. 12'],

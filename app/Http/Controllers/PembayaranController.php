@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pembayaran;
 use App\Models\Pendaftaran;
-use App\Models\User;
+use App\Models\Pasien;
+use App\Models\Dokter;
 use Illuminate\Support\Facades\Auth;
 
 class PembayaranController extends Controller
@@ -26,17 +27,27 @@ class PembayaranController extends Controller
 
     public function create()
     {
-        $pasiens = User::where('role', 'pasien')->get();
+        $pasiens = Pasien::all();
+        $dokters = Dokter::all();
         $pendaftaran = Pendaftaran::with('pasien')->get();
 
-        return view('dokter.pembayaran.create', compact('pasiens', 'pendaftaran'));
+        $user = Auth::user();
+
+        $view = match ($user->role) {
+            'admin'  => 'admin.pembayaran.create',
+            'dokter' => 'dokter.pembayaran.create',
+            default  => abort(403),
+        };
+
+        return view($view, compact('pasiens', 'dokters', 'pendaftaran'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'pasien_id'      => 'nullable|exists:users,id',
+            'pasien_id'      => 'required|exists:pasien,id',
             'pendaftaran_id' => 'nullable|exists:pendaftaran,id',
+            'dokter_id'      => 'nullable|exists:dokter,id',
             'jumlah'         => 'required|numeric',
             'metode'         => 'required|string',
             'tanggal'        => 'required|date',
@@ -44,62 +55,66 @@ class PembayaranController extends Controller
         ]);
 
         $user = Auth::user();
+        $pasien = Pasien::find($request->pasien_id);
 
         $data = [
-            'pasien_id'      => $request->pasien_id,
+'pasien_id' => $pasien?->id,
             'pendaftaran_id' => $request->pendaftaran_id,
-            'dokter_id'      => $user->role === 'dokter' ? $user->id : null,
+            'dokter_id'      => $user->role === 'dokter' ? $user->id : $request->dokter_id,
             'jumlah'         => $request->jumlah,
             'metode'         => $request->metode,
             'tanggal'        => $request->tanggal,
             'keterangan'     => $request->keterangan,
-            'status'         => 'lunas',
+            'status'         => 'belum lunas',
         ];
 
-        if (!$data['pasien_id'] && $data['pendaftaran_id']) {
-            $pendaftaran = Pendaftaran::find($data['pendaftaran_id']);
-            $data['pasien_id'] = $pendaftaran?->pasien_id;
-        }
+        Pembayaran::create($data);
 
-        $pembayaran = Pembayaran::create($data);
-
-        if ($pembayaran->pendaftaran_id) {
-            $pembayaran->pendaftaran->update(['status_pembayaran' => 'lunas']);
-        }
-
-        return redirect()->route($user->role . '.pembayaran.index')->with('success', 'Pembayaran berhasil ditambahkan.');
+        return redirect()->route($user->role . '.pembayaran.index')
+            ->with('success', 'Pembayaran berhasil ditambahkan, menunggu konfirmasi.');
     }
 
     public function edit(Pembayaran $pembayaran)
     {
-        $pasiens = User::where('role', 'pasien')->get();
+        $pasiens = Pasien::all();
         return view('dokter.pembayaran.edit', compact('pembayaran', 'pasiens'));
     }
 
     public function update(Request $request, Pembayaran $pembayaran)
     {
         $request->validate([
-            'pasien_id'  => 'required|exists:users,id',
+            'pasien_id'  => 'required|exists:pasien,id',
             'jumlah'     => 'required|numeric',
             'metode'     => 'required|string',
-            'status'     => 'required|string|in:lunas,belum',
+            'status'     => 'required|string|in:lunas,belum lunas',
             'tanggal'    => 'required|date',
             'keterangan' => 'nullable|string',
         ]);
 
-        $pembayaran->update($request->only(['pasien_id', 'jumlah', 'metode', 'status', 'tanggal', 'keterangan']));
+        $pasien = Pasien::find($request->pasien_id);
+
+        $pembayaran->update([
+            'pasien_id'  => $pasien?->user_id ?? null,
+            'jumlah'     => $request->jumlah,
+            'metode'     => $request->metode,
+            'status'     => $request->status,
+            'tanggal'    => $request->tanggal,
+            'keterangan' => $request->keterangan,
+        ]);
 
         if ($pembayaran->pendaftaran_id) {
             $pembayaran->pendaftaran->update(['status_pembayaran' => $request->status]);
         }
 
-        return redirect()->route(Auth::user()->role . '.pembayaran.index')->with('success', 'Data pembayaran berhasil diperbarui.');
+        return redirect()->route(Auth::user()->role . '.pembayaran.index')
+            ->with('success', 'Data pembayaran berhasil diperbarui.');
     }
 
     public function destroy(Pembayaran $pembayaran)
     {
         $pembayaran->delete();
-        return redirect()->route(Auth::user()->role . '.pembayaran.index')->with('success', 'Data pembayaran berhasil dihapus.');
+        return redirect()->route(Auth::user()->role . '.pembayaran.index')
+            ->with('success', 'Data pembayaran berhasil dihapus.');
     }
 
     public function bayarForm($id)
