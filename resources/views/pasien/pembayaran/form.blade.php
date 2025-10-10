@@ -11,12 +11,12 @@
 
         <div class="mb-3">
             <label class="form-label text-pink-700 fw-semibold">Nama Pasien</label>
-            <input type="text" value="{{ $pasien->name }}" class="form-control border-pink-300 bg-pink-50" readonly>
+            <input type="text" value="{{ $pasien->nama }}" class="form-control border-pink-300 bg-pink-50" readonly>
         </div>
 
         <div class="mb-3">
             <label class="form-label text-pink-700 fw-semibold">Nama Dokter</label>
-            <input type="text" value="{{ $dokter->name ?? '-' }}" class="form-control border-pink-300 bg-pink-50" readonly>
+            <input type="text" value="{{ $dokter->nama?? '-' }}" class="form-control border-pink-300 bg-pink-50" readonly>
         </div>
 
         <div class="mb-3">
@@ -28,8 +28,8 @@
             <label class="form-label text-pink-700 fw-semibold">Metode Pembayaran</label>
             <select name="metode" class="form-select border-pink-300 bg-white" required>
                 <option value="">-- Pilih Metode --</option>
-                <option value="Tunai">Cash</option>
-                <option value="Transfer">Transfer</option>
+                <option value="cash">Cash</option>
+                <option value="transfer">Transfer</option>
             </select>
         </div>
 

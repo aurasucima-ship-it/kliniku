@@ -41,8 +41,8 @@
                         @foreach($pembayaran as $index => $p)
                             <tr onmouseover="this.style.backgroundColor='#ffe4ed'" onmouseout="this.style.backgroundColor=''">
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $p->pasien?->name ?? '-' }}</td>
-                                <td>{{ $p->dokter?->name ?? '-' }}</td>
+                                <td>{{ $p->pasien?->nama ?? '-' }}</td>
+                                <td>{{ $p->dokter?->nama ?? '-' }}</td>
                                 <td>Rp {{ number_format($p->jumlah ?? 0, 0, ',', '.') }}</td>
                                 <td>{{ $p->metode ?? '-' }}</td>
                                 <td>

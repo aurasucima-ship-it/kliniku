@@ -11,7 +11,7 @@
     </h5>
 
     <div class="card-body">
-        <form action="{{ route('dokter.pembayaran.update', $pembayaran->id) }}" method="POST">
+        <form action="{{ route(auth()->user()->role . '.pembayaran.update', $pembayaran->id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -21,7 +21,7 @@
                     <option value="">-- Pilih Pasien --</option>
                     @foreach($pasiens as $pasien)
                         <option value="{{ $pasien->id }}" {{ old('pasien_id', $pembayaran->pasien_id) == $pasien->id ? 'selected' : '' }}>
-                            {{ $pasien->name }}
+                            {{ $pasien->nama }}
                         </option>
                     @endforeach
                 </select>
@@ -29,6 +29,23 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
+            @if(auth()->user()->role === 'admin')
+            <div class="mb-3">
+                <label for="dokter_id" class="form-label fw-semibold text-pink-700">Dokter</label>
+                <select name="dokter_id" id="dokter_id" class="form-select border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('dokter_id') is-invalid @enderror" required>
+                    <option value="">-- Pilih Dokter --</option>
+                    @foreach($dokters as $dokter)
+                        <option value="{{ $dokter->id }}" {{ old('dokter_id', $pembayaran->dokter_id) == $dokter->id ? 'selected' : '' }}>
+                            {{ $dokter->nama }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('dokter_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            @endif
 
             <div class="mb-3">
                 <label for="jumlah" class="form-label fw-semibold text-pink-700">Jumlah</label>
@@ -54,6 +71,18 @@
             </div>
 
             <div class="mb-3">
+                <label for="status" class="form-label fw-semibold text-pink-700">Status</label>
+                <select name="status" id="status" class="form-select border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('status') is-invalid @enderror" required>
+                    @foreach(['belum lunas' => 'Belum Lunas', 'menunggu konfirmasi' => 'Menunggu Konfirmasi', 'lunas' => 'Lunas'] as $key => $label)
+                        <option value="{{ $key }}" {{ old('status', $pembayaran->status) == $key ? 'selected' : '' }}>{{ $label }}</option>
+                    @endforeach
+                </select>
+                @error('status')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
                 <label for="tanggal" class="form-label fw-semibold text-pink-700">Tanggal</label>
                 <input type="date" name="tanggal" id="tanggal" class="form-control border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('tanggal') is-invalid @enderror" value="{{ old('tanggal', $pembayaran->tanggal->format('Y-m-d')) }}" required>
                 @error('tanggal')
@@ -69,21 +98,9 @@
                 @enderror
             </div>
 
-            <div class="mb-3">
-                <label for="status" class="form-label fw-semibold text-pink-700">Status</label>
-                <select name="status" id="status" class="form-select border-pink-300 focus:border-pink-500 focus:ring focus:ring-pink-200 @error('status') is-invalid @enderror" required>
-                    @foreach(['belum' => 'Belum Lunas', 'nunggu' => 'Menunggu Konfirmasi', 'lunas' => 'Lunas'] as $key => $label)
-                        <option value="{{ $key }}" {{ old('status', $pembayaran->status) == $key ? 'selected' : '' }}>{{ $label }}</option>
-                    @endforeach
-                </select>
-                @error('status')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-
             <div class="mt-4 d-flex gap-2">
                 <button type="submit" class="btn btn-pink bg-pink-500 hover:bg-pink-600 text-white flex-grow-1 shadow-sm">Update Pembayaran</button>
-                <a href="{{ route('dokter.pembayaran.index') }}" class="btn btn-pink bg-pink-300 hover:bg-pink-400 text-white flex-grow-1 shadow-sm">Batal</a>
+                <a href="{{ route(auth()->user()->role . '.pembayaran.index') }}" class="btn btn-pink bg-pink-300 hover:bg-pink-400 text-white flex-grow-1 shadow-sm">Batal</a>
             </div>
 
         </form>

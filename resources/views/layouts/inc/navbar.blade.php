@@ -12,7 +12,7 @@
     <li class="nav-item navbar-dropdown dropdown-user dropdown">
       <a class="nav-link dropdown-toggle hide-arrow p-0 d-flex align-items-center" href="javascript:void(0);" data-bs-toggle="dropdown">
         <div class="avatar avatar-online me-2">
-          <img src="{{ Auth::user()->foto ? asset('storage/' . Auth::user()->foto) : asset('img/avatars/default-avatar.png') }}" 
+          <img src="{{ Auth::user()->foto ? asset('storage/' . Auth::user()->foto) : asset('img/default-avatar.png') }}" 
                alt="User Avatar" class="rounded-circle" />
         </div>
         <span style="color:#9d174d;">{{ Auth::user()->name ?? 'Guest' }}</span>
@@ -24,7 +24,7 @@
             <div class="d-flex align-items-center">
               <div class="flex-shrink-0 me-2">
                 <div class="avatar avatar-online">
-                  <img src="{{ Auth::user()->foto ? asset('storage/' . Auth::user()->foto) : asset('img/avatars/default-avatar.png') }}" 
+                  <img src="{{ Auth::user()->foto ? asset('storage/' . Auth::user()->foto) : asset('img/default-avatar.png') }}" 
                        alt="User Avatar" class="rounded-circle" />
                 </div>
               </div>

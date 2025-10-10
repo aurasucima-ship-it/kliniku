@@ -41,7 +41,7 @@
                     @forelse ($pembayaran as $index => $p)
                         <tr class="transition duration-200 hover:bg-pink-100">
                             <td style="border:1px solid #F9A8D4;">{{ $index + 1 }}</td>
-                            <td style="border:1px solid #F9A8D4;">{{ $p->pasien->name ?? '-' }}</td>
+                            <td style="border:1px solid #F9A8D4;">{{ $p->pasien->nama ?? '-' }}</td>
                             <td style="border:1px solid #F9A8D4;">Rp {{ number_format($p->jumlah, 0, ',', '.') }}</td>
                             <td style="border:1px solid #F9A8D4;">{{ ucfirst($p->metode ?? '-') }}</td>
                             <td style="border:1px solid #F9A8D4;">{{ $p->tanggal->format('d/m/Y') }}</td>
