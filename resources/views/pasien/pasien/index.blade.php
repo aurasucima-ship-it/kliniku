@@ -7,7 +7,7 @@
 
     <div class="card shadow-sm rounded-2xl mb-8 text-center p-8" style="background: linear-gradient(135deg, rgba(251,182,206,0.3), rgba(253,164,175,0.2));">
         <h2 class="text-4xl font-extrabold text-pink-600 mb-4">
-            Selamat Datang, {{ $pasien->nama ?? Auth::user()->name }} 👋
+            Selamat Datang di kliniku adakah yang bisa kami, {{ $pasien->nama ?? Auth::user()->name }} 👋
         </h2>
         <p class="text-gray-700 text-lg">
             Gunakan menu di bawah untuk melakukan 

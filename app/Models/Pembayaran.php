@@ -25,6 +25,7 @@ class Pembayaran extends Model
         'metode',
         'keterangan',
         'lunas',
+            'bukti_transfer',
     ];
 
     protected $casts = [

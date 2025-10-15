@@ -8,6 +8,8 @@ use App\Http\Controllers\RekamMedisController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PasienNotifikasiController;
+use App\Http\Controllers\DokterNotifikasiController;
 use App\Models\User;
 use App\Models\RekamMedis;
 use App\Models\Pembayaran;
@@ -62,6 +64,12 @@ Route::middleware(['auth', 'role:dokter'])->group(function () {
     Route::resource('dokter/pasien', PasienController::class)->names('dokter.pasien');
     Route::resource('dokter/rekam_medis', RekamMedisController::class)->names('dokter.rekam_medis');
     Route::resource('dokter/pembayaran', PembayaranController::class)->names('dokter.pembayaran');
+Route::get('/dokter/notifikasi', [DokterNotifikasiController::class, 'showPage'])
+    ->middleware('auth')
+    ->name('dokter.notifikasi.index');
+Route::get('/dokter/notifikasi/data', [DokterNotifikasiController::class, 'index'])
+    ->middleware('auth')
+    ->name('dokter.notifikasi.data');
 });
 
 Route::middleware(['auth', 'role:pasien'])->prefix('pasien')->as('pasien.')->group(function () {
@@ -80,7 +88,12 @@ Route::middleware(['auth', 'role:pasien'])->prefix('pasien')->as('pasien.')->gro
 
     Route::get('rekam_medis', [RekamMedisController::class, 'index'])->name('rekam_medis.index');
     Route::get('rekam_medis/{rekamMedis}', [RekamMedisController::class, 'show'])->name('rekam_medis.show');
+
+    // **Notifikasi Pasien**
+    Route::get('notifikasi', [PasienNotifikasiController::class, 'index'])->name('notifikasi.index');
+    Route::get('notifikasi/read/{id}', [PasienNotifikasiController::class, 'markAsRead'])->name('notifikasi.read');
 });
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

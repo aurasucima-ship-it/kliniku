@@ -49,41 +49,51 @@ class HomeController extends Controller
                     'data'
                 ));
 
-            case 'dokter':
-                $dokterId = optional($user->dokter)->id; 
+case 'dokter':
+    $dokterId = optional($user->dokter)->id;
 
-                $totalPasien = $dokterId
-                    ? Pasien::where('dokter_id', $dokterId)->count()
-                    : 0;
+    $totalPasien = $dokterId
+        ? Pasien::where('dokter_id', $dokterId)->count()
+        : 0;
 
-                $totalRekamMedis = $dokterId
-                    ? RekamMedis::whereHas('pasien', fn($q) => $q->where('dokter_id', $dokterId))->count()
-                    : 0;
+    $totalRekamMedis = $dokterId
+        ? RekamMedis::where('dokter_id', $dokterId)
+            ->orWhereIn(
+                'pasien_id',
+                Pendaftaran::where('dokter_id', $dokterId)->pluck('pasien_id')
+            )
+            ->count()
+        : 0;
 
-                $totalPembayaran = $dokterId
-                    ? Pembayaran::whereHas('pasien', fn($q) => $q->where('dokter_id', $dokterId))->count()
-                    : 0;
+    $totalPembayaran = $dokterId
+        ? Pembayaran::where('dokter_id', $dokterId)
+            ->orWhereIn(
+                'pasien_id',
+                Pendaftaran::where('dokter_id', $dokterId)->pluck('pasien_id')
+            )
+            ->count()
+        : 0;
 
-                return view('home.dokter', compact(
-                    'totalPasien',
-                    'totalRekamMedis',
-                    'totalPembayaran'
-                ));
+    return view('home.dokter', compact(
+        'totalPasien',
+        'totalRekamMedis',
+        'totalPembayaran'
+    ));
 
-          
-            case 'pasien':
-                $pasien = Pasien::where('user_id', $user->id)->first();
+case 'pasien':
+    $pasien = Pasien::where('user_id', $user->id)->first();
+    $rekamMedisSaya = $pasien?->rekamMedis()->get() ?? collect();
+    $pembayaranSaya = $pasien?->pembayaran()->get() ?? collect();
+    $pendaftaranSaya = $pasien?->pendaftaran()->get() ?? collect();
+    $dokter = Dokter::select('nama', 'alamat', 'spesialis')->get();
+    return view('home.pasien', compact(
+        'pasien',
+        'rekamMedisSaya',
+        'pembayaranSaya',
+        'pendaftaranSaya',
+        'dokter'
+    ));
 
-                $rekamMedisSaya = $pasien?->rekamMedis()->get() ?? collect();
-                $pembayaranSaya = $pasien?->pembayaran()->get() ?? collect();
-                $pendaftaranSaya = $pasien?->pendaftaran()->get() ?? collect();
-
-                return view('home.pasien', compact(
-                    'pasien',
-                    'rekamMedisSaya',
-                    'pembayaranSaya',
-                    'pendaftaranSaya'
-                ));
 
             default:
                 return redirect()->route('login');

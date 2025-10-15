@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Pasien;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,20 +15,13 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Tampilkan halaman register
-     */
     public function create(): View
     {
         return view('auth.register');
     }
 
-    /**
-     * Proses register user baru
-     */
     public function store(Request $request): RedirectResponse
     {
-      
         $request->validate([
             'name'     => ['required', 'string', 'max:255'],
             'email'    => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
@@ -41,10 +35,20 @@ class RegisteredUserController extends Controller
             'role'     => 'pasien',
         ]);
 
-        event(new Registered($user));
+        Pasien::create([
+            'user_id' => $user->id,
+            'nama' => $user->name,
+            'alamat' => '-',
+            'jenis_kelamin' => 'L',
+            'no_telp' => '-',
+            'keluhan' => '-',
+            'tanggal_berobat' => now(),
+            'dokter_id' => null,
+        ]);
 
+        event(new Registered($user));
         Auth::login($user);
 
-        return redirect()->intended('/home');
+        return redirect()->route('home');
     }
 }

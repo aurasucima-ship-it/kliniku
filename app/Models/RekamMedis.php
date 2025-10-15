@@ -22,7 +22,10 @@ class RekamMedis extends Model
         'tanggal_pemeriksaan',
     ];
 
-  
+    protected $casts = [
+        'tanggal_pemeriksaan' => 'datetime',
+    ];
+
     public function pasien()
     {
         return $this->belongsTo(Pasien::class, 'pasien_id');

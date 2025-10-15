@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Pendaftaran;
 use App\Models\Dokter;
 use App\Models\Pasien;
+use App\Models\Notification;
 
 class PendaftaranController extends Controller
 {
@@ -57,22 +58,10 @@ class PendaftaranController extends Controller
             'dokter_id'       => 'required|exists:dokter,id',
         ]);
 
-        DB::transaction(function() use ($validated) {
-            $pasien = Auth::user()->pasien;
-
-            if ($pasien) {
-                $pasien->update([
-                    'dokter_id'       => $validated['dokter_id'],
-                    'keluhan'         => $validated['keluhan'],
-                    'nama'            => $validated['nama'],
-                    'alamat'          => $validated['alamat'],
-                    'jenis_kelamin'   => $validated['jenis_kelamin'],
-                    'no_telp'         => $validated['no_telp'],
-                    'tanggal_berobat' => $validated['tanggal_berobat'],
-                ]);
-            } else {
-                $pasien = Pasien::create([
-                    'user_id'         => Auth::id(),
+        DB::transaction(function() use ($validated, &$pendaftaran) {
+            $pasien = Pasien::firstOrCreate(
+                ['user_id' => Auth::id()],
+                [
                     'nama'            => $validated['nama'],
                     'alamat'          => $validated['alamat'],
                     'jenis_kelamin'   => $validated['jenis_kelamin'],
@@ -80,10 +69,20 @@ class PendaftaranController extends Controller
                     'tanggal_berobat' => $validated['tanggal_berobat'],
                     'dokter_id'       => $validated['dokter_id'],
                     'keluhan'         => $validated['keluhan'],
-                ]);
-            }
+                ]
+            );
 
-            Pendaftaran::create([
+            $pasien->update([
+                'nama'            => $validated['nama'],
+                'alamat'          => $validated['alamat'],
+                'jenis_kelamin'   => $validated['jenis_kelamin'],
+                'no_telp'         => $validated['no_telp'],
+                'tanggal_berobat' => $validated['tanggal_berobat'],
+                'dokter_id'       => $validated['dokter_id'],
+                'keluhan'         => $validated['keluhan'],
+            ]);
+
+            $pendaftaran = Pendaftaran::create([
                 'user_id'         => Auth::id(),
                 'pasien_id'       => $pasien->id,
                 'dokter_id'       => $validated['dokter_id'],
@@ -93,6 +92,16 @@ class PendaftaranController extends Controller
                 'alamat'          => $pasien->alamat,
                 'keluhan'         => $validated['keluhan'],
                 'tanggal_berobat' => $validated['tanggal_berobat'],
+            ]);
+
+            $dokterUserId = Dokter::find($validated['dokter_id'])->user_id;
+
+            Notification::create([
+                'user_id' => $dokterUserId,
+                'title'   => 'Pendaftaran Pasien Baru',
+                'message' => 'Pasien baru mendaftar: ' . $pasien->nama,
+                'is_read' => false,
+                'pendaftaran_id' => $pendaftaran->id
             ]);
         });
 
